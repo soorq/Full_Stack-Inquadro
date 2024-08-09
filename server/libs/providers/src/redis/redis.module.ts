@@ -9,8 +9,8 @@ import { Module } from '@nestjs/common';
             isGlobal: true,
             imports: [ConfigModule],
             useFactory: async (cfg: ConfigService) => ({
-                url: cfg.get('REDIS_URL'),
-                store: redisStore
+                store: redisStore,
+                url: cfg.get('REDIS_URL')
             }),
             inject: [ConfigService]
         })

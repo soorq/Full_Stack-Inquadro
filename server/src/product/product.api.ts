@@ -30,7 +30,7 @@ export const ApiGetAllProducts = () =>
         }),
         UseInterceptors(CacheInterceptor),
         CacheKey('Products'),
-        CacheTTL(600),
+        CacheTTL(60 * 5),
         Get('all')
     );
 
@@ -50,9 +50,8 @@ export const ApiGetOneProductOneById = () =>
             description: 'Плохой запроос или айди не найден'
         }),
         UseInterceptors(CacheInterceptor),
-        CacheTTL(600),
-        Get('get/:id'),
-        CacheKey('Product' + ':id')
+        CacheTTL(60 * 5),
+        Get('get/:id')
     );
 
 export const ApiGetManyProductsByPagination = () =>
@@ -72,36 +71,47 @@ export const ApiGetManyProductsByPagination = () =>
         }),
         UseInterceptors(CacheInterceptor),
         CacheKey('Products-pagination'),
-        CacheTTL(60000),
+        CacheTTL(60 * 5),
         Get('pagination')
     );
 
 export const ApiGetManyProductsByParams = () =>
     applyDecorators(
         ApiOperation({
-            summary: 'Получение отсортированных по параметру фильтров',
-            description: 'Для получения сортированных постов'
+            summary: 'Получение продуктов по фильтрам',
+            description: 'Возвращает список продуктов на основе фильтров'
         }),
         ApiOkResponse({
             status: HttpStatus.OK,
             isArray: true,
-            description: 'Отдает отстортирование по квери данным - посты по бд',
+            description: 'Список отфильтрованных продуктов',
             type: EProduct
         }),
         ApiBadRequestResponse({
             status: HttpStatus.BAD_REQUEST,
-            description: 'Плохой запроос или не найдены данные'
+            description: 'Неправильный запрос или данные не найдены'
         }),
-        ApiQuery({ type: 'string', required: false, name: 'author' }),
-        ApiQuery({ type: 'Date', required: false, name: 'start' }),
-        ApiQuery({ type: 'Date', required: false, name: 'end' }),
+        ApiQuery({ type: 'string', required: false, name: 'category' }),
+        ApiQuery({ type: 'string', required: false, name: 'usage' }),
+        ApiQuery({ type: 'string', required: false, name: 'availability' }),
+        ApiQuery({ type: 'string', required: false, name: 'plating' }),
+        ApiQuery({ type: 'string', required: false, name: 'size' }),
+        ApiQuery({ type: 'string', required: false, name: 'texture' }),
+        ApiQuery({ type: 'string', required: false, name: 'minPrice' }),
+        ApiQuery({ type: 'string', required: false, name: 'maxPrice' }),
         ApiQuery({
-            type: 'string',
+            type: 'number',
             required: false,
-            name: 'categories',
-            example: '1,2,3'
+            name: 'limit',
+            example: 20
+        }),
+        ApiQuery({
+            type: 'number',
+            required: false,
+            name: 'offset',
+            example: 0
         }),
         UseInterceptors(CacheInterceptor),
-        CacheTTL(30000),
+        CacheTTL(60 * 5), // Кэшируем на 5 минут
         Get('filter')
     );

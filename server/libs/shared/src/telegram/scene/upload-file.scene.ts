@@ -16,8 +16,6 @@ export class UpdateProductWizard {
 
     @WizardStep(1)
     async getName(@Context() ctx: Scenes.WizardContext, @Message() text) {
-        console.log(text);
-
         const product = await this.product.findByArticul('432');
 
         if (!product)

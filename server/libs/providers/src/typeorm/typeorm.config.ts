@@ -10,7 +10,6 @@ const cfg = new ConfigService();
 
 const options = (): DataSourceOptions => {
     const url = cfg.get('DATABASE_URL');
-    console.log(url);
 
     const urlRedis = cfg.get('REDIS_URL');
     if (!url || !urlRedis) {

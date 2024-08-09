@@ -1,27 +1,45 @@
-import { Controller, Param, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import {
+    Controller,
+    HttpException,
+    HttpStatus,
+    Param,
+    Query
+} from '@nestjs/common';
+import {
     ApiGetAllProducts,
-    ApiGetManyProductsByPagination,
+    ApiGetManyProductsByParams,
     ApiGetOneProductOneById
 } from './product.api';
 
-@Controller()
+@Controller('product')
 export class ProductController {
     constructor(private readonly service: ProductService) {}
 
     @ApiGetAllProducts()
     getAll() {
-        return this.service.findAll();
+        try {
+            return this.service.findAll();
+        } catch (error) {
+            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @ApiGetManyProductsByPagination()
-    getByFilter(@Query() category: string) {
-        return this.service.findByFilter({ heelo: '' });
+    @ApiGetManyProductsByParams()
+    getByFilter(@Query() query: Record<string, string | number | undefined>) {
+        try {
+            return this.service.findByFilter(query);
+        } catch (error) {
+            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ApiGetOneProductOneById()
-    getById(@Param() id: string) {
-        return this.service.findOne(id);
+    getById(@Param('id') id: string) {
+        try {
+            return this.service.findOne(id);
+        } catch (error) {
+            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

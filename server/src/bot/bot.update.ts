@@ -36,7 +36,6 @@ export class BotUpdate {
     @Action('cancel')
     async getBack(ctx: Scenes.WizardContext) {
         await ctx.answerCbQuery('Отмена редактирования');
-        console.log(ctx.scene);
 
         if (!ctx?.scene) await ctx.scene?.leave;
 
@@ -51,7 +50,6 @@ export class BotUpdate {
         });
 
         await this.service.leaveButton(ctx);
-        console.log(ctx);
 
         ctx.reply(
             'Введите последние артикуль товара, которого желаете редактировать',
