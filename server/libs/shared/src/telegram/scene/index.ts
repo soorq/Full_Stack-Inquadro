@@ -1,1 +1,2 @@
-export * from './upload-file.scene'
+export * from './product';
+export * from './admin';

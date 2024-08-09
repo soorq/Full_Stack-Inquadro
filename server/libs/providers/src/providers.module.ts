@@ -1,4 +1,5 @@
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeormModule } from './typeorm/typeorm.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { RedisModule } from './redis/redis.module';
@@ -20,7 +21,8 @@ import { join } from 'path';
                 ttl: 60000,
                 limit: 10
             }
-        ])
+        ]),
+        EventEmitterModule.forRoot({ global: true })
     ],
     providers: [
         {
