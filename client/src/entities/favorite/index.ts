@@ -1,0 +1,1 @@
+export { FavoritePerview } from './favorite.ui';
