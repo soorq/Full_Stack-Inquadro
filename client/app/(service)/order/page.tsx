@@ -1,5 +1,3 @@
 export default function OrderPage() {
-    return (
-        <div className="">order page</div>
-    );
+    return <div className="">order page</div>;
 }

@@ -1,1 +1,2 @@
-export { FavoritePerview } from './favorite.ui';
+export { useFavoriteStore } from './favorite.store';
+export { FavoritePreview } from './favorite.ui';

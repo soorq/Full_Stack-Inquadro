@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { RootProvider } from '~&/src/app/provider/index.provider';
 
 export const metadata: Metadata = {
     title: 'Inquadra',
@@ -11,7 +12,9 @@ export default function RootLayout({
 }: Readonly<React.PropsWithChildren>) {
     return (
         <html lang="en" className="subpixel-antialiased">
-            <body>{children}</body>
+            <body>
+                <RootProvider>{children}</RootProvider>
+            </body>
         </html>
     );
 }

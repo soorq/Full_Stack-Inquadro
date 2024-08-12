@@ -3,7 +3,6 @@ import { ChevronRightIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Slot } from '@radix-ui/react-slot';
 
 import { cn } from '~&/src/shared/lib/tw-merge';
-import { Play } from 'lucide-react';
 
 const Breadcrumb = React.forwardRef<
     HTMLElement,
@@ -20,7 +19,7 @@ const BreadcrumbList = React.forwardRef<
     <ol
         ref={ref}
         className={cn(
-            'flex flex-wrap items-center gap-1.5 break-words text-base text-muted-foreground sm:gap-2.5',
+            'flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5',
             className
         )}
         {...props}
@@ -81,10 +80,10 @@ const BreadcrumbSeparator = ({
     <li
         role="presentation"
         aria-hidden="true"
-        className={cn(className)}
+        className={cn('[&>svg]:size-3.5', className)}
         {...props}
     >
-        {children ?? <Play className="fill-muted-foreground h-2 w-3" />}
+        {children ?? <ChevronRightIcon />}
     </li>
 );
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator';

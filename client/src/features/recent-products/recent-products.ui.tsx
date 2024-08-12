@@ -1,4 +1,5 @@
 'use client';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ProductPreview } from '~&/src/entities/product';
 import { Heart } from 'lucide-react';
@@ -12,7 +13,10 @@ export const RecentProducts = () => {
                 </h3>
                 <Heart className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-xl" />
             </div>
-            <Swiper slidesPerView={4} spaceBetween={20}>
+            <Swiper
+                breakpoints={{ '1200px': { slidesPerView: 4 } }}
+                spaceBetween={20}
+            >
                 <SwiperSlide>
                     <ProductPreview variant="sm" />
                 </SwiperSlide>

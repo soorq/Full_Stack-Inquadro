@@ -1,5 +1,12 @@
-import { LargeProduct, SmallProduct } from '~&/src/widgets/product';
 import type { variants } from './product.types';
+import dynamic from 'next/dynamic';
+
+const ProductSmall = dynamic(() =>
+    import('~&/src/widgets/product').then(cn => cn.ProductSmall)
+);
+const ProductLarge = dynamic(() =>
+    import('~&/src/widgets/product').then(cn => cn.ProductLarge)
+);
 
 const images = [
     '/product/main.png',
@@ -19,10 +26,16 @@ const smallData = {
     total: '28 шт'
 };
 
-export const ProductPreview = ({ variant = 'lg' }: { variant?: variants }) => {
-    return variant === 'lg' ? (
-        <LargeProduct slides={images} />
+export const ProductPreview = ({
+    variant = 'lg',
+    slug
+}: {
+    variant?: variants;
+    slug?: string;
+}) => {
+    return variant === 'lg' && slug ? (
+        <ProductLarge slides={images} />
     ) : (
-        <SmallProduct product={smallData} />
+        <ProductSmall product={smallData} />
     );
 };

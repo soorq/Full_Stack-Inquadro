@@ -5,7 +5,7 @@ export const Footer = () => {
     return (
         <footer className="w-full h-full py-10 bg-primary text-white">
             <div className="container w-full h-full">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-center">
                     <Image
                         src="/logo/logo.png"
                         alt=""
@@ -48,8 +48,8 @@ export const Footer = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="flex mt-10 mb-5">
-                    <ul className="w-1/4 [&>li]:mb-1">
+                <div className="flex mt-10 mb-5 flex-col md:flex-row gap-5">
+                    <ul className="md:w-1/4 [&>li]:mb-1">
                         <li className="">
                             <Link href="">о компании</Link>
                         </li>
@@ -67,7 +67,7 @@ export const Footer = () => {
                         </li>
                     </ul>
 
-                    <ul className="w-2/4 [&>li]:mb-1">
+                    <ul className="md:w-2/4 [&>li]:mb-1">
                         <li>
                             <Link href="/">
                                 условия обработки персональных данных
@@ -83,24 +83,26 @@ export const Footer = () => {
                             <Link href="/">публичная оферта</Link>
                         </li>
                     </ul>
-                    <div className="w-1/4 flex flex-col text-right">
+                    <div className="md:w-1/4 flex flex-col md:text-right">
                         <Link
-                            href="telto:+78008001010"
+                            href="tel:+78008001010"
                             rel="noopener noreferrer"
+                            className="text-xl"
                         >
                             +7 800 800 10 10
                         </Link>
                         <Link
                             href="mailto:info@inquadra.ru"
                             rel="noopener noreferrer"
+                            className="text-xl"
                         >
                             info@inquadra.ru
                         </Link>
                     </div>
                 </div>
 
-                <div className="flex items-end">
-                    <div className="w-1/4">
+                <div className="flex md:items-end flex-col md:flex-row gap-5">
+                    <div className="w-full md:w-1/4">
                         <Link href="/policy" className="mb-1">
                             пользовательское соглашение
                         </Link>

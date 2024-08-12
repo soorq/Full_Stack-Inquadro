@@ -5,13 +5,13 @@ export const CartDel = () => {
     return (
         <div className="">
             <div className="flex gap-1.5">
-                <Button size="icon" disabled className="rounded-lg w-12 h-12">
+                <Button disabled className="rounded-lg size-12">
                     <Minus />
                 </Button>
                 <div className="h-12 w-12 flex justify-center items-center bg-secondary rounded-lg">
                     <span>1</span>
                 </div>
-                <Button size="icon" className="rounded-lg h-12 w-12">
+                <Button className="rounded-lg size-12">
                     <Plus />
                 </Button>
             </div>
