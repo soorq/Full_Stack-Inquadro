@@ -3,7 +3,7 @@ import { Skeleton } from '~&/src/shared/ui/skeleton';
 export const ProductSmallSkeleton = () => {
     return (
         <div className="w-full h-full">
-            <Skeleton className="max-h-[345px] rounded-b-none h-full w-full" />
+            <Skeleton className="max-h-[345px] rounded-b-none h-svh w-full" />
 
             <div className="w-full h-auto bg-secondary relative p-4 rounded-b-xl">
                 <div className="flex justify-between items-center">

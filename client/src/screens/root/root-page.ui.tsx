@@ -5,6 +5,7 @@ export const RootPageUi = () => {
     return (
         <>
             <Header />
+            <main className="min-h-svh max-h-[50svh]">Root Page</main>
             <Footer />
         </>
     );

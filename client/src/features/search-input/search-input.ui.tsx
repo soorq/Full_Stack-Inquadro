@@ -68,7 +68,7 @@ export const SearchInput = () => {
                     <Search className="h-5 w-5" />
 
                     <Input
-                        className="border-none shadow-none focus-visible:ring-0 placeholder:text-lg px-0 h-[50px] text-base leading-4"
+                        className="bg-transparent focus-visible:ring-0 placeholder:text-lg px-0 leading-4"
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                         type="text"

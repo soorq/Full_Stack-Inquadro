@@ -1,40 +1,77 @@
 import { z } from 'zod';
 
-type Option = { label: string; value: string };
+type Option = { id: string; value: string };
+
+const getDisplayValue = (
+    data: string | { id: string; value: string }[]
+): Option[] => {
+    if (typeof data === 'string') {
+        return [{ id: data, value: data }];
+    }
+
+    // Преобразование массива объектов с id в формат Option
+    return data.map(item => ({ id: item.value, value: item.value }));
+};
 
 export const createSchema = (options: {
-    sizes: Option[];
-    usage: Option[];
-    shades: Option[];
+    size: string | Option[];
+    usage: string | Option[];
+    shade: string | Option[];
 }) => {
-    const { sizes, usage, shades } = options;
+    const { size, usage, shade } = options;
+
+    const sizeOptions = getDisplayValue(size);
+    const usageOptions = getDisplayValue(usage);
+    const shadeOptions = getDisplayValue(shade);
 
     return z.object({
         size: z
-            .enum(sizes.map(option => option.value) as [string, ...string[]])
+            .enum(
+                sizeOptions.map(option => option.value) as [string, ...string[]]
+            )
             .refine(val => val !== '', {
                 message: 'Пожалуйста, выберите размер.'
             })
-            .refine(val => sizes.map(option => option.value).includes(val), {
-                message: 'Недопустимое значение размера.'
-            }),
+            .refine(
+                val => sizeOptions.map(option => option.value).includes(val),
+                {
+                    message: 'Недопустимое значение размера.'
+                }
+            ),
         usage: z
-            .enum(usage.map(option => option.value) as [string, ...string[]])
+            .enum(
+                usageOptions.map(option => option.value) as [
+                    string,
+                    ...string[]
+                ]
+            )
             .refine(val => val !== '', {
                 message: 'Пожалуйста, выберите использование.'
             })
-            .refine(val => usage.map(option => option.value).includes(val), {
-                message: 'Недопустимое значение использования.'
-            }),
+            .refine(
+                val => usageOptions.map(option => option.value).includes(val),
+                {
+                    message: 'Недопустимое значение использования.'
+                }
+            ),
         shade: z
-            .enum(shades.map(option => option.value) as [string, ...string[]], {
-                required_error: 'Пожалуйста, выберите оттенок.'
-            })
+            .enum(
+                shadeOptions.map(option => option.value) as [
+                    string,
+                    ...string[]
+                ],
+                {
+                    required_error: 'Пожалуйста, выберите оттенок.'
+                }
+            )
             .refine(val => val !== '', {
                 message: 'Пожалуйста, выберите оттенок.'
             })
-            .refine(val => shades.map(option => option.value).includes(val), {
-                message: 'Недопустимое значение оттенка.'
-            })
+            .refine(
+                val => shadeOptions.map(option => option.value).includes(val),
+                {
+                    message: 'Недопустимое значение оттенка.'
+                }
+            )
     });
 };

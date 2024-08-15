@@ -1,6 +1,6 @@
 import { queryClient } from '~&/src/shared/lib/query-client';
 import { ProductService } from '~&/src/shared/api/product';
-import { Product, Products } from './product.types';
+import { ProductApi, ProductClient, ProductsApi } from './product.types';
 import { queryOptions } from '@tanstack/react-query';
 
 export class ProductsQueries {
@@ -27,7 +27,8 @@ export class ProductsQueries {
              * FIXME: https://github.com/TanStack/query/issues/7341
              */
             // @ts-expect-error
-            initialData: () => this.getInitialData<Product>(['product', slug])
+            initialData: () =>
+                this.getInitialData<ProductApi>(['product', slug])
         });
     }
 
@@ -132,25 +133,25 @@ export class ProductsQueries {
 
     private static getNextPageParam(limit: number) {
         return (
-            lastPage: Products,
-            _allPages: Array<Products>,
+            lastPage: ProductClient,
+            _allPages: Array<ProductsApi>,
             lastPageParam: number
         ) => {
-            if (lastPage.size < limit) return;
+            if (+lastPage.size < limit) return;
             return lastPageParam + 1;
         };
     }
 
     private static getPreviousPageParam(
-        _firstPage: Products,
-        _allPages: Array<Products>,
+        _firstPage: ProductApi,
+        _allPages: Array<ProductApi>,
         firstPageParam: number
     ) {
         if (firstPageParam <= 1) return;
         return firstPageParam - 1;
     }
 
-    private static setArticleData(products: Products) {
+    private static setArticleData(products: ProductsApi) {
         products.forEach(product => {
             queryClient.setQueryData(
                 [...this.keys.root, product.slug],

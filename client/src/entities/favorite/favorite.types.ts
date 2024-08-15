@@ -1,14 +1,11 @@
-import type {
-    ProductSearchDto,
-    ProductsSearchDto
-} from '~&/src/shared/api/api.types';
+import type { ProductClient } from '~&/src/entities/product';
 
-export type TypeActionsStore = {
-    addFn: (product: ProductSearchDto) => void;
+export type TypeFavoriteActions = {
+    addFn: (product: ProductClient) => void;
     delFn: (id: string) => void;
 };
 
-export type TypeStatesStore = {
+export type TypeFavoriteStates = {
     quantity: number;
-    products: ProductsSearchDto;
+    products: ProductClient[];
 };

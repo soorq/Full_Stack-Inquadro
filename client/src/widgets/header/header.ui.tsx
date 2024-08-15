@@ -1,7 +1,13 @@
-import { SearchInput } from '~&/src/features/search-input';
+import { SearchInputSkeleton } from '~&/src/features/search-input';
 import { FavoritePreview } from '~&/src/entities/favorite';
 import { CartPreview } from '~&/src/entities/cart';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+
+const SearchInput = dynamic(
+    () => import('~&/src/features/search-input').then(cn => cn.SearchInput),
+    { loading: () => <SearchInputSkeleton /> }
+);
 
 export const Header = () => {
     return (

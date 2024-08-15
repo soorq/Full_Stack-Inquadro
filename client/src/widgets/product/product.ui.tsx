@@ -1,16 +1,39 @@
-import type { TypeSmallProduct } from '~&/src/entities/product';
-import { ProductSearchDto } from '~&/src/shared/api/api.types';
+import { OrderInfo } from '~&/src/widgets/order-info';
 import { Button } from '~&/src/shared/ui/button';
+import { cn } from '~&/src/shared/lib/tw-merge';
 import { Badge } from '~&/src/shared/ui/badge';
 import {
     ProductDetails,
-    ProductInfo,
     ProductOptions,
     ProductSlider
 } from '~&/src/features/product';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import type {
+    ProductApi,
+    ProductClient,
+    TypeSmallProduct
+} from '~&/src/entities/product';
+
+export const ProductLarge = ({
+    slides,
+    product
+}: {
+    slides: string[];
+    product: ProductApi;
+}) => {
+    return (
+        <div className="lg:flex-row flex flex-col lg:justify-between container xl:gap-5 mb-10 lg:mb-0">
+            <ProductSlider slides={slides} />
+            <div className="flex flex-col gap-2.5 w-full">
+                <ProductOptions product={product} />
+                <OrderInfo />
+                <ProductDetails />
+            </div>
+        </div>
+    );
+};
 
 export const ProductSmall = ({ product }: { product: TypeSmallProduct }) => {
     return (
@@ -68,24 +91,11 @@ export const ProductSmall = ({ product }: { product: TypeSmallProduct }) => {
     );
 };
 
-export const ProductLarge = ({ slides }: { slides: string[] }) => {
-    return (
-        <div className="lg:flex-row flex flex-col lg:justify-between container xl:gap-5 mb-10 lg:mb-0">
-            <ProductSlider slides={slides} />
-            <div className="flex flex-col gap-2.5 w-full">
-                <ProductOptions />
-                <ProductInfo />
-                <ProductDetails />
-            </div>
-        </div>
-    );
-};
-
 export const ProductSearch = ({
     product,
     onClick
 }: {
-    product: ProductSearchDto;
+    product: ProductClient;
     onClick: () => void;
 }) => {
     return (
@@ -139,9 +149,22 @@ export const ProductSearch = ({
     );
 };
 
-export const ProductOrder = ({ product }: { product?: ProductSearchDto }) => {
+export const ProductOrder = ({
+    product,
+    isCart,
+    isFavorite
+}: {
+    product?: ProductClient;
+    isFavorite?: boolean;
+    isCart?: boolean;
+}) => {
     return (
-        <div className="flex gap-5 p-4 w-auto h-auto">
+        <div
+            className={cn(
+                'flex gap-5 w-auto h-auto',
+                isFavorite || isCart ? 'p-4' : 'mt-6 mb-10 max-w-[580px] w-full'
+            )}
+        >
             <div className="relative shrink-0 w-full h-svh max-w-[170px] max-h-[230px]">
                 <Image
                     src="/product/main.png"
@@ -159,18 +182,25 @@ export const ProductOrder = ({ product }: { product?: ProductSearchDto }) => {
                     </div>
                     <h4 className="text-xl leading-5">Avalanche</h4>
                 </div>
-                <div className="flex justify-between items-center bg-secondary p-2.5 rounded-xl">
-                    <p className="text-lg leading-5">1024 рублей за м²</p>
-                    {product?.slug && (
-                        <p className="text-lg leading-5">{product.slug}</p>
-                    )}
+                <div className="flex flex-wrap gap-1.5">
+                    <Badge variant="order">300x600</Badge>
+                    <Badge variant="order">Белый</Badge>
                 </div>
-                <Button
-                    asChild
-                    className="h-[50px] w-full text-lg leading-4 font-normal"
-                >
-                    <Link href={`/product/2313`}>Посмотреть</Link>
-                </Button>
+                {isFavorite ||
+                    (isCart && (
+                        <Button
+                            asChild
+                            className="h-[50px] w-full text-lg leading-4 font-normal"
+                        >
+                            <Link href={`/order/podtverzhdenie-zakaza`}>
+                                {isFavorite
+                                    ? 'В коризну'
+                                    : isCart
+                                      ? 'Оформить'
+                                      : ''}
+                            </Link>
+                        </Button>
+                    ))}
             </div>
         </div>
     );

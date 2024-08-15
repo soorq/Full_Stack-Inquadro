@@ -1,23 +1,42 @@
+import { ProductService } from '~&/src/shared/api/product';
+import { getProduct } from './action';
+import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { ProductsDto } from '~&/src/shared/api/api.types';
 
-const Page = dynamic(
-    () =>
-        import('~&/src/screens/product/product-page.ui').then(
-            page => page.ProductPage
-        ),
-    { suspense: true }
+const Page = dynamic(() =>
+    import('~&/src/screens/product/product-page.ui').then(
+        page => page.ProductPage
+    )
 );
 
-export async function generateStaticParams() {
-    const products = (await fetch('http://localhost:1010/api/product/all', {
-        method: 'GET',
-        next: { revalidate: 60 * 5 }
-    }).then(res => res.json())) as ProductsDto;
+type Props = { slug: string };
 
-    return products?.map(product => ({ slug: product.article }));
+export async function generateStaticParams() {
+    const products = await ProductService.productsQuery();
+    return products.data?.map(product => ({ slug: product.article }));
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-    return <Page slug={params.slug} />;
+export async function generateMetadata({
+    params
+}: {
+    params: Props;
+}): Promise<Metadata> {
+    const product = await ProductService.productQuery(params.slug);
+
+    return {
+        title: product.data.name,
+        description: `Купите ${product.data.name} — высококачественную ${product.data.category}, идеально подходящую для ${product.data.usage}. Эта плитка доступна ${product.data.availability} состоянии и стоит ${product.data.price} за единицу. Производство: ${product.data.country}. Идеально подходит для создания стильных интерьеров и долговечного покрытия.`,
+        openGraph: {
+            title: `Inquadro | ${product.data.name}`,
+            description: `Купите ${product.data.name} — высококачественную ${product.data.category}, идеально подходящую для ${product.data.usage}. Эта плитка доступна ${product.data.availability} состоянии и стоит ${product.data.price} за единицу. Производство: ${product.data.country}. Идеально подходит для создания стильных интерьеров и долговечного покрытия.`
+        },
+        authors: {
+            name: 'Danil or Soorq'
+        }
+    };
+}
+
+export default async function ProductPage({ params }: { params: Props }) {
+    const product = await getProduct(params.slug);
+    return <Page product={product} />;
 }

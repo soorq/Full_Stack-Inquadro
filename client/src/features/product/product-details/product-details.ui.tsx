@@ -1,66 +1,74 @@
+'use client';
+
+import { useProductStore } from '~&/src/entities/product';
+
 export const ProductDetails = () => {
+    const { product } = useProductStore(state => state);
+
+    if (!product) return <p>Данные о продукте не найдены.</p>;
+
     return (
         <div className="bg-secondary px-4 py-2.5 rounded-xl">
             <ul className="flex flex-col w-auto h-auto">
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">артикул: </span>
-                    <span>УТ000000289</span>
+                    <span>{product.article}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">категория: </span>
-                    <span>керамическая плитка</span>
+                    <span>{product.category}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">название: </span>
-                    <span>Ливандия</span>
+                    <span>{product.name}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">наличие: </span>
-                    <span>в наличии</span>
+                    <span>{product.availability}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">применение: </span>
-                    <span>панно</span>
+                    <span>{product.usage}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">изображение: </span>
-                    <span>одуванчик</span>
+                    <span>{product.image}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">покрытие: </span>
-                    <span>глянцевое</span>
+                    <span>{product.plating}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">текстура: </span>
-                    <span>моноколор</span>
+                    <span>{product.texture}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">фактура: </span>
-                    <span>гладкая</span>
+                    <span>{product.manufacturing}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">размер: </span>
-                    <span>500х250</span>
+                    <span>{product.size}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">оттенок: </span>
-                    <span>салатовый</span>
+                    <span>{product.shade}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">цена: </span>
-                    <span>575</span>
+                    <span>{product.price}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">продажа: </span>
-                    <span>штука (поштучно)</span>
+                    <span>{product.kit}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">комплектация: </span>
-                    <span>1</span>
+                    <span>{product.kit}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">страна изготовления: </span>
-                    <span>республика беларусь</span>
+                    <span>{product.country}</span>
                 </li>
             </ul>
         </div>

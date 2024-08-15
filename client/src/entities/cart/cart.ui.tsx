@@ -43,7 +43,7 @@ export const CartPreview = () => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="p-0 max-w-[610px] w-svw">
-                    <ProductOrder />
+                    <ProductOrder isCart />
                 </PopoverContent>
             </Popover>
 

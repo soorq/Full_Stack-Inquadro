@@ -1,8 +1,19 @@
 'use client';
 
+import { ProductSmall } from '~&/src/widgets/product';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ProductPreview } from '~&/src/entities/product';
 import { Heart } from 'lucide-react';
+
+const smallData = {
+    image: '/product/main.png',
+    sell: '15%',
+    price: '1050',
+    id: '534534',
+    name: 'Avalanche',
+    availability: 'В наличие',
+    category: 'Керамическая плитка',
+    total: '28 шт'
+};
 
 export const RecentProducts = () => {
     return (
@@ -18,25 +29,25 @@ export const RecentProducts = () => {
                 spaceBetween={20}
             >
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductPreview variant="sm" />
+                    <ProductSmall product={smallData} />
                 </SwiperSlide>
             </Swiper>
         </div>

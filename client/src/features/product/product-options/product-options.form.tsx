@@ -1,75 +1,22 @@
 'use client';
+
 import { Form, FormItem, FormField, FormControl } from '~&/src/shared/ui/form';
 import { ToggleGroup, ToggleGroupItem } from '~&/src/shared/ui/toggle-group';
-import { createSchema } from './product-options.contract';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { createSchema } from './product-options.contract';
 import { FavoriteAdd } from '~&/src/features/favorite';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CartAdd } from '~&/src/features/cart';
-import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { z } from 'zod';
+import { ProductApi } from '~&/src/entities/product';
+import { getDisplayValue } from '~&/src/entities/product/product.lib';
 
-const sizes = [
-    {
-        label: '250x250',
-        value: 'size-210'
-    },
-    {
-        label: '418x418',
-        value: 'size-418'
-    },
-    {
-        label: '50x500',
-        value: 'size-50'
-    },
-    {
-        label: '250x500',
-        value: 'size-250'
-    },
-    {
-        label: '500x250',
-        value: 'size-500'
-    }
-];
-
-const usage = [
-    {
-        value: 'pano',
-        label: 'панно'
-    },
-    {
-        value: 'decor',
-        label: 'декор'
-    },
-    {
-        value: 'bord',
-        label: 'бордюр'
-    }
-];
-
-const shades = [
-    {
-        value: 'salat',
-        label: 'Салатовый'
-    },
-    {
-        value: 'white',
-        label: 'Белый'
-    }
-];
-
-export const ProductOptionsForm = () => {
-    const schema = createSchema({ usage, shades, sizes });
-
-    const onSubmit: SubmitHandler<z.infer<typeof schema>> = data => {
-        console.log(data, 'data from form');
-    };
-
-    const onError = (errors: FieldValues) => {
-        Object.values(errors).forEach((error: any) => {
-            toast.error(error?.message || 'Произошла ошибка');
-        });
-    };
+export const ProductOptionsForm = ({ product }: { product: ProductApi }) => {
+    const size = getDisplayValue(product.size);
+    const usage = getDisplayValue(product.usage);
+    const shade = getDisplayValue(product.shade);
+    const schema = createSchema({ usage, shade, size });
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -80,6 +27,16 @@ export const ProductOptionsForm = () => {
             usage: ''
         }
     });
+
+    const onSubmit: SubmitHandler<z.infer<typeof schema>> = data => {};
+
+    const onError = (errors: FieldValues) => {
+        Object.values(errors).forEach((error: any) => {
+            toast.error(error?.message || 'Произошла ошибка');
+        });
+    };
+
+    if (!product) return null;
 
     return (
         <Form {...form}>
@@ -95,20 +52,13 @@ export const ProductOptionsForm = () => {
                             <FormControl>
                                 <ToggleGroup
                                     type="single"
-                                    onValueChange={value =>
-                                        field.onChange(value)
-                                    }
+                                    onValueChange={value => {
+                                        // setSize(value);
+                                        return field.onChange(value);
+                                    }}
                                     value={field.value}
                                 >
-                                    {sizes.map(btn => (
-                                        <ToggleGroupItem
-                                            value={btn.value}
-                                            key={btn.value}
-                                            aria-label={`Кнопка размеров - ${btn.label}`}
-                                        >
-                                            {btn.label}
-                                        </ToggleGroupItem>
-                                    ))}
+                                    {renderToggleItems(product.size)}
                                 </ToggleGroup>
                             </FormControl>
                         </FormItem>
@@ -123,20 +73,13 @@ export const ProductOptionsForm = () => {
                             <FormControl>
                                 <ToggleGroup
                                     type="single"
-                                    onValueChange={value =>
-                                        field.onChange(value)
-                                    }
+                                    onValueChange={value => {
+                                        // setSize(value);
+                                        return field.onChange(value);
+                                    }}
                                     value={field.value}
                                 >
-                                    {usage.map(usag => (
-                                        <ToggleGroupItem
-                                            value={usag.value}
-                                            key={usag.value}
-                                            aria-label={`Кнопка размеров - ${usag.label}`}
-                                        >
-                                            {usag.label}
-                                        </ToggleGroupItem>
-                                    ))}
+                                    {renderToggleItems(product.size)}
                                 </ToggleGroup>
                             </FormControl>
                         </FormItem>
@@ -150,20 +93,13 @@ export const ProductOptionsForm = () => {
                             <FormControl>
                                 <ToggleGroup
                                     type="single"
-                                    onValueChange={value =>
-                                        field.onChange(value)
-                                    }
+                                    onValueChange={value => {
+                                        // setSize(value);
+                                        return field.onChange(value);
+                                    }}
                                     value={field.value}
                                 >
-                                    {shades.map(shade => (
-                                        <ToggleGroupItem
-                                            value={shade.value}
-                                            key={shade.value}
-                                            aria-label={`Кнопка размеров - ${shade.label}`}
-                                        >
-                                            {shade.label}
-                                        </ToggleGroupItem>
-                                    ))}
+                                    {renderToggleItems(product.size)}
                                 </ToggleGroup>
                             </FormControl>
                         </FormItem>
@@ -199,7 +135,6 @@ export const ProductOptionsForm = () => {
                                 kit: '',
                                 size: '',
                                 invoice: '',
-                                id: '',
                                 plating: '',
                                 price: '',
                                 slug: '',
@@ -213,4 +148,24 @@ export const ProductOptionsForm = () => {
             </form>
         </Form>
     );
+};
+
+const renderToggleItems = (items: string | { id: number; value: string }[]) => {
+    if (typeof items === 'string') {
+        return (
+            <ToggleGroupItem value={items} key={items}>
+                {items}
+            </ToggleGroupItem>
+        );
+    }
+
+    return items.map(item => (
+        <ToggleGroupItem
+            value={item.value}
+            key={item.value}
+            aria-label={`Кнопка - ${item.value}`}
+        >
+            {item.value}
+        </ToggleGroupItem>
+    ));
 };

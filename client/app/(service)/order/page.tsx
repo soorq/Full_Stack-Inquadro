@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+
 export default function OrderPage() {
-    return <div className="">order page</div>;
+    return redirect('/oformlenie-zakaza');
 }

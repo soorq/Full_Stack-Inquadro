@@ -1,28 +1,34 @@
-import { ProductDto, ProductsDto, ProductsParamsQueryDto } from '../api.types';
-import { ProductDtoSchema, ProductsDtoSchema } from '../api.contract';
 import { AxiosContracts } from '~&/src/shared/lib/axios';
 import { API, handleGenericError } from '../index';
 import type { AxiosResponse } from 'axios';
+import {
+    ProductApi,
+    ProductsApi,
+    productContract
+} from '~&/src/entities/product';
 
 export class ProductService {
     static async productsQuery(config?: {
         signal?: AbortSignal;
-    }): Promise<AxiosResponse<ProductsDto>> {
+    }): Promise<AxiosResponse<ProductsApi>> {
         try {
-            const response = await API.get('/product/all', config);
-            return AxiosContracts.responseContract(ProductsDtoSchema)(response);
+            return API.get<ProductsApi>('/product/all', config);
         } catch (error) {
             throw handleApiError(error);
         }
     }
 
     static async productsFeedQuery(config: {
-        params: ProductsParamsQueryDto;
         signal?: AbortSignal;
-    }): Promise<AxiosResponse<ProductsDto>> {
+    }): Promise<AxiosResponse<ProductsApi>> {
         try {
-            const response = await API.get('/product/feed', config);
-            return AxiosContracts.responseContract(ProductsDtoSchema)(response);
+            const response = await API.get<ProductsApi>(
+                '/product/feed',
+                config
+            );
+            return AxiosContracts.responseContract(
+                productContract.ProductsApiSchema
+            )(response);
         } catch (error) {
             throw handleApiError(error);
         }
@@ -30,11 +36,16 @@ export class ProductService {
 
     static async productQuery(
         slug: string,
-        config: { signal?: AbortSignal }
-    ): Promise<AxiosResponse<ProductDto>> {
+        config?: { signal?: AbortSignal }
+    ): Promise<AxiosResponse<ProductApi>> {
         try {
-            const response = await API.get(`/product/get/${slug}`, config);
-            return AxiosContracts.responseContract(ProductDtoSchema)(response);
+            const response = await API.get<ProductApi>(
+                `/product/get/${slug}`,
+                config
+            );
+            return AxiosContracts.responseContract(
+                productContract.ProductApiSchema
+            )(response);
         } catch (error) {
             throw handleApiError(error);
         }

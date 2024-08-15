@@ -1,6 +1,10 @@
+import { AxiosContracts } from '~&/src/shared/lib/axios';
 import { API, handleGenericError } from '../index';
-import { ProductsSearchDto } from '../api.types';
 import type { AxiosResponse } from 'axios';
+import {
+    type ProductsSearchApi,
+    productContract
+} from '~&/src/entities/product';
 
 export class SearchService {
     static async productsQuery(
@@ -8,9 +12,16 @@ export class SearchService {
         config?: {
             signal?: AbortSignal;
         }
-    ): Promise<AxiosResponse<ProductsSearchDto>> {
+    ): Promise<AxiosResponse<ProductsSearchApi>> {
         try {
-            return API.get(`/product/search?query=${query}`, config);
+            const response = await API.get<ProductsSearchApi>(
+                `/product/search?query=${query}`,
+                config
+            );
+
+            return AxiosContracts.responseContract(
+                productContract.ProductsSearchSchema
+            )(response);
         } catch (error) {
             throw handleApiError(error);
         }

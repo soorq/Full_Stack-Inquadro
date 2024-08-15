@@ -1,14 +1,22 @@
 import { RecentProducts } from '~&/src/features/recent-products';
-import { ProductPreview } from '~&/src/entities/product';
+import { ProductApi } from '~&/src/entities/product';
+import { ProductLarge } from '~&/src/widgets/product';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
 
-export const ProductPage = ({ slug }: { slug: string }) => {
+const images = [
+    '/product/main.png',
+    '/product/color.png',
+    '/product/color.png',
+    '/product/color.png'
+];
+
+export const ProductPage = ({ product }: { product: ProductApi }) => {
     return (
         <>
             <Header />
-            <ProductPreview slug={slug} variant="lg" />
-            <RecentProducts />
+            {/*<ProductLarge slides={images} product={product} />*/}
+            {/*<RecentProducts />*/}
             <Footer />
         </>
     );

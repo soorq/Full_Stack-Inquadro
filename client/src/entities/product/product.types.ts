@@ -1,12 +1,10 @@
-import { InfiniteData } from '@tanstack/react-query';
 import { z } from 'zod';
 import {
-    ProductFilterSchema,
-    ProductSchema,
-    ProductsSchema
-} from './product.contract';
-
-export type variants = 'sm' | 'lg';
+    ProductApiSchema,
+    ProductClientSchema,
+    ProductsApiSchema,
+    ProductsSearchSchema
+} from './product.contracts';
 export type TypeSmallProduct = {
     price: string;
     sell?: string;
@@ -18,7 +16,29 @@ export type TypeSmallProduct = {
     availability: string;
 };
 
-export type Product = z.infer<typeof ProductSchema>;
-export type Products = z.infer<typeof ProductsSchema>;
-export type FilterQuery = z.infer<typeof ProductFilterSchema>;
-export type InfiniteProducts = InfiniteData<Products, number>;
+export type ProductApi = z.infer<typeof ProductApiSchema>;
+export type ProductsApi = z.infer<typeof ProductsApiSchema>;
+export type ProductClient = z.infer<typeof ProductClientSchema>;
+export type ProductsSearchApi = z.infer<typeof ProductsSearchSchema>;
+// export type FilterQuery = z.infer<typeof ProductFilterSchema>;
+// export type InfiniteProducts = InfiniteData<ProductsSchemaApi, number>;
+
+type OptionValue = {
+    id: number;
+    value: string;
+};
+
+export type ProductState = {
+    product: ProductClient | null;
+    size: OptionValue | null;
+    usage: OptionValue | null;
+    shade: OptionValue | null;
+};
+
+export type ProductActions = {
+    setProduct: (product: ProductClient) => void;
+    setSize: (size: OptionValue) => void;
+    setUsage: (usage: OptionValue) => void;
+    setShade: (shade: OptionValue) => void;
+    reset: () => void;
+};
