@@ -12,7 +12,11 @@ export class ProductService {
         signal?: AbortSignal;
     }): Promise<AxiosResponse<ProductsApi>> {
         try {
-            return API.get<ProductsApi>('/product/all', config);
+            return API.get<ProductsApi>('/product/all', config).then(
+                AxiosContracts.responseContract(
+                    productContract.ProductsApiSchema
+                )
+            );
         } catch (error) {
             throw handleApiError(error);
         }
@@ -22,13 +26,11 @@ export class ProductService {
         signal?: AbortSignal;
     }): Promise<AxiosResponse<ProductsApi>> {
         try {
-            const response = await API.get<ProductsApi>(
-                '/product/feed',
-                config
+            return API.get<ProductsApi>('/product/feed', config).then(
+                AxiosContracts.responseContract(
+                    productContract.ProductsApiSchema
+                )
             );
-            return AxiosContracts.responseContract(
-                productContract.ProductsApiSchema
-            )(response);
         } catch (error) {
             throw handleApiError(error);
         }
@@ -39,13 +41,11 @@ export class ProductService {
         config?: { signal?: AbortSignal }
     ): Promise<AxiosResponse<ProductApi>> {
         try {
-            const response = await API.get<ProductApi>(
-                `/product/get/${slug}`,
-                config
+            return API.get<ProductApi>(`/product/get/${slug}`, config).then(
+                AxiosContracts.responseContract(
+                    productContract.ProductApiSchema
+                )
             );
-            return AxiosContracts.responseContract(
-                productContract.ProductApiSchema
-            )(response);
         } catch (error) {
             throw handleApiError(error);
         }

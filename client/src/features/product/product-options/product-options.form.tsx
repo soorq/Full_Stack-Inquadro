@@ -150,7 +150,13 @@ export const ProductOptionsForm = ({ product }: { product: ProductApi }) => {
     );
 };
 
-const renderToggleItems = (items: string | { id: number; value: string }[]) => {
+const renderToggleItems = (
+    items: string | null | { id: number; value: string }[]
+) => {
+    if (!items) {
+        return null;
+    }
+
     if (typeof items === 'string') {
         return (
             <ToggleGroupItem value={items} key={items}>

@@ -13,7 +13,7 @@ type Props = { slug: string };
 
 export async function generateStaticParams() {
     const products = await ProductService.productsQuery();
-    return products.data?.map(product => ({ slug: product.article }));
+    return products.data?.map(product => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({

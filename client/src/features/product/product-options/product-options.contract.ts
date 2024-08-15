@@ -3,8 +3,12 @@ import { z } from 'zod';
 type Option = { id: string; value: string };
 
 const getDisplayValue = (
-    data: string | { id: string; value: string }[]
+    data: string | { id: string; value: string }[] | null
 ): Option[] => {
+    if (!data) {
+        return []; // Возвращаем пустой массив вместо null
+    }
+
     if (typeof data === 'string') {
         return [{ id: data, value: data }];
     }

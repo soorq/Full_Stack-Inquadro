@@ -29,7 +29,8 @@ const dynamicFieldSchema = z.union([
             id: z.number(),
             value: z.string()
         })
-    )
+    ),
+    z.null()
 ]);
 
 export const ProductApiSchema = z.object({
