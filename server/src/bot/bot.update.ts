@@ -13,7 +13,6 @@ export class BotUpdate {
         const name =
             ctx.message?.from?.id ?? ctx.update.callback_query.from.first_name;
         await ctx.reply(`Добро пожаловать, ${name}!`);
-        console.log(ctx.update.message.from);
     }
 
     @Command('admin')
@@ -59,8 +58,8 @@ export class BotUpdate {
     }
 
     // Универсальный обработчик для редактирования и удаления товара
-    @UseGuards(AdminGuard)
     @Action(['editProduct', 'deleteProduct'])
+    @UseGuards(AdminGuard)
     async onEditOrDeleteProduct(@Ctx() ctx) {
         const action = ctx.callbackQuery.data;
         const message =
@@ -69,7 +68,6 @@ export class BotUpdate {
                 : 'Вы перешли в удаление товара';
         const sceneName =
             action === 'editProduct' ? 'updateProduct' : 'deleteProduct';
-
         await ctx.answerCbQuery(message);
         await ctx.scene.enter(sceneName);
     }

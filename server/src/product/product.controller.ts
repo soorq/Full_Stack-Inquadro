@@ -1,17 +1,14 @@
+import { Controller, HttpException, Param, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import {
-    Controller,
-    HttpException,
-    HttpStatus,
-    Param,
-    Query
-} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import {
     ApiGetAllProducts,
     ApiGetManyProductsByParams,
-    ApiGetOneProductOneById
+    ApiGetOneProductOneById,
+    ApiSearchProducts
 } from './product.api';
 
+@ApiTags('Products')
 @Controller('product')
 export class ProductController {
     constructor(private readonly service: ProductService) {}
@@ -21,7 +18,7 @@ export class ProductController {
         try {
             return this.service.findAll();
         } catch (error) {
-            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(error.message, error.status);
         }
     }
 
@@ -30,16 +27,21 @@ export class ProductController {
         try {
             return this.service.findByFilter(query);
         } catch (error) {
-            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(error.message, error.status);
         }
     }
 
     @ApiGetOneProductOneById()
-    getById(@Param('id') id: string) {
+    getBySlug(@Param('slug') slug: string) {
         try {
-            return this.service.findOne(id);
+            return this.service.findAndMergeBySlug(slug);
         } catch (error) {
-            throw new HttpException('', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(error.message, error.status);
         }
+    }
+
+    @ApiSearchProducts()
+    search(@Query('query') query: string) {
+        return this.service.searchProduct(query);
     }
 }

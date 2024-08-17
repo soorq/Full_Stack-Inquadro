@@ -13,7 +13,8 @@ export abstract class ProductRepository {
     abstract findAll(): Promise<EProduct[]>;
     abstract findByFilter(
         filter: Record<string, string | number | undefined>
-    ): Promise<EProduct[]>;
+    ): Promise<{ data: EProduct[], nextId: number, previousId: number }>;
     abstract update(id: string, dto: UpdateProductDto): Promise<EProduct>;
     abstract delete(id: string): Promise<TypeMessage>;
+    abstract searchProduct(query: string): Promise<EProduct[] | EProduct>;
 }

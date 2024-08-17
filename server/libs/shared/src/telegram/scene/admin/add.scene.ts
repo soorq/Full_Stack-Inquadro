@@ -36,7 +36,6 @@ export class AddAdminWizard {
         @Ctx() ctx: Scenes.WizardContext,
         @Message() msg: { text: string }
     ) {
-        console.log(msg.text);
         const admin = await this.admin.findOne(msg.text);
 
         if (admin) {
@@ -58,7 +57,7 @@ export class AddAdminWizard {
             }
         });
 
-        await ctx.wizard.next();
+        ctx.wizard.next();
     }
 
     @On('callback_query')

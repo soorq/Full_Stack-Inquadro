@@ -161,7 +161,7 @@ export class BotService {
 
     // Метод для разбора Excel-файла
     private parseExcel = async (filename: string) => {
-        const data = await xlsx.readFile(filename);
+        const data = xlsx.readFile(filename);
         return Object.keys(data.Sheets).map(name => ({
             data: xlsx.utils.sheet_to_json(data.Sheets[name], {
                 defval: '',

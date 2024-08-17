@@ -38,9 +38,6 @@ export class DeleteAdminWizard {
         @Message() msg: { text: string }
     ) {
         const admin = await this.admin.findOne(msg.text);
-
-        console.log(admin);
-
         if (!admin) {
             await ctx.scene.reenter();
             return 'Не верный айди, попробуйте еще раз';

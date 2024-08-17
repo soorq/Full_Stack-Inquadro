@@ -7,15 +7,6 @@
     "webpack": true
   },
   "projects": {
-    "product": {
-      "type": "library",
-      "root": "libs/product",
-      "entryFile": "index",
-      "sourceRoot": "libs/product/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/product/tsconfig.lib.json"
-      }
-    },
     "shared": {
       "type": "library",
       "root": "libs/shared",

@@ -1,6 +1,6 @@
 import { DataSource, type DataSourceOptions } from 'typeorm';
-import { ENTITIES } from '../../../entities/src';
 import { ConfigService } from '@nestjs/config';
+import { ENTITIES } from '@app/entities';
 import { Logger } from '@nestjs/common';
 import { config } from 'dotenv';
 import { join } from 'path';
@@ -13,7 +13,9 @@ const options = (): DataSourceOptions => {
 
     const urlRedis = cfg.get('REDIS_URL');
     if (!url || !urlRedis) {
-        Logger.error('Database URL or Redis URL is empty');
+        Logger.error(
+            `Database URL or Redis URL is empty. Redis - ${urlRedis} | Pg - ${url}`
+        );
         process.exit();
     }
 

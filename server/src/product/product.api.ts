@@ -51,7 +51,7 @@ export const ApiGetOneProductOneById = () =>
         }),
         UseInterceptors(CacheInterceptor),
         CacheTTL(60 * 5),
-        Get('get/:id')
+        Get('get/:slug')
     );
 
 export const ApiGetManyProductsByPagination = () =>
@@ -73,6 +73,26 @@ export const ApiGetManyProductsByPagination = () =>
         CacheKey('Products-pagination'),
         CacheTTL(60 * 5),
         Get('pagination')
+    );
+
+export const ApiSearchProducts = () =>
+    applyDecorators(
+        ApiOperation({
+            summary: 'Получение отсортированных по поиску',
+            description: 'Для получения по поиску сортированных продукрты'
+        }),
+        ApiOkResponse({
+            status: HttpStatus.OK,
+            type: EProduct,
+            description: 'Отдает найденые продукрты по бд'
+        }),
+        ApiBadRequestResponse({
+            status: HttpStatus.BAD_REQUEST,
+            description: 'Плохой запроос или не найдены данные'
+        }),
+        UseInterceptors(CacheInterceptor),
+        CacheTTL(60 * 3),
+        Get('search?')
     );
 
 export const ApiGetManyProductsByParams = () =>

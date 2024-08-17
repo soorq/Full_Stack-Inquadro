@@ -15,8 +15,6 @@ export class AdminGuard implements CanActivate {
             .findAll()
             .then(res => res.map(admin => +admin.telegram_id));
 
-        console.log(admins);
-
         if (admins.includes(userId)) {
             telegrafCtx.session.isAdmin = true;
         } else {

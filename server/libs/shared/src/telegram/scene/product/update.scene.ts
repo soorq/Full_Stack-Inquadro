@@ -7,6 +7,13 @@ import { Scenes } from 'telegraf';
 export class UpdateProductWizard {
     constructor(private readonly product: ProductService) {}
 
+    @WizardStep(1)
+    async onSceneEnter(@Ctx() ctx) {
+        await ctx.reply('✋, отправь мне артикуль для поиска товара');
+
+        await ctx.wizard.next();
+    }
+
     @Hears('CANCEL')
     @On('callback_query')
     async handleCancel(@Ctx() ctx: Scenes.WizardContext) {
@@ -15,13 +22,6 @@ export class UpdateProductWizard {
             cache_time: 60 * 5
         });
         await ctx.scene.leave();
-    }
-
-    @WizardStep(1)
-    async onSceneEnter(@Ctx() ctx) {
-        await ctx.reply('✋, отправь мне артикуль для поиска товара');
-
-        await ctx.wizard.next();
     }
 
     @On('text')
@@ -106,8 +106,7 @@ export class UpdateProductWizard {
         try {
             await this.product.update(id, { [field]: msg.text });
             await ctx.reply(`Значение для ${field} успешно обновлено!`);
-        } catch (e) {
-            console.log(e);
+        } finally {
         }
 
         // Возвращаем пользователя к выбору следующего действия или завершению

@@ -138,6 +138,14 @@ export class EProduct {
 
     @ApiProperty({
         type: 'string',
+        title: 'Слаг для ссылки',
+        description: 'По нему на фронте будет обращение'
+    })
+    @Column({ type: 'varchar', unique: true })
+    slug: string;
+
+    @ApiProperty({
+        type: 'string',
         title: 'Дата создания',
         description: 'Автоматически сам высчитывает время'
     })

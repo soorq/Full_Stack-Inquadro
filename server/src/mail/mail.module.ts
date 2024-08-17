@@ -10,19 +10,19 @@ import { join } from 'path';
     imports: [
         MailerModule.forRootAsync({
             inject: [ConfigService],
-            useFactory: () => ({
+            useFactory: (cfg: ConfigService) => ({
                 transport: {
-                    host: 'smtp.mail.ru',
+                    host: cfg.get('SMTP_HOST'),
                     auth: {
-                        user: 'soorqprod@mail.ru',
-                        pass: 'p9Mua3KTvwK5HABtXySK'
+                        user: cfg.get('SMTP_USER'),
+                        pass: cfg.get('SMTP_PASS')
                     }
                 },
                 defaults: {
-                    from: 'soorqProdServer'
+                    from: 'inquadra'
                 },
                 template: {
-                    dir: join(__dirname, './templates'),
+                    dir: join(process.cwd(), './static/template'),
                     adapter: new HandlebarsAdapter(),
                     options: {
                         strict: true
