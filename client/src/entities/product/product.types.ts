@@ -1,10 +1,15 @@
 import { z } from 'zod';
 import {
-    ProductApiSchema,
+    ProductFilterQuerySchema,
+    ProductsClientSchema,
+    ProductsSearchSchema,
+    FilterResponseSchema,
     ProductClientSchema,
     ProductsApiSchema,
-    ProductsSearchSchema
+    ProductApiSchema,
+    ProductsSchema
 } from './product.contracts';
+
 export type TypeSmallProduct = {
     price: string;
     sell?: string;
@@ -17,28 +22,32 @@ export type TypeSmallProduct = {
 };
 
 export type ProductApi = z.infer<typeof ProductApiSchema>;
-export type ProductsApi = z.infer<typeof ProductsApiSchema>;
-export type ProductClient = z.infer<typeof ProductClientSchema>;
-export type ProductsSearchApi = z.infer<typeof ProductsSearchSchema>;
-// export type FilterQuery = z.infer<typeof ProductFilterSchema>;
-// export type InfiniteProducts = InfiniteData<ProductsSchemaApi, number>;
 
-type OptionValue = {
-    id: number;
-    value: string;
-};
+export type ProductsApi = z.infer<typeof ProductsApiSchema>;
+
+export type ProductClient = z.infer<typeof ProductClientSchema>;
+
+export type ProductsClient = z.infer<typeof ProductsClientSchema>;
+
+export type ProductsSearchApi = z.infer<typeof ProductsSearchSchema>;
+
+export type Products = z.infer<typeof ProductsSchema>;
+
+export type FilterResponse = z.infer<typeof FilterResponseSchema>
+
+export type FilterQuery = z.infer<typeof ProductFilterQuerySchema>;
 
 export type ProductState = {
-    product: ProductClient | null;
-    size: OptionValue | null;
-    usage: OptionValue | null;
-    shade: OptionValue | null;
+    product_api: ProductApi | null;
+    product_client: ProductClient | null;
+    currentId: number | null;
 };
 
 export type ProductActions = {
-    setProduct: (product: ProductClient) => void;
-    setSize: (size: OptionValue) => void;
-    setUsage: (usage: OptionValue) => void;
-    setShade: (shade: OptionValue) => void;
+    setProductClient: (product: ProductApi) => void;
+    setProductApi: (product: ProductApi) => void;
+    setCurrentId: (id: number) => void;
     reset: () => void;
 };
+
+export type DynamicOption = { id: number; value: string };

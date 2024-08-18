@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    font-family: var(--font-man);
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -43,10 +47,9 @@
     border-radius: 50%;
     background: white !important;
     margin: 0 2px !important; /* Space between bullets */
-    transition:
-        background 0.3s ease,
-        width 0.3s ease,
-        transform 0.3s ease;
+    transition: background 0.3s ease,
+    width 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* Style for the active bullet */

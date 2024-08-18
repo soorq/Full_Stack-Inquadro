@@ -1,3 +1,7 @@
-export { ProductOptions } from './product-options';
-export { ProductDetails } from './product-details';
+export { ProductDetails, ProductDetailsSkeleton } from './product-details';
+export { ProductOptions, ProductOptionsSkeleton } from './product-options';
+export {
+    ProductOperation,
+    ProductOperationSkeleton
+} from './product-operation';
 export { ProductSlider } from './product-slider';

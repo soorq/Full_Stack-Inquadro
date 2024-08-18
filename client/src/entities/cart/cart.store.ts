@@ -12,18 +12,12 @@ function createCartSlice() {
         TypeCartActions & TypeCartStates
     > = set => ({
         quantity: 0,
-        products: [], // Инициализируем как пустой массив
+        products: [],
 
         addFn: (product: ProductClient) => {
             set(
                 state => {
                     const updatedProducts = [...state.products, product];
-
-                    // Сохраняем в localStorage
-                    localStorage.setItem(
-                        'cart_products',
-                        JSON.stringify(updatedProducts)
-                    );
 
                     return {
                         products: updatedProducts,
@@ -40,12 +34,6 @@ function createCartSlice() {
                 state => {
                     const updatedProducts = state.products.filter(
                         item => item.article !== id
-                    );
-
-                    // Обновляем localStorage
-                    localStorage.setItem(
-                        'cart_products',
-                        JSON.stringify(updatedProducts)
                     );
 
                     return {

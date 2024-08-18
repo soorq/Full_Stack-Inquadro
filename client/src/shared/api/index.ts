@@ -1,8 +1,10 @@
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 
+const $api = process.env.NEXT_PUBLIC_API_URL;
+
 export const API = axios.create({
-    baseURL: 'http://localhost:1010/api'
+    baseURL: $api
 });
 
 export function handleGenericError(error: AxiosError) {

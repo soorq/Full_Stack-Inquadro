@@ -1,4 +1,4 @@
-import type { ProductClient } from '~&/src/entities/product';
+import type { ProductClient, ProductsClient } from '~&/src/entities/product';
 
 export type TypeCartActions = {
     addFn: (product: ProductClient) => void;
@@ -7,5 +7,5 @@ export type TypeCartActions = {
 
 export type TypeCartStates = {
     quantity: number;
-    products: ProductClient[];
+    products: ProductsClient;
 };

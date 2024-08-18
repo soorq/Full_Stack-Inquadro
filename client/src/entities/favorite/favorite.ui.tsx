@@ -36,7 +36,7 @@ export const FavoritePreview = () => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="p-0 max-w-[610px] w-svw">
-                    <ProductOrder isFavorite />
+                    {/*<ProductOrder isFavorite />*/}
                 </PopoverContent>
             </Popover>
 

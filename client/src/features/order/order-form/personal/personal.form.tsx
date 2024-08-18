@@ -16,7 +16,7 @@ export const PersonalForm = ({
     control: Control<orderTypes.OrderSchemaDto>;
 }) => {
     return (
-        <div className="bg-secondary p-4 rounded-xl">
+        <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-lg leading-5 mb-2.5 font-medium">Мои данные</h3>
 
             <div className="grid grid-cols-[425px_1fr_1fr] gap-4">
@@ -58,7 +58,7 @@ export const PersonalForm = ({
                                 </FormLabel>
                                 <FormControl>
                                     <InputMask
-                                        className="flex h-[50px] items-center w-full rounded-xl bg-white px-4 py-1 text-base transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="flex h-[50px] items-center w-full rounded-[10px] bg-white px-4 py-1 text-base transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                                         placeholder="+7 999 999 99 99"
                                         replacement={{ _: /\d/ }}
                                         mask="+7 ___ ___ __ __"

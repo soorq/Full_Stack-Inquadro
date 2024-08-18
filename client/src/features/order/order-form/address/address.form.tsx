@@ -38,7 +38,7 @@ export const AddressForm = ({
     });
 
     return (
-        <div className="bg-secondary p-4 rounded-xl">
+        <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-lg leading-5 mb-2.5 font-medium">
                 Выбрать адрес доставки
             </h3>

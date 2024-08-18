@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '~&/src/shared/lib/tw-merge';
 
 const badgeVariants = cva(
-    'inline-flex items-center rounded-xl border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    'inline-flex items-center rounded-[10px] border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
     {
         variants: {
             variant: {
@@ -14,7 +14,7 @@ const badgeVariants = cva(
                 destructive:
                     'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
                 outline: 'text-foreground',
-                order: 'h-10 py-2.5 text-white text-base font-normal bg-primary rounded-xl'
+                order: 'h-10 py-2.5 text-white text-base font-normal bg-primary'
             }
         },
         defaultVariants: {

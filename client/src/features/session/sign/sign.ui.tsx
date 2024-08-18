@@ -30,14 +30,14 @@ export const SignBlock = () => {
     };
 
     return (
-        <div className="w-full h-full p-4 bg-secondary rounded-xl">
+        <div className="w-full h-full p-4 bg-secondary rounded-[10px]">
             <p className="text-lg mb-4 leading-4">{getParagraphText()}</p>
 
             {show ? (
                 <SignForm />
             ) : (
                 <Button
-                    className="max-w-[200px] w-full h-[50px] rounded-xl"
+                    className="max-w-[200px] w-full h-[50px]"
                     onClick={() => setShow(true)}
                 >
                     {isAuth ? 'Войти' : 'Зарегистрироваться'}

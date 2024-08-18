@@ -11,7 +11,7 @@ export const TotalOrder = ({
     isFormSubmit?: boolean;
 }) => {
     return (
-        <div className="bg-secondary w-full h-auto rounded-xl p-4">
+        <div className="bg-secondary w-full h-auto rounded-[10px] p-4">
             <p className="text-lg leading-5">Итоговая сумма вашего заказа</p>
             <div className="flex gap-2.5 max-w-[550px] mt-3 mb-2.5">
                 <Input

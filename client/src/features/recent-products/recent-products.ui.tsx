@@ -22,7 +22,7 @@ export const RecentProducts = () => {
                 <h3 className="text-lg">
                     Просмотренное, которое можно отложить в
                 </h3>
-                <Heart className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-xl" />
+                <Heart className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-[10px]" />
             </div>
             <Swiper
                 breakpoints={{ '1200px': { slidesPerView: 4 } }}

@@ -25,7 +25,6 @@ export const ProductSmallSkeleton = () => {
         </div>
     );
 };
-export const ProductLargeSkeleton = () => {};
 
 export const ProductSearchSkeleton = () => {
     return (

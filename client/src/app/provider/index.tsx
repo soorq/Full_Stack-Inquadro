@@ -1,5 +1,4 @@
 import { QueryClientProvider } from './queryClient.provider';
-import { getServerSession } from 'next-auth';
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'react-hot-toast';
 

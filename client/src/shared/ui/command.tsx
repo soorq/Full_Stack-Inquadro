@@ -43,7 +43,7 @@ const CommandInput = React.forwardRef<
     <CommandPrimitive.Input
         ref={ref}
         className={cn(
-            'flex h-[50px] w-full rounded-xl bg-white px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-[50px] w-full rounded-[10px] bg-white px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
             className
         )}
         {...props}
@@ -59,7 +59,7 @@ const CommandList = React.forwardRef<
     <CommandPrimitive.List
         ref={ref}
         className={cn(
-            'max-h-[220px] h-svh rounded-xl overflow-y-auto overflow-x-hidden py-1 bg-white [&>div]:h-full',
+            'max-h-[220px] h-svh rounded-[10px] overflow-y-auto overflow-x-hidden py-1 bg-white [&>div]:h-full',
             className
         )}
         {...props}

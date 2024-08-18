@@ -1,24 +1,23 @@
 'use client';
 
+import { useCartStore } from '~&/src/entities/cart/cart.store';
+import { ProductOrder } from '~&/src/widgets/product';
+import { useShallow } from 'zustand/react/shallow';
 import { Button } from '~&/src/shared/ui/button';
+import { cn } from '~&/src/shared/lib/tw-merge';
+import { ShoppingCart } from 'lucide-react';
+import React from 'react';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '~&/src/shared/ui/popover';
-import { ShoppingCart } from 'lucide-react';
-import { useCartStore } from '~&/src/entities/cart/cart.store';
-
-import { useShallow } from 'zustand/react/shallow';
-import { ProductOrder } from '~&/src/widgets/product';
-import React, { useState } from 'react';
-import { cn } from '~&/src/shared/lib/tw-merge';
 
 export const CartPreview = () => {
-    const [focus, setFocus] = useState(false);
+    const [focus, setFocus] = React.useState(false);
 
-    const { quantity } = useCartStore(
-        useShallow(({ quantity }) => ({ quantity }))
+    const { quantity, products } = useCartStore(
+        useShallow(({ quantity, products }) => ({ quantity, products }))
     );
 
     const handlerSwithFocus = (value: boolean) => {
@@ -42,8 +41,14 @@ export const CartPreview = () => {
                         <ShoppingCart className="stroke-1" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="p-0 max-w-[610px] w-svw">
-                    <ProductOrder isCart />
+                <PopoverContent className="p-0 max-w-[610px] max-h-[500px] h-full overflow-y-auto w-svw">
+                    {products.map(product => (
+                        <ProductOrder
+                            key={product.slug}
+                            product={product}
+                            isCart
+                        />
+                    ))}
                 </PopoverContent>
             </Popover>
 

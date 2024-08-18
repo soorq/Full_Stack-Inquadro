@@ -10,7 +10,7 @@ import {
 } from './filter.types';
 
 const useFilterSet = (param: string | null, defaultValues: string[] = []) => {
-    return useSet(new Set<string>(param ? param.split(',') : defaultValues));
+    return useSet(new Set<string>(param ? param.split(',') : []));
 };
 
 export const useFilters = (): IReturnFilter => {
@@ -114,7 +114,6 @@ export const useQueryFilters = (filters: TypeFilters) => {
 
     React.useEffect(() => {
         if (isMounted.current) {
-            // Создаем объект параметров из фильтров
             const params = {
                 category: Array.from(filters.category),
                 usage: Array.from(filters.usage),
@@ -129,26 +128,13 @@ export const useQueryFilters = (filters: TypeFilters) => {
                 priceTo: filters.prices.priceTo
             };
 
-            // Преобразуем объект в строку запроса
             const query = qs.stringify(params, {
-                arrayFormat: 'comma',
-                format: 'RFC1738', // Форматирование для URL
-                encoder: str => encodeURIComponent(str)
+                arrayFormat: 'comma'
             });
 
-            // Обновляем URL
             router.push(`?${query}`, { scroll: false });
         }
 
-        // Устанавливаем флаг монтирования в true
         isMounted.current = true;
-    }, [filters, router]); // Добавляем router в зависимости
-
-    // Важно добавить очистку эффекта, если требуется
-    React.useEffect(() => {
-        return () => {
-            // Очистка или сброс состояния при размонтировании, если это необходимо
-            isMounted.current = false;
-        };
-    }, []);
+    }, [filters, router]);
 };

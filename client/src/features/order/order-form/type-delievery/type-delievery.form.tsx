@@ -15,7 +15,7 @@ export const TypeDelieveryForm = ({
     control: Control<orderTypes.OrderSchemaDto>;
 }) => {
     return (
-        <div className="bg-secondary p-4 rounded-xl">
+        <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-lg leading-5 mb-4 font-medium">
                 Выбрать способ доставки
             </h3>

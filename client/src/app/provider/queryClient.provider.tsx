@@ -1,7 +1,8 @@
 'use client';
 
+import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { queryClient } from '~&/src/shared/lib/query-client';
+import { getQueryClient } from '~&/src/shared/lib/query-client';
 import type { PropsWithChildren } from 'react';
 import { AxiosError } from 'axios';
 import {
@@ -9,12 +10,14 @@ import {
     QueryClientProvider as TanStackQueryClientProvider
 } from '@tanstack/react-query';
 
-export function QueryClientProvider(props: PropsWithChildren) {
-    const { children } = props;
+export function QueryClientProvider({ children }: PropsWithChildren) {
+    const queryClient = getQueryClient();
 
     return (
         <TanStackQueryClientProvider client={queryClient}>
-            {children}
+            {/*<ReactQueryStreamedHydration>*/}
+                {children}
+            {/*</ReactQueryStreamedHydration>*/}
             <ReactQueryDevtools
                 initialIsOpen={false}
                 buttonPosition="bottom-left"

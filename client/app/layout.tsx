@@ -1,6 +1,16 @@
+import { Manrope } from 'next/font/google';
 import { RootProvider } from '~&/src/app/provider';
 import type { Metadata } from 'next';
 import './globals.css';
+
+const font = Manrope({
+    adjustFontFallback: false,
+    variable: '--font-man',
+    preload: true,
+    weight: ['400', '500', '300'],
+    display: 'swap',
+    subsets: ['latin']
+});
 
 const $app = process.env['NEXT_PUBLIC_APP_URL'] as string;
 
@@ -33,8 +43,8 @@ export default function RootLayout({
     children
 }: Readonly<React.PropsWithChildren>) {
     return (
-        <html lang="en" className="subpixel-antialiased">
-            <body>
+        <html lang="ru" className='antialiased'>
+            <body className={font.variable}>
                 <RootProvider>{children}</RootProvider>
             </body>
         </html>

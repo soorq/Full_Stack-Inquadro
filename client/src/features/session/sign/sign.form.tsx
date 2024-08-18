@@ -93,7 +93,7 @@ export const SignForm = () => {
                 )}
                 <Button
                     type="submit"
-                    className="h-[50px] max-w-[300px] w-full rounded-xl"
+                    className="h-[50px] max-w-[300px] w-full"
                 >
                     {step === 'email' ? 'Подтвердить почту' : 'Подтвердить'}
                 </Button>

@@ -1,14 +1,14 @@
-'use client';
+import { ProductClient } from '~&/src/entities/product';
 
-import { useProductStore } from '~&/src/entities/product';
-
-export const ProductDetails = () => {
-    const { product } = useProductStore(state => state);
-
-    if (!product) return <p>Данные о продукте не найдены.</p>;
+export const ProductDetails = ({
+    product
+}: {
+    product: ProductClient | null;
+}) => {
+    if (!product) return null;
 
     return (
-        <div className="bg-secondary px-4 py-2.5 rounded-xl">
+        <div className="bg-secondary px-4 py-2.5 rounded-[10px]">
             <ul className="flex flex-col w-auto h-auto">
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">артикул: </span>

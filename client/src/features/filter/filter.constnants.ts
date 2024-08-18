@@ -1,34 +1,34 @@
 export const MFilterUsage = [
     {
         label: 'облицовочная плитка',
-        value: 'oblicov'
+        value: 'облицовочная'
     },
     {
         label: 'напольная плитка',
-        value: 'napol'
+        value: 'напольная'
     },
     {
         label: 'бордюр',
-        value: 'bord'
+        value: 'бордюр'
     },
     {
         label: 'панно',
-        value: 'panno'
+        value: 'панно'
     }
 ];
 
 export const MFilterAvailable = [
     {
-        label: 'В наличии',
-        value: 'stock'
+        label: 'в наличии',
+        value: 'в наличии'
     },
     {
-        label: 'Под заказ',
-        value: 'deliev'
+        label: 'под заказ',
+        value: 'под заказ'
     },
     {
-        label: 'Ограниченная коллекция',
-        value: 'limited'
+        label: 'ограниченная коллекция',
+        value: 'ограниченная коллекция'
     }
 ];
 
@@ -65,65 +65,65 @@ export const MFilterInvoice = [
 export const MFilterTexture = [
     {
         label: 'мрамор',
-        value: 'mramor'
+        value: 'мрамор'
     },
     {
         label: 'дерево',
-        value: 'wood'
+        value: 'дерево'
     },
     {
         label: 'бетон',
-        value: 'beton'
+        value: 'бетон'
     },
     {
         label: 'жезело',
-        value: 'iron'
+        value: 'жезело'
     },
     {
         label: 'камень',
-        value: 'camen'
+        value: 'камень'
     },
     {
         label: 'песок',
-        value: 'send'
+        value: 'песок'
     }
 ];
 
 export const MFilterPlating = [
     {
         label: 'матовое покрытие',
-        value: 'matovoe'
+        value: 'матовое покрытие'
     },
     {
         label: 'глянцевое покрытие',
-        value: 'glynec'
+        value: 'матовое покрытие'
     }
 ];
 
 export const MFilterShade = [
     {
         label: 'бежевый оттенок',
-        value: 'white'
+        value: 'бежевый'
     },
     {
         label: 'светло-бежевый оттенок',
-        value: 'lightwhite'
+        value: 'светло-бежевый'
     },
     {
         label: 'белый оттенок',
-        value: 'whitea'
+        value: 'белый'
     },
     {
         label: 'графитовый оттенок',
-        value: 'grafit'
+        value: 'графитовый'
     },
     {
         label: 'светло-графитовый оттенок',
-        value: 'lightgrafit'
+        value: 'светло-графитовый'
     },
     {
         label: 'коричневый оттенок',
-        value: 'brown'
+        value: 'коричневый'
     }
 ];
 

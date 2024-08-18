@@ -3,22 +3,8 @@ import { z } from 'zod';
 export const ProductFilterSchema = z.object({
     minPrice: z.string().optional(),
     maxPrice: z.string().optional(),
-
     limit: z.number().min(1).default(20),
     offset: z.number().min(0).default(0),
-
-    /** Дополнительные фильтры
-     * Это объект с произвольными строковыми значениями фильтров
-     * Можно оставить это поле динамическим и не проверять конкретные ключи
-     * чтобы дать возможность фильтрации по любым полям
-     * Или задать конкретные ключи, если они известны
-     * @example
-     * tag: z.string().optional(),
-     * category: z.string().optional(),
-     * и т.д.
-     * Для гибкости, оставляем это поле как произвольные строки
-     * Можно также использовать `z.record(z.string())` для других значений
-     */
     filters: z.record(z.string().optional())
 });
 
@@ -29,8 +15,7 @@ const dynamicFieldSchema = z.union([
             id: z.number(),
             value: z.string()
         })
-    ),
-    z.null()
+    )
 ]);
 
 export const ProductApiSchema = z.object({
@@ -47,8 +32,6 @@ export const ProductApiSchema = z.object({
     price: dynamicFieldSchema,
     manufacturing: dynamicFieldSchema,
     kit: dynamicFieldSchema,
-    createdAt: dynamicFieldSchema,
-    updatedAt: dynamicFieldSchema,
     shade: dynamicFieldSchema,
     article: dynamicFieldSchema,
     slug: dynamicFieldSchema
@@ -68,21 +51,45 @@ export const ProductClientSchema = z.object({
     price: z.string(),
     manufacturing: z.string(),
     kit: z.string(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
     shade: z.string(),
     article: z.string(),
     slug: z.string()
+});
+
+export const ProductFilterQuerySchema = z.object({
+    // minPrice: z.string().optional(),  // maxPrice: z.string().optional(),
+    filters: z.record(z.string().optional()).optional()
 });
 
 export const ProductSearchSchema = ProductClientSchema.extend({
     id: z.string()
 });
 
+export const ProductsSchema = z.map(z.string(), ProductClientSchema);
+
 export const ProductsApiSchema = z.array(ProductApiSchema);
+
+export const ProductsClientSchema = z.array(ProductClientSchema);
+
 export const ProductsSearchSchema = z.array(ProductSearchSchema);
 
-export const ProductsFeedParamsDtoSchema = z.object({
-    offset: z.number().min(0),
-    limit: z.number().min(1)
+const FilterMetaSchema = z.object({
+    itemsPerPage: z.number(),
+    totalItems: z.number(),
+    currentPage: z.number(),
+    totalPages: z.number(),
+    sortBy: z.array(z.tuple([z.string(), z.enum(['ASC', 'DESC'])])),
+    filter: z.record(z.string(), z.string())
+});
+
+const FilterLinksSchema = z.object({
+    current: z.string().url(),
+    next: z.string().url(),
+    last: z.string().url()
+});
+
+export const FilterResponseSchema = z.object({
+    data: ProductsClientSchema,
+    meta: FilterMetaSchema,
+    links: FilterLinksSchema
 });

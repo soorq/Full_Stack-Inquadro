@@ -1,1 +1,1 @@
-export { FilterCategory } from './filter-category.ui';
+export { FiltersCheckboxGroup } from './filter-category-group.ui';

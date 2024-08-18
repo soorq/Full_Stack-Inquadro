@@ -1,61 +1,69 @@
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import { ProductActions, ProductState } from './product.types';
+import { persist, devtools, createJSONStorage } from 'zustand/middleware';
+import type { ProductState, ProductActions } from './product.types';
+import { transformProductClientDto } from '~&/src/entities/product';
 import { createSelectors } from '~&/src/shared/lib/zustand';
 import { StateCreator, create } from 'zustand';
 
-// Создаем срез состояния с выбором параметров
-function createProductSlice() {
-    const productSlice: StateCreator<
-        ProductState & ProductActions,
-        [['zustand/devtools', never], ['zustand/persist', unknown]],
-        [],
-        ProductState & ProductActions
-    > = set => ({
-        product: null,
-        size: null,
-        usage: null,
-        shade: null,
+function createProductSlice(): StateCreator<
+    ProductState & ProductActions,
+    [['zustand/devtools', never], ['zustand/persist', unknown]],
+    [],
+    ProductState & ProductActions
+> {
+    return set => ({
+        product_api: null,
+        product_client: null,
+        currentId: null,
 
-        setSize: size => set({ size: size }, false, 'setSize'),
-        setUsage: usage => set({ usage: usage }, false, 'setUsage'),
-        setShade: shade => set({ shade: shade }, false, 'setShade'),
-        setProduct: product => {
-            set({ product });
+        setProductClient: product => {
+            const product_client = transformProductClientDto(product);
+            set({
+                product_client
+            });
+        },
 
-            // Установите значения по умолчанию для размера, использования и оттенка
-            const defaultSize = product.size[0] || null;
-            const defaultUsage = product.usage[0] || null;
-            const defaultShade = product.shade[0] || null;
+        setProductApi: product_api =>
+            set({
+                product_api
+            }),
 
-            // set({
-            //     size: defaultSize,
-            //     usage: defaultUsage,
-            //     shade: defaultShade
-            // });
+        setCurrentId: (id: number) => {
+            set(state => {
+                const product_api = state.product_api;
+
+                if (product_api) {
+                    const product_client = transformProductClientDto(
+                        product_api,
+                        id
+                    );
+                    return {
+                        currentId: id,
+                        product_client
+                    };
+                }
+
+                return {
+                    currentId: id,
+                    product_client: null
+                };
+            });
         },
 
         reset: () =>
-            set(
-                {
-                    size: null,
-                    usage: null,
-                    shade: null
-                },
-                false,
-                'reset'
-            )
+            set({
+                product_client: null,
+                product_api: null,
+                currentId: null
+            })
     });
-    return productSlice;
 }
 
-// Применяем persist и devtools к состоянию
 const slice = createProductSlice();
 const withPersist = persist(slice, {
     name: 'product-options',
     storage: createJSONStorage(() => localStorage)
 });
-const withDevtools = devtools(withPersist, { name: 'Product  Service' });
+const withDevtools = devtools(withPersist, { name: 'Product Service' });
 const store = create(withDevtools);
 
-// Экспортируем hooks для использования store
 export const useProductStore = createSelectors(store);

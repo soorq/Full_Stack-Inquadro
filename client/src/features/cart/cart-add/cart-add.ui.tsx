@@ -15,8 +15,8 @@ export const CartAdd = ({ product }: { product: ProductClient }) => {
     return (
         <Button
             onClick={handlerFn}
-            className="h-12 max-w-[360px] w-full text-lg"
-            type="submit"
+            className="h-[50px] w-full text-lg"
+            type="button"
         >
             Добавить в корзину
         </Button>

@@ -1,5 +1,5 @@
-import { ProductService } from '~&/src/shared/api/product';
-import { getProduct } from './action';
+import { getProductBySlug, getProducts } from './action';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
@@ -9,19 +9,12 @@ const Page = dynamic(() =>
     )
 );
 
-type Props = { slug: string };
-
-export async function generateStaticParams() {
-    const products = await ProductService.productsQuery();
-    return products.data?.map(product => ({ slug: product.slug }));
-}
-
 export async function generateMetadata({
     params
 }: {
-    params: Props;
+    params: { slug: string };
 }): Promise<Metadata> {
-    const product = await ProductService.productQuery(params.slug);
+    const product = await getProductBySlug(params.slug);
 
     return {
         title: product.data.name,
@@ -36,7 +29,20 @@ export async function generateMetadata({
     };
 }
 
-export default async function ProductPage({ params }: { params: Props }) {
-    const product = await getProduct(params.slug);
-    return <Page product={product} />;
+export async function generateStaticParams() {
+    const products = await getProducts();
+
+    return products?.data.map(product => ({ slug: product.slug }));
+}
+
+export default async function ProductPage({
+    params
+}: {
+    params: { slug: string };
+}) {
+    const product = await getProductBySlug(params.slug);
+
+    if (!product.data) notFound();
+
+    return <Page product={product.data} />;
 }

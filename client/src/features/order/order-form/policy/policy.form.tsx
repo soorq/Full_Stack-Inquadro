@@ -15,7 +15,7 @@ export const PolicyForm = ({
     control: Control<orderTypes.OrderSchemaDto>;
 }) => {
     return (
-        <div className="bg-secondary p-4 rounded-xl">
+        <div className="bg-secondary p-4 rounded-[10px]">
             <FormField
                 name="isPolicy"
                 control={control}

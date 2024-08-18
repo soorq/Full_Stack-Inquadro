@@ -42,7 +42,8 @@ export const OrderConfirmPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
 
-                <ProductOrder />
+                {/*<ProductOrder />*/}
+
                 <div className="flex gap-1.5 flex-col">
                     <PromoCode />
                     <TotalOrder total={'2000'} />

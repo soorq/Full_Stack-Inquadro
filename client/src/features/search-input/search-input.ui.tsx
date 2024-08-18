@@ -24,14 +24,12 @@ export const SearchInput = () => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [focused, setFocused] = React.useState(false);
 
-    const searchConfig = SearchQueries.searchByQuery(searchQuery);
-
     const {
         data: products,
         refetch,
         isLoading,
-        isError
-    } = useQuery(searchConfig);
+        isError,
+    } = useQuery(SearchQueries.searchByQuery(searchQuery));
 
     useClickAway(ref, () => {
         setFocused(false);
@@ -54,7 +52,6 @@ export const SearchInput = () => {
         setSearchQuery('');
     };
 
-    // @ts-ignore
     return (
         <>
             {focused && (
@@ -80,7 +77,7 @@ export const SearchInput = () => {
                 {!isLoading && !isError && (
                     <div
                         className={cn(
-                            'absolute w-full bg-white rounded-xl py-2 shadow-md transition-opacity duration-200',
+                            'absolute w-full bg-white rounded-[10px] py-2 shadow-md transition-opacity duration-200',
                             'top-[125%] max-h-[550px] overflow-y-auto z-30',
                             focused &&
                                 products?.data &&
@@ -93,8 +90,8 @@ export const SearchInput = () => {
                             {products?.data?.map(product => (
                                 <ProductSearch
                                     key={`product-search-${product.article}`}
-                                    product={product}
                                     onClick={onClickItem}
+                                    product={product}
                                 />
                             ))}
                         </div>

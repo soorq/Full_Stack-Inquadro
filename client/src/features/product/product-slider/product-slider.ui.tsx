@@ -15,7 +15,7 @@ export const ProductSlider = ({ slides }: { slides: string[] }) => {
     return (
         <div className="flex w-auto xl:w-full xl:max-w-[705px] lg:max-w-fit lg:mx-auto md:mx-auto md:max-w-[768px] max-h-[500px] lg:max-h-[710px] h-svh gap-2.5 shrink-0 lg:mb-0 mb-10">
             <Swiper
-                className="h-full !hidden md:!block max-w-[170px] w-full"
+                className="h-full !hidden sm:!block max-w-[170px] w-full"
                 direction="vertical"
                 onSwiper={setThumbs}
                 slidesPerView={3}
@@ -37,7 +37,7 @@ export const ProductSlider = ({ slides }: { slides: string[] }) => {
 
             <Swiper
                 thumbs={{ swiper: thumbs && !thumbs.destroyed ? thumbs : null }}
-                className="w-full h-full ml-2.5 md:max-w-[525px] max-w-max"
+                className="w-full h-full ml-2.5 sm:max-w-[450px] md:max-w-[525px]"
                 spaceBetween={20}
                 modules={[Thumbs, Pagination]}
                 pagination={{
