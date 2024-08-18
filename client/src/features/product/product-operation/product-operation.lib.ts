@@ -15,12 +15,18 @@ interface Option {
 }
 
 // Вспомогательная функция для фильтрации опций
-export const filterOptionsByIds = (options: Option[], ids: number[]): Option[] => {
+export const filterOptionsByIds = (
+    options: Option[],
+    ids: number[]
+): Option[] => {
     return options.filter(option => ids.includes(option.id));
 };
 
 // Вспомогательная функция для получения связанных ID по значению размера
-export const getRelatedSizeIds = (sizeOptions: Option[], sizeId: number): number[] => {
+export const getRelatedSizeIds = (
+    sizeOptions: Option[],
+    sizeId: number
+): number[] => {
     const selectedSizeValue = sizeOptions.find(
         size => size.id === sizeId
     )?.value;
@@ -32,4 +38,27 @@ export const getRelatedSizeIds = (sizeOptions: Option[], sizeId: number): number
 // Функция для преобразования size в массив опций
 export const getSizeOptions = (size: Option[] | string): Option[] => {
     return typeof size === 'string' ? [] : size;
+};
+
+// Функция для преобразования данных в массив Option[]
+const toOptionArray = (
+    data: string | { id: number; value: string }[]
+): Option[] => {
+    if (typeof data === 'string') {
+        return [{ id: 0, value: data }];
+    }
+
+    if (Array.isArray(data) && typeof data[0] === 'object') {
+        return data as { id: number; value: string }[];
+    }
+
+    return [];
+};
+
+export const getOptions = (
+    data: string | { id: number; value: string }[],
+    getSize?: boolean
+): Option[] => {
+    const options = toOptionArray(data);
+    return getSize ? getSizeOptions(options) : options;
 };

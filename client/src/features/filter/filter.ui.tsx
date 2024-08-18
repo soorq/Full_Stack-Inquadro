@@ -1,5 +1,6 @@
-import { useFilters, useQueryFilters } from './filter.lib';
+import { useFilters } from '~&/src/entities/filter';
 import { FiltersCheckboxGroup } from './filter-category';
+import React from 'react';
 import {
     MFilterAvailable,
     MFilterTexture,
@@ -8,11 +9,9 @@ import {
     MFilterShade,
     MFilterUsage
 } from './filter.constnants';
-import React from 'react';
 
 export const Filter = () => {
     const filters = useFilters();
-    useQueryFilters(filters);
 
     return (
         <aside className="flex-col flex w-full gap-1.5">

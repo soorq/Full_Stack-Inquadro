@@ -1,11 +1,11 @@
 'use client';
 
-import { useCartStore } from '~&/src/entities/cart/cart.store';
 import { ProductOrder } from '~&/src/widgets/product';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '~&/src/shared/ui/button';
 import { cn } from '~&/src/shared/lib/tw-merge';
 import { ShoppingCart } from 'lucide-react';
+import { useCartStore } from './cart.model';
 import React from 'react';
 import {
     Popover,

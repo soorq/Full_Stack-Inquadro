@@ -1,2 +1,2 @@
-export { useFavoriteStore } from './favorite.store';
+export { useFavoriteStore } from './favorite.model';
 export { FavoritePreview } from './favorite.ui';

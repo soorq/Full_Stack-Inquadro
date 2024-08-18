@@ -1,24 +1,35 @@
+'use client';
 import { Button } from '~&/src/shared/ui/button';
 import { X } from 'lucide-react';
 import {
-    Select,
     SelectContent,
-    SelectItem,
     SelectTrigger,
-    SelectValue
+    SelectGroup,
+    SelectValue,
+    SelectItem,
+    Select
 } from '~&/src/shared/ui/select';
-import { SelectGroup } from '@radix-ui/react-select';
+import { useFiltersStore } from '~&/src/entities/filter';
 
 export const FilterHeader = () => {
+    const { hasActiveFilters, resetFilters } = useFiltersStore(state => state);
+
+    const isActiveFilter = hasActiveFilters();
+
     return (
         <section className="grid grid-cols-[270px,1fr] gap-x-8 container py-5">
             <div className="w-1/4">1</div>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(165px,295px))] gap-x-5 grid-rows-1">
                 <div className="col-span-1 col-start-1">
-                    <Button className="gap-2 h-10 leading-5 font-[350]">
-                        <span>сбросить фильтр</span>
-                        <X className="size-5 stroke-1 self-center" />
-                    </Button>
+                    {isActiveFilter && (
+                        <Button
+                            className="gap-2 h-10 leading-5 font-[350]"
+                            onClick={() => resetFilters()}
+                        >
+                            <span>сбросить фильтр</span>
+                            <X className="size-5 stroke-1 self-center" />
+                        </Button>
+                    )}
                 </div>
                 <div className="col-span-1 col-start-3 place-self-end w-full">
                     <Select>

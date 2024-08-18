@@ -3,13 +3,12 @@
 import { Button } from '~&/src/shared/ui/button';
 import { cn } from '~&/src/shared/lib/tw-merge';
 import { Heart } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '~&/src/shared/ui/popover';
-import { ProductOrder } from '~&/src/widgets/product';
 
 export const FavoritePreview = () => {
     const [focus, setFocus] = useState(false);

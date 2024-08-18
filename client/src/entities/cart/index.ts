@@ -1,2 +1,2 @@
-export { useCartStore } from './cart.store';
+export { useCartStore } from './cart.model';
 export { CartPreview } from './cart.ui';

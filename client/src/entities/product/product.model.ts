@@ -30,7 +30,6 @@ function createProductSlice(): StateCreator<
         setCurrentId: (id: number) => {
             set(state => {
                 const product_api = state.product_api;
-
                 if (product_api) {
                     const product_client = transformProductClientDto(
                         product_api,

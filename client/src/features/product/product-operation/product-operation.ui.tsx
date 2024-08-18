@@ -5,61 +5,8 @@ import { useEffect, useState } from 'react';
 import {
     filterOptionsByIds,
     getRelatedSizeIds,
-    getSizeOptions
+    getOptions
 } from './product-operation.lib';
-
-type Option = {
-    id: number;
-    value: string;
-};
-
-// Function to convert various data formats into Option[]
-const toOptionArray = (
-    data: string | string[] | { id: number; value: string }[]
-): Option[] => {
-    if (typeof data === 'string') {
-        // Single string, return as single Option
-        return [{ id: 0, value: data }];
-    }
-
-    if (Array.isArray(data)) {
-        if (typeof data[0] === 'string') {
-            // Array of strings
-            return data.map((value, index) => ({ id: index, value }));
-        } else if (
-            typeof data[0] === 'object' &&
-            'id' in data[0] &&
-            'value' in data[0]
-        ) {
-            // Array of objects with id and value
-            return data.map(item => ({
-                id: item.id,
-                value: item.value
-            }));
-        }
-    }
-
-    // Return empty array if no valid data format is found
-    return [];
-};
-
-const getOptions = (
-    data: string | string[] | { id: number; value: string }[],
-    getSize?: boolean
-): Option[] => {
-    if (
-        typeof data === 'string' ||
-        (Array.isArray(data) && typeof data[0] === 'string')
-    ) {
-        // Convert to Option[] if the data is a string or array of strings
-        return getSize
-            ? getSizeOptions(toOptionArray(data))
-            : toOptionArray(data);
-    }
-
-    // Convert to Option[] if the data is already an array of objects with id and value
-    return toOptionArray(data);
-};
 
 export const ProductOperation = () => {
     const [selectedSizeId, setSelectedSizeId] = useState<number | undefined>(
@@ -85,10 +32,16 @@ export const ProductOperation = () => {
     }, [product]);
 
     useEffect(() => {
-        if (selectedSizeId) {
-            setCurrentId(selectedSizeId);
+        const determineCurrentId = (): number | undefined => {
+            return selectedShadeId ?? selectedUsageId ?? selectedSizeId;
+        };
+
+        const currentId = determineCurrentId();
+
+        if (currentId !== undefined) {
+            setCurrentId(currentId);
         }
-    }, [selectedSizeId, setCurrentId]);
+    }, [selectedSizeId, selectedUsageId, selectedShadeId, setCurrentId]);
 
     const updateOptions = () => {
         if (product) {
@@ -100,11 +53,11 @@ export const ProductOperation = () => {
                 sizeOptions,
                 selectedSizeId ?? 0
             );
-
             const filteredUsageOptions = filterOptionsByIds(
                 usageOptions,
                 relatedSizeIds
             );
+
             if (filteredUsageOptions.length > 0) {
                 setSelectedUsageId(filteredUsageOptions[0].id);
 
@@ -165,12 +118,12 @@ export const ProductOperation = () => {
                   .filter(usage => usage.id === selectedUsageId)
                   .map(usage => usage.id)
           )
-        : [];
+        : shadeOptions;
 
     const handleSizeChange = (id: number) => {
         setSelectedSizeId(id);
-        setSelectedUsageId(undefined); // Reset usage when size changes
-        setSelectedShadeId(undefined); // Reset shade when size changes
+        setSelectedUsageId(undefined);
+        setSelectedShadeId(undefined);
     };
 
     const handleUsageChange = (id: number) => setSelectedUsageId(id);
