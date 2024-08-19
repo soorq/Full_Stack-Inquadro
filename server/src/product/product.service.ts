@@ -8,6 +8,13 @@ import { Brackets, Repository } from 'typeorm';
 import { EProduct } from '@app/entities';
 import { Cache } from 'cache-manager';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    FilterOperator,
+    PaginateQuery,
+    paginate,
+    Paginated,
+    PaginateConfig
+} from 'nestjs-paginate';
 
 @Injectable()
 export class ProductService implements ProductRepository {
@@ -74,8 +81,8 @@ export class ProductService implements ProductRepository {
 
     public async findAll() {
         const cacheKey = 'all_products';
-        const cachedProducts =
-            await this.cacheManager.get<EProduct[]>(cacheKey);
+
+        const cachedProducts = await this.getCachedResult<EProduct[]>(cacheKey);
 
         if (cachedProducts) {
             return cachedProducts;
@@ -93,7 +100,7 @@ export class ProductService implements ProductRepository {
 
     public async findOne(id: string) {
         const cacheKey = `Category_findOne:product_${id}`;
-        const cachedProduct = await this.cacheManager.get<EProduct>(cacheKey);
+        const cachedProduct = await this.getCachedResult<EProduct>(cacheKey);
 
         if (cachedProduct) {
             return cachedProduct;
@@ -188,53 +195,38 @@ export class ProductService implements ProductRepository {
             .getMany();
     }
 
-    public findByFilter = async (
-        filter: Record<string, string | number | undefined>
-    ): Promise<{ data: EProduct[]; nextId: number; previousId: number }> => {
-        const cacheKey = this.generateCacheKey(filter);
+    public findByFilter(query: PaginateQuery): Promise<Paginated<EProduct>> {
+        const config: PaginateConfig<EProduct> = {
+            filterableColumns: {
+                category: [FilterOperator.EQ],
+                usage: [FilterOperator.EQ],
+                plating: [FilterOperator.EQ],
+                invoice: [FilterOperator.EQ],
+                texture: [FilterOperator.EQ],
+                size: [FilterOperator.EQ],
+                shade: [FilterOperator.EQ],
+                availability: [FilterOperator.EQ],
+                price: [FilterOperator.GTE, FilterOperator.LTE],
+                createdAt: [FilterOperator.GTE, FilterOperator.LTE],
+                updatedAt: [FilterOperator.GTE, FilterOperator.LTE]
+            },
+            sortableColumns: [
+                'category',
+                'usage',
+                'plating',
+                'invoice',
+                'texture',
+                'size',
+                'shade',
+                'availability',
+                'price',
+                'createdAt',
+                'updatedAt'
+            ]
+        };
 
-        const cachedResult = await this.getCachedResult(cacheKey);
-        if (cachedResult) {
-            return cachedResult as {
-                data: EProduct[];
-                nextId: number;
-                previousId: number;
-            };
-        }
-
-        const {
-            minPrice,
-            maxPrice,
-            limit = 20,
-            offset = 0,
-            otherFilters
-        } = this.prepareFilters(filter);
-
-        const parsedLimit =
-            typeof limit === 'string' ? parseInt(limit, 10) : limit;
-        const parsedOffset =
-            typeof offset === 'string' ? parseInt(offset, 10) : offset;
-
-        const { result, totalCount } = await this.executeQuery({
-            minPrice,
-            maxPrice,
-            limit,
-            offset,
-            otherFilters
-        });
-
-        const nextId = this.calculateNextId(
-            parsedOffset,
-            result.length,
-            totalCount
-        );
-        const previousId = this.calculatePreviousId(parsedOffset, parsedLimit);
-
-        const resultWithCursor = { data: result, nextId, previousId };
-        await this.cacheManager.set(cacheKey, resultWithCursor, 60 * 5);
-
-        return resultWithCursor;
-    };
+        return paginate(query, this.db, config);
+    }
 
     private async getCachedResult<T>(cacheKey: string): Promise<T | undefined> {
         return (await this.cacheManager.get(cacheKey)) as T | undefined;
@@ -256,87 +248,6 @@ export class ProductService implements ProductRepository {
             .filter(([_, value]) => value !== undefined && value !== '')
             .map(([key, value]) => `${key}-${value}`);
         return `Category_filters:products_filter_${validFilter.sort().join('|')}`;
-    }
-
-    private prepareFilters(
-        filter: Record<string, string | number | undefined>
-    ) {
-        return {
-            minPrice: filter.minPrice,
-            maxPrice: filter.maxPrice,
-            limit:
-                typeof filter.limit === 'number'
-                    ? filter.limit
-                    : parseInt(filter.limit as string, 10),
-            offset:
-                typeof filter.offset === 'number'
-                    ? filter.offset
-                    : parseInt(filter.offset as string, 10),
-            otherFilters: Object.entries(filter).reduce(
-                (acc, [key, value]) => {
-                    if (
-                        !['minPrice', 'maxPrice', 'limit', 'offset'].includes(
-                            key
-                        ) &&
-                        value
-                    ) {
-                        acc[key] = value;
-                    }
-                    return acc;
-                },
-                {} as Record<string, string | number>
-            )
-        };
-    }
-
-    private async executeQuery({
-        minPrice,
-        maxPrice,
-        limit,
-        offset,
-        otherFilters
-    }: {
-        minPrice?: string | number;
-        maxPrice?: string | number;
-        limit: number;
-        offset: number;
-        otherFilters: Record<string, string | number>;
-    }) {
-        const qb = this.db
-            .createQueryBuilder('f')
-            .orderBy('f.createdAt', 'DESC');
-
-        Object.entries(otherFilters).forEach(([key, value]) => {
-            qb.andWhere(`f.${key} = :${key}`, { [key]: value });
-        });
-
-        if (minPrice) {
-            qb.andWhere('f.price >= :minPrice', { minPrice });
-        }
-
-        if (maxPrice) {
-            qb.andWhere('f.price <= :maxPrice', { maxPrice });
-        }
-
-        qb.take(limit);
-        qb.skip(offset);
-
-        const totalCount = await qb.getCount();
-        const result = await qb.getMany();
-
-        return { result, totalCount };
-    }
-
-    private calculateNextId(
-        offset: number,
-        resultLength: number,
-        totalCount: number
-    ): number {
-        return offset + resultLength < totalCount ? offset + resultLength : 0;
-    }
-
-    private calculatePreviousId(offset: number, limit: number): number {
-        return offset > 0 ? Math.max(0, offset - limit) : 0;
     }
 
     private generateSlug(name: string): string {

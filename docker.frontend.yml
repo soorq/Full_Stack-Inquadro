@@ -17,4 +17,5 @@ services:
       - webnet
 
 networks:
-  webnet:
+  apis_n:
+    external: true

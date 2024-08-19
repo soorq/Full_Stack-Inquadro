@@ -1,4 +1,5 @@
 import { Controller, HttpException, Param, Query } from '@nestjs/common';
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { ProductService } from './product.service';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -23,7 +24,10 @@ export class ProductController {
     }
 
     @ApiGetManyProductsByParams()
-    getByFilter(@Query() query: Record<string, string | number | undefined>) {
+    getByFilter(
+        @Paginate()
+        query: PaginateQuery
+    ) {
         try {
             return this.service.findByFilter(query);
         } catch (error) {
