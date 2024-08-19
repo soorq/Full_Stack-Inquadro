@@ -2,17 +2,21 @@ name: Docker CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build client
-        run: docker build ./client/ --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout repository👀
+      - uses: actions/checkout@v2
 
-      - name: Build api
-        run: docker build ./server/ --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Build client 👤
+        run: docker build client/ --file Dockerfile --tag my-image-name:$(date +%s)
+
+      - name: Build api ⚙️
+        run: docker build server/ --file Dockerfile --tag my-image-name:$(date +%s)
