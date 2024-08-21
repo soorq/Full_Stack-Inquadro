@@ -43,7 +43,7 @@ export default function RootLayout({
     children
 }: Readonly<React.PropsWithChildren>) {
     return (
-        <html lang="ru" className='antialiased'>
+        <html lang="ru" className="antialiased scroll-m-12">
             <body className={font.variable}>
                 <RootProvider>{children}</RootProvider>
             </body>

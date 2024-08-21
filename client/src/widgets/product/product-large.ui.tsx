@@ -1,15 +1,16 @@
 'use client';
 
 import { ProductApi, useProductStore } from '~&/src/entities/product';
+import { useRecentViewStore } from '~&/src/entities/recent-view';
 import { OrderInfo } from '~&/src/widgets/order-info';
 import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import {
-    ProductOptionsSkeleton,
     ProductOperationSkeleton,
-    ProductDetailsSkeleton
+    ProductOptionsSkeleton,
+    ProductDetailsSkeleton,
+    ProductSliderSkeleton
 } from '~&/src/features/product';
-import { ProductSliderSkeleton } from '~&/src/features/product/product-slider';
 
 const ProductOptions = dynamic(
     () => import('~&/src/features/product').then(cn => cn.ProductOptions),
@@ -31,31 +32,36 @@ const ProductOperation = dynamic(
     { ssr: false, loading: () => <ProductOperationSkeleton /> }
 );
 
-export const ProductLarge = ({
-    slides,
-    product
-}: {
-    slides: string[];
-    product: ProductApi;
-}) => {
-    const { setProductApi, product_client, setProductClient } = useProductStore(
-        state => state
-    );
+export const ProductLarge = React.memo(
+    ({ product }: { product: ProductApi }) => {
+        const { setProductApi, product_client, setProductClient } =
+            useProductStore(state => state);
 
-    useEffect(() => {
-        setProductClient(product);
-        setProductApi(product);
-    }, [product, setProductApi, setProductClient]);
+        const { addRecentProduct } = useRecentViewStore(state => state);
 
-    return (
-        <main className="lg:flex-row flex flex-col lg:justify-between container lg:gap-5 mb-10 lg:mb-0">
-            <ProductSlider slides={slides} />
-            <div className="flex flex-col gap-1.5 w-full">
-                <ProductOptions product={product_client} />
-                <ProductOperation />
-                <OrderInfo />
-                <ProductDetails product={product_client} />
-            </div>
-        </main>
-    );
-};
+        useEffect(() => {
+            setProductClient(product);
+            setProductApi(product);
+        }, [product, setProductApi, setProductClient]);
+
+        useEffect(() => {
+            if (product_client !== null) {
+                addRecentProduct(product_client);
+            }
+        }, [addRecentProduct]);
+
+        return (
+            <main className="lg:flex-row flex flex-col lg:justify-between container lg:gap-5 mb-10 lg:mb-0">
+                <ProductSlider />
+                <div className="flex flex-col gap-1.5 w-full">
+                    <ProductOptions product={product_client} />
+                    <ProductOperation />
+                    <OrderInfo />
+                    <ProductDetails product={product_client} />
+                </div>
+            </main>
+        );
+    }
+);
+
+ProductLarge.displayName = 'ProductLarge';

@@ -1,4 +1,4 @@
-import { ProductClient } from '~&/src/entities/product';
+import type { ProductClient } from '~&/src/entities/product';
 
 export const ProductOptions = ({
     product
@@ -21,8 +21,13 @@ export const ProductOptions = ({
             </div>
 
             <div className="bg-secondary p-4 w-full flex justify-between items-center rounded-[10px]">
-                <h2 className="text-2xl">{product?.price} за шт.</h2>
-                <p className="">-70%</p>
+                <h2 className="text-2xl">
+                    {Math.floor((product && +product?.price) || 0)}
+                    {' рублей за '}
+                    {product?.kit ? (+product.kit === 1 ? 'шт.' : 'м²') : ''}
+                </h2>
+                {/* ##FIXTURE NEXT THE SALE */}
+                {/*<p className="">-70%</p>*/}
             </div>
         </div>
     );

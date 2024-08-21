@@ -41,6 +41,46 @@ body {
     }
 }
 
+@layer components {
+    .scroll-down {
+        @apply h-[50px] w-[30px] border-2 border-black absolute left-1/2 bottom-20 rounded-full cursor-pointer;
+        position: relative;
+    }
+
+    .scroll-down::before,
+    .scroll-down::after {
+        content: "";
+        @apply absolute h-[10px] w-[10px] border-2 border-black;
+        border-top-color: transparent;
+        border-left-color: transparent;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -100%) rotate(45deg);
+        animation: scroll-down 1s ease-in-out infinite;
+    }
+
+    .scroll-down::before {
+        top: 30%;
+        animation-delay: 0.3s;
+    }
+}
+
+@keyframes scroll-down {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        top: 90%;
+        opacity: 0;
+    }
+}
+
 .swiper-pagination-bullet {
     width: 12px;
     height: 12px;
@@ -78,4 +118,9 @@ body {
 .custom-scroll::-webkit-scrollbar-thumb:hover {
     background: #c7c7c7; /* Цвет ползунка при наведении */
     cursor: pointer;
+}
+
+
+.scroll-none::-webkit-scrollbar {
+    display: none;
 }

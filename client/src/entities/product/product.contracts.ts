@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
 export const ProductFilterSchema = z.object({
-    minPrice: z.string().optional(),
-    maxPrice: z.string().optional(),
     limit: z.number().min(1).default(20),
     offset: z.number().min(0).default(0),
     filters: z.record(z.string().optional())
@@ -23,7 +21,15 @@ export const ProductApiSchema = z.object({
     category: dynamicFieldSchema,
     availability: dynamicFieldSchema,
     usage: dynamicFieldSchema,
-    image: dynamicFieldSchema,
+    image: z.union([
+        z.string(),
+        z.array(
+            z.object({
+                id: z.number(),
+                value: z.array(z.string()).or(z.array(z.string()).length(0))
+            })
+        )
+    ]),
     plating: dynamicFieldSchema,
     texture: dynamicFieldSchema,
     invoice: dynamicFieldSchema,
@@ -42,7 +48,7 @@ export const ProductClientSchema = z.object({
     category: z.string(),
     availability: z.string(),
     usage: z.string(),
-    image: z.string(),
+    images: z.array(z.string()).or(z.array(z.string()).length(0)),
     plating: z.string(),
     texture: z.string(),
     invoice: z.string(),
@@ -56,13 +62,10 @@ export const ProductClientSchema = z.object({
     slug: z.string()
 });
 
-export const ProductFilterQuerySchema = z.object({
-    // minPrice: z.string().optional(),  // maxPrice: z.string().optional(),
-    filters: z.record(z.string().optional()).optional()
-});
-
 export const ProductSearchSchema = ProductClientSchema.extend({
-    id: z.string()
+    id: z.number(),
+    createdAt: z.string(),
+    updatedAt: z.string()
 });
 
 export const ProductsSchema = z.map(z.string(), ProductClientSchema);
@@ -72,24 +75,3 @@ export const ProductsApiSchema = z.array(ProductApiSchema);
 export const ProductsClientSchema = z.array(ProductClientSchema);
 
 export const ProductsSearchSchema = z.array(ProductSearchSchema);
-
-const FilterMetaSchema = z.object({
-    itemsPerPage: z.number(),
-    totalItems: z.number(),
-    currentPage: z.number(),
-    totalPages: z.number(),
-    sortBy: z.array(z.tuple([z.string(), z.enum(['ASC', 'DESC'])])),
-    filter: z.record(z.string(), z.string())
-});
-
-const FilterLinksSchema = z.object({
-    current: z.string().url(),
-    next: z.string().url(),
-    last: z.string().url()
-});
-
-export const FilterResponseSchema = z.object({
-    data: ProductsClientSchema,
-    meta: FilterMetaSchema,
-    links: FilterLinksSchema
-});

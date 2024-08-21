@@ -4,7 +4,9 @@ import { cn } from '~&/src/shared/lib/tw-merge';
 export const OrderInfo = ({ withBg = true }: { withBg?: boolean }) => {
     return (
         <div
-            className={cn(withBg ? 'bg-secondary rounded-[10px] px-4 py-2.5' : '')}
+            className={cn(
+                withBg ? 'bg-secondary rounded-[10px] px-4 py-2.5' : ''
+            )}
         >
             <div className="flex gap-2.5 mb-0.5 items-center">
                 <Banknote className="size-5" />

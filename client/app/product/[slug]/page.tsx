@@ -25,6 +25,12 @@ export async function generateMetadata({
         },
         authors: {
             name: 'Danil or Soorq'
+        },
+        alternates: {
+            /*
+             * FIXME : CANNONICAL LINKS
+             */
+            canonical: new URL('http://localhost:3000')
         }
     };
 }
@@ -40,9 +46,7 @@ export default async function ProductPage({
 }: {
     params: { slug: string };
 }) {
-    const product = await getProductBySlug(params.slug);
-
-    if (!product.data) notFound();
+    const product = await getProductBySlug(params.slug).catch(() => notFound());
 
     return <Page product={product.data} />;
 }

@@ -27,23 +27,21 @@ export const SearchInput = () => {
     const {
         data: products,
         refetch,
-        isLoading,
-        isError,
-    } = useQuery(SearchQueries.searchByQuery(searchQuery));
-
-    useClickAway(ref, () => {
-        setFocused(false);
+        isLoading
+    } = useQuery({
+        ...SearchQueries.searchByQuery(searchQuery),
+        enabled: !!searchQuery.trim()
     });
 
+    useClickAway(ref, () => setFocused(false));
+
     useDebounce(
-        async () => {
-            try {
-                await refetch();
-            } catch (err) {
-                throw new Error(String(err));
+        () => {
+            if (searchQuery.trim()) {
+                refetch();
             }
         },
-        500,
+        1000,
         [searchQuery]
     );
 
@@ -74,20 +72,18 @@ export const SearchInput = () => {
                     />
                 </div>
 
-                {!isLoading && !isError && (
+                {!isLoading && products?.data && (
                     <div
                         className={cn(
                             'absolute w-full bg-white rounded-[10px] py-2 shadow-md transition-opacity duration-200',
                             'top-[125%] max-h-[550px] overflow-y-auto z-30',
-                            focused &&
-                                products?.data &&
-                                products.data.length > 0
+                            focused
                                 ? 'opacity-100 visible'
                                 : 'opacity-0 invisible'
                         )}
                     >
                         <div className="flex flex-col w-full h-full">
-                            {products?.data?.map(product => (
+                            {products.data?.map(product => (
                                 <ProductSearch
                                     key={`product-search-${product.article}`}
                                     onClick={onClickItem}

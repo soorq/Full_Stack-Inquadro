@@ -1,4 +1,5 @@
+export * as filtersContract from './filter.contracts';
 export { useFiltersStore } from './filter.model';
+export { useQueryFilters } from './filter.lib';
 export * as filterTypes from './filter.types';
-export { useFilters } from './filter.lib';
-export {} from './filter.queries';
+export * from './filter.queries';

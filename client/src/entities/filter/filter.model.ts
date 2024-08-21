@@ -9,17 +9,13 @@ const createFiltersSlice: StateCreator<
 > = (set, get) => ({
     category: new Set<string>(),
     usage: new Set<string>(),
-    available: new Set<string>(),
+    availability: new Set<string>(),
     plating: new Set<string>(),
     invoice: new Set<string>(),
     size: new Set<string>(),
     texture: new Set<string>(),
     shade: new Set<string>(),
-    wimages: new Set<string>(),
-    prices: {
-        priceFrom: undefined,
-        priceTo: undefined
-    },
+    images: new Set<string>(),
 
     setFilter: (name: keyof Omit<TypeFilters, 'prices'>, value: string) => {
         set(state => {
@@ -39,42 +35,33 @@ const createFiltersSlice: StateCreator<
             return { [name]: newSet } as Pick<
                 TypeFilters,
                 keyof Omit<TypeFilters, 'prices'>
-            >;        });
-    },
-
-    setPrices: (name: keyof TypeFilters['prices'], value: number) => {
-        set(state => ({
-            prices: { ...state.prices, [name]: value }
-        }));
+            >;
+        });
     },
 
     hasActiveFilters: () => {
         const {
             category,
             usage,
-            available,
+            availability,
             plating,
             invoice,
             size,
             texture,
             shade,
-            wimages,
-            prices
+            images
         } = get();
-        return (
-            [
-                category,
-                usage,
-                available,
-                plating,
-                invoice,
-                size,
-                texture,
-                shade,
-                wimages
-            ].some(set => set.size > 0) ||
-            (prices.priceFrom !== null && prices.priceTo !== null)
-        );
+        return [
+            category,
+            usage,
+            availability,
+            plating,
+            invoice,
+            size,
+            texture,
+            shade,
+            images
+        ].some(set => set.size > 0);
     },
 
     resetFilters: () => {
@@ -87,11 +74,7 @@ const createFiltersSlice: StateCreator<
             size: new Set<string>(),
             texture: new Set<string>(),
             shade: new Set<string>(),
-            wimages: new Set<string>(),
-            prices: {
-                priceFrom: undefined,
-                priceTo: undefined
-            }
+            images: new Set<string>()
         }));
     }
 });

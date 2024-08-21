@@ -1,7 +1,7 @@
 'use client';
 
 import type { Swiper as SwiperCore } from 'swiper/types';
-import { Navigation, Pagination, Thumbs } from 'swiper/modules';
+import { Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import React from 'react';
@@ -9,7 +9,14 @@ import React from 'react';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
-export const ProductSlider = ({ slides }: { slides: string[] }) => {
+const slides = [
+    '/product/main.png',
+    '/product/color.png',
+    '/product/color.png',
+    '/product/color.png'
+];
+
+export const ProductSlider = () => {
     const [thumbs, setThumbs] = React.useState<SwiperCore | null>(null);
 
     return (
@@ -27,6 +34,8 @@ export const ProductSlider = ({ slides }: { slides: string[] }) => {
                             <Image
                                 alt={`thumb-product-${index}`}
                                 className="rounded-lg"
+                                loading="lazy"
+                                rel="preload"
                                 src={image}
                                 fill
                             />
@@ -54,6 +63,8 @@ export const ProductSlider = ({ slides }: { slides: string[] }) => {
                             <Image
                                 alt={`main-product-${index}`}
                                 className="rounded-lg"
+                                loading="lazy"
+                                rel="preload"
                                 src={image}
                                 fill
                             />

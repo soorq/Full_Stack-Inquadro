@@ -32,7 +32,7 @@ export const ProductDetails = ({
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">изображение: </span>
-                    <span>{product.image}</span>
+                    <span>{product?.images}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">покрытие: </span>
@@ -44,7 +44,7 @@ export const ProductDetails = ({
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">фактура: </span>
-                    <span>{product.manufacturing}</span>
+                    <span>{product.invoice}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">размер: </span>
@@ -60,7 +60,7 @@ export const ProductDetails = ({
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">продажа: </span>
-                    <span>{product.kit}</span>
+                    <span>{product.manufacturing}</span>
                 </li>
                 <li className="[&>span]:text-base [&>span]:leading-6">
                     <span className="text-black/50">комплектация: </span>

@@ -1,4 +1,4 @@
-import { FilterQuery } from '~&/src/entities/product';
+import { FilterQuery } from '~&/src/entities/filter/filter.types';
 
 export function formatSearchFilters({ filters }: FilterQuery): string {
     const queryParams = new URLSearchParams();

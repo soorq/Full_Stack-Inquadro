@@ -24,7 +24,7 @@ export const ProductSearch = ({
             </div>
 
             <div className="flex flex-col gap-2 w-full">
-            <div className="bg-secondary p-2.5 rounded-[10px]">
+                <div className="bg-secondary p-2.5 rounded-[10px]">
                     <div className="flex justify-between [&>p]:text-sm [&>p]:text-black/50 [&>p]:leading-4">
                         <p>{product.category}</p>
                         <p>{product.availability}</p>
@@ -35,9 +35,6 @@ export const ProductSearch = ({
                     <p className="text-lg leading-5">
                         {product.price} рублей за м²
                     </p>
-                    {product?.slug && (
-                        <p className="text-lg leading-5">{product.slug}</p>
-                    )}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                     <Badge variant="secondary">{product.texture}</Badge>
@@ -45,7 +42,7 @@ export const ProductSearch = ({
                     <Badge variant="secondary">
                         {product.plating} покрытие
                     </Badge>
-                    <Badge variant="secondary">сверху: {product.invoice}</Badge>
+                    <Badge variant="secondary">{product.invoice}</Badge>
                 </div>
                 <Button
                     asChild

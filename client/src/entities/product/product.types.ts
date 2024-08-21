@@ -1,25 +1,12 @@
 import { z } from 'zod';
 import {
-    ProductFilterQuerySchema,
     ProductsClientSchema,
     ProductsSearchSchema,
-    FilterResponseSchema,
     ProductClientSchema,
     ProductsApiSchema,
     ProductApiSchema,
     ProductsSchema
 } from './product.contracts';
-
-export type TypeSmallProduct = {
-    price: string;
-    sell?: string;
-    image: string;
-    id: string;
-    category: string;
-    total: string;
-    name: string;
-    availability: string;
-};
 
 export type ProductApi = z.infer<typeof ProductApiSchema>;
 
@@ -32,10 +19,6 @@ export type ProductsClient = z.infer<typeof ProductsClientSchema>;
 export type ProductsSearchApi = z.infer<typeof ProductsSearchSchema>;
 
 export type Products = z.infer<typeof ProductsSchema>;
-
-export type FilterResponse = z.infer<typeof FilterResponseSchema>
-
-export type FilterQuery = z.infer<typeof ProductFilterQuerySchema>;
 
 export type ProductState = {
     product_api: ProductApi | null;

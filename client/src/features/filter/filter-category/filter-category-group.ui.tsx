@@ -1,10 +1,8 @@
-'use client';
-
 import { FilterCategoryCheckbox } from './filter-category-checkbox.ui';
 import { Skeleton } from '~&/src/shared/ui/skeleton';
 import { useState } from 'react';
 
-export interface FilterChecboxProps {
+export interface FilterCheckboxProps {
     label: string;
     value: string;
     onCheckedChange?: (checked: boolean) => void;
@@ -21,14 +19,14 @@ export const FiltersCheckboxGroup = ({
     loading = false,
     items,
     name
-}:{
-    onClickCheckbox?: (id: string) => void;
-    defaultItems?: FilterChecboxProps[];
+}: {
+    onClickCheckbox?: (id: string, isSelected: boolean) => void;
+    defaultItems?: FilterCheckboxProps[];
     className?: string;
     limit?: number;
     selected?: Set<string>;
     loading?: boolean;
-    items: FilterChecboxProps[];
+    items: FilterCheckboxProps[];
     name?: string;
 }) => {
     const [showAll, setShowAll] = useState(false);
@@ -51,6 +49,11 @@ export const FiltersCheckboxGroup = ({
           )
         : (defaultItems || items).slice(0, limit);
 
+    const handleCheckboxChange = (id: string) => {
+        const isSelected = selected.has(id);
+        onClickCheckbox?.(id, !isSelected);
+    };
+
     return (
         <div className="bg-secondary py-5 px-4 gap-2.5 flex flex-col rounded-[10px]">
             <div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
@@ -58,7 +61,7 @@ export const FiltersCheckboxGroup = ({
                     <FilterCategoryCheckbox
                         key={index}
                         onCheckedChange={checked =>
-                            onClickCheckbox?.(item.value)
+                            handleCheckboxChange(item.value)
                         }
                         checked={selected.has(item.value)}
                         value={item.value}

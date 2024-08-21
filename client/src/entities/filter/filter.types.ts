@@ -1,13 +1,19 @@
-import {
-    FiltersSchema,
-    PriceSchema,
-    QueryFiltersSchema
-} from './filter.contracts';
 import { z } from 'zod';
+import {
+    FilterResponseSchema,
+    QueryFiltersSchema,
+    FilterQuerySchema,
+    FiltersSchema
+} from './filter.contracts';
 
 export type TypeFilters = z.infer<typeof FiltersSchema>;
 export type TypeQueryFilters = z.infer<typeof QueryFiltersSchema>;
-export type TypePrice = z.infer<typeof PriceSchema>;
+export type FilterResponse = z.infer<typeof FilterResponseSchema>;
+export type FilterQuery = z.infer<typeof FilterQuerySchema>;
+export type FilterCategory = keyof Omit<
+    z.infer<typeof FiltersSchema>,
+    'prices'
+>;
 
 export type TypeFilterActions = {
     setFilter: (name: keyof Omit<TypeFilters, 'prices'>, value: string) => void;
@@ -15,7 +21,6 @@ export type TypeFilterActions = {
         name: keyof Omit<TypeFilters, 'prices'>,
         value: string
     ) => void;
-    setPrices: (name: keyof TypeFilters['prices'], value: number) => void;
     hasActiveFilters: () => boolean;
     resetFilters: () => void;
 };

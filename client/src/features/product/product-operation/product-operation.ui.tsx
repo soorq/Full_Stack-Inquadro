@@ -53,17 +53,23 @@ export const ProductOperation = () => {
                 sizeOptions,
                 selectedSizeId ?? 0
             );
-            const filteredUsageOptions = filterOptionsByIds(
-                usageOptions,
-                relatedSizeIds
-            );
+
+            const filteredUsageOptions =
+                selectedSizeId === 0
+                    ? usageOptions
+                    : filterOptionsByIds(usageOptions, relatedSizeIds);
 
             if (filteredUsageOptions.length > 0) {
-                setSelectedUsageId(filteredUsageOptions[0].id);
+                const relatedUsageIds = filteredUsageOptions
+                    .filter(
+                        usage => usage.value === filteredUsageOptions[0].value
+                    )
+                    .map(usage => usage.id);
 
+                setSelectedUsageId(relatedUsageIds[0]);
                 const filteredShadeOptions = filterOptionsByIds(
                     shadeOptions,
-                    filteredUsageOptions.map(usage => usage.id)
+                    relatedUsageIds
                 );
                 setSelectedShadeId(
                     filteredShadeOptions.length > 0
@@ -81,21 +87,28 @@ export const ProductOperation = () => {
 
     useEffect(() => {
         if (selectedUsageId && product) {
-            const shadeOptions = getOptions(product.shade);
+            const shadeOptions = Array.isArray(product.shade)
+                ? getOptions(product.shade)
+                : [{ id: selectedUsageId, value: product.shade }];
+
             const usageOptions = getOptions(product.usage);
 
-            const usageOptionIds = usageOptions
+            const relatedUsageValues = usageOptions
                 .filter(usage => usage.id === selectedUsageId)
+                .map(usage => usage.value);
+
+            const relatedUsageIds = usageOptions
+                .filter(usage => relatedUsageValues.includes(usage.value))
                 .map(usage => usage.id);
 
-            const filteredShadeOptions = filterOptionsByIds(
-                shadeOptions,
-                usageOptionIds
-            );
+            const filteredShadeOptions = Array.isArray(product.shade)
+                ? filterOptionsByIds(shadeOptions, relatedUsageIds)
+                : [{ id: selectedUsageId, value: product.shade }];
+
             setSelectedShadeId(
                 filteredShadeOptions.length > 0
                     ? filteredShadeOptions[0].id
-                    : undefined
+                    : selectedUsageId
             );
         }
     }, [selectedUsageId, product]);
@@ -107,17 +120,24 @@ export const ProductOperation = () => {
     const shadeOptions = getOptions(product.shade);
 
     const relatedSizeIds = getRelatedSizeIds(sizeOptions, selectedSizeId ?? 0);
-    const filteredUsageOptions = filterOptionsByIds(
-        usageOptions,
-        relatedSizeIds
-    );
+
+    const filteredUsageOptions =
+        selectedSizeId === 0
+            ? usageOptions
+            : filterOptionsByIds(usageOptions, relatedSizeIds);
+
+    const relatedUsageValues = selectedUsageId
+        ? usageOptions
+              .filter(usage => usage.id === selectedUsageId)
+              .map(usage => usage.value)
+        : [];
+
+    const relatedUsageIds = usageOptions
+        .filter(usage => relatedUsageValues.includes(usage.value))
+        .map(usage => usage.id);
+
     const filteredShadeOptions = selectedUsageId
-        ? filterOptionsByIds(
-              shadeOptions,
-              usageOptions
-                  .filter(usage => usage.id === selectedUsageId)
-                  .map(usage => usage.id)
-          )
+        ? filterOptionsByIds(shadeOptions, relatedUsageIds)
         : shadeOptions;
 
     const handleSizeChange = (id: number) => {

@@ -1,15 +1,13 @@
+import { formatSearchFilters } from '~&/src/shared/lib/filter-search';
+import { filterTypes, filtersContract } from '~&/src/entities/filter';
 import { AxiosContracts } from '~&/src/shared/lib/axios';
 import { API, handleGenericError } from '../index';
 import type { AxiosResponse } from 'axios';
 import {
     productContract,
-    type FilterResponse,
-    type FilterQuery,
     type ProductsApi,
     type ProductApi
 } from '~&/src/entities/product';
-import { formatSearchFilters } from '~&/src/shared/lib/filter-search';
-
 
 export class ProductService {
     static async productsQuery(config?: {
@@ -23,19 +21,22 @@ export class ProductService {
     }
 
     static async productsFilterQuery(config: {
-        params: FilterQuery & { limit: number; offset: number },
+        params: filterTypes.FilterQuery & { limit: number; offset: number };
         signal?: AbortSignal;
-    }): Promise<AxiosResponse<FilterResponse>> {
+    }): Promise<AxiosResponse<filterTypes.FilterResponse>> {
         try {
-            const validatedParams = productContract.ProductFilterQuerySchema.parse(config.params);
+            const validatedParams = filtersContract.FilterQuerySchema.parse(
+                config.params
+            );
             const filtersQueryString = formatSearchFilters(validatedParams);
 
-            console.log(filtersQueryString);
-
-            console.log(`/product/filter?${filtersQueryString}`)
-
-            return API.get<FilterResponse>(`/product/filter?${filtersQueryString}`, { signal: config.signal });
-            // .then(AxiosContracts.responseContract(productContract.FilterResponseSchema));
+            return API.get<filterTypes.FilterResponse>(
+                `/product/filter?${filtersQueryString}&offset=${config.params.offset}&limit=${config.params.limit}`
+            ).then(
+                AxiosContracts.responseContract(
+                    filtersContract.FilterResponseSchema
+                )
+            );
         } catch (error) {
             throw handleApiError(error);
         }
@@ -46,8 +47,11 @@ export class ProductService {
         config?: { signal?: AbortSignal }
     ): Promise<AxiosResponse<ProductApi>> {
         try {
-            return API.get<ProductApi>(`/product/get/${slug}`, config)
-                .then(AxiosContracts.responseContract(productContract.ProductApiSchema));
+            return API.get<ProductApi>(`/product/get/${slug}`, config).then(
+                AxiosContracts.responseContract(
+                    productContract.ProductApiSchema
+                )
+            );
         } catch (error) {
             throw handleApiError(error);
         }

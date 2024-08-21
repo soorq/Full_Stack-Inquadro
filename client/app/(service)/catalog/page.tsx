@@ -1,6 +1,5 @@
-import { getQueryClient } from '~&/src/shared/lib/query-client';
-import { ProductQueries } from '~&/src/entities/product';
 import dynamic from 'next/dynamic';
+import { TypeQueryFilters } from '~&/src/entities/filter/filter.types';
 
 const Page = dynamic(
     () =>
@@ -10,10 +9,10 @@ const Page = dynamic(
     { suspense: true }
 );
 
-export default function CatalogPage({ searchParams }: { searchParams: any }) {
-    const queryClient = getQueryClient();
-    void queryClient.prefetchInfiniteQuery(
-        ProductQueries.infinityProductsQuery({ filters: searchParams })
-    );
+export default function CatalogPage({
+    searchParams
+}: {
+    searchParams: TypeQueryFilters;
+}) {
     return <Page params={searchParams} />;
 }

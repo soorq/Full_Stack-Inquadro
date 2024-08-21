@@ -16,7 +16,7 @@ export function QueryClientProvider({ children }: PropsWithChildren) {
     return (
         <TanStackQueryClientProvider client={queryClient}>
             {/*<ReactQueryStreamedHydration>*/}
-                {children}
+            {children}
             {/*</ReactQueryStreamedHydration>*/}
             <ReactQueryDevtools
                 initialIsOpen={false}

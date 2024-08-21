@@ -41,51 +41,51 @@ export const MFilterCategory = [
 
 export const MFilterInvoice = [
     {
-        label: 'полировка',
-        value: 'polirovka'
-    },
-    {
         label: 'глазурь',
-        value: 'glazur'
-    },
-    {
-        label: 'легкий рельеф',
-        value: 'relef-e'
+        value: 'глазурь'
     },
     {
         label: 'рельеф',
-        value: 'relef'
+        value: 'рельеф'
     },
     {
         label: 'сильный рельеф',
-        value: 'relef-h'
+        value: 'сильный-рельеф'
     }
 ];
 
 export const MFilterTexture = [
     {
-        label: 'мрамор',
-        value: 'мрамор'
+        label: 'моноколор',
+        value: 'моноколор'
     },
     {
-        label: 'дерево',
-        value: 'дерево'
+        label: 'под асфальт',
+        value: 'под асфальт'
     },
     {
-        label: 'бетон',
-        value: 'бетон'
+        label: 'под бетон',
+        value: 'под бетон'
     },
     {
-        label: 'жезело',
-        value: 'жезело'
+        label: 'под дерево',
+        value: 'под дерево'
     },
     {
-        label: 'камень',
-        value: 'камень'
+        label: 'под камень',
+        value: 'под камень'
     },
     {
-        label: 'песок',
-        value: 'песок'
+        label: 'под кирпич',
+        value: 'под кирпич'
+    },
+    {
+        label: 'под мрамор',
+        value: 'под мрамор'
+    },
+    {
+        label: 'под песок',
+        value: 'под песок'
     }
 ];
 

@@ -1,6 +1,6 @@
 {
     "extends": ["next", "next/core-web-vitals", "prettier"],
-    "plugins": ["prettier","@tanstack/query"],
+    "plugins": ["prettier", "@tanstack/query"],
     "rules": {
         "@tanstack/query/exhaustive-deps": "error",
         "prettier/prettier": "warn",

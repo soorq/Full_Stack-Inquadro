@@ -4,4 +4,4 @@ export {
     ProductOperation,
     ProductOperationSkeleton
 } from './product-operation';
-export { ProductSlider } from './product-slider';
+export { ProductSlider, ProductSliderSkeleton } from './product-slider';

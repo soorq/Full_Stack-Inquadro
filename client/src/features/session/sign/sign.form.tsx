@@ -91,10 +91,7 @@ export const SignForm = () => {
                         control={form.control as Control<CodeFormValues>}
                     />
                 )}
-                <Button
-                    type="submit"
-                    className="h-[50px] max-w-[300px] w-full"
-                >
+                <Button type="submit" className="h-[50px] max-w-[300px] w-full">
                     {step === 'email' ? 'Подтвердить почту' : 'Подтвердить'}
                 </Button>
             </form>

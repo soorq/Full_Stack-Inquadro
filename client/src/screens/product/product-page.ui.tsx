@@ -1,14 +1,8 @@
+import { RecentProducts } from '../../entities/recent-view';
 import { ProductLarge } from '~&/src/widgets/product';
 import { ProductApi } from '~&/src/entities/product';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
-
-const images = [
-    '/product/main.png',
-    '/product/color.png',
-    '/product/color.png',
-    '/product/color.png'
-];
 
 export const ProductPage = ({ product }: { product: ProductApi }) => {
     const productJsonLd = {
@@ -30,8 +24,8 @@ export const ProductPage = ({ product }: { product: ProductApi }) => {
     return (
         <>
             <Header />
-            <ProductLarge product={product} slides={images} />
-            {/*<RecentProducts />*/}
+            <ProductLarge product={product} />
+            <RecentProducts />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

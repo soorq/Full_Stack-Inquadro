@@ -3,7 +3,6 @@ import { queryOptions } from '@tanstack/react-query';
 
 export class SearchQueries {
     protected static keys = {
-        searchRoot: ['search'] as const,
         searchByQuery: ['search', 'by-query'] as const
     };
 
@@ -12,8 +11,7 @@ export class SearchQueries {
             queryKey: [...this.keys.searchByQuery, query],
             queryFn: ({ signal }) => {
                 return SearchService.productsQuery(query, { signal });
-            },
-            enabled: !!query
+            }
         });
     }
 }
