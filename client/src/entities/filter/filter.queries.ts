@@ -13,31 +13,28 @@ export class FilterQueries {
         infinitySlug: ['product', 'infinity'] as const
     };
 
-    static readonly options = {
-        limit: 10,
-        offset: 0
-    };
-
     static infinityProductsQuery = (filters: TypeQueryFilters) => {
-        const { offset, limit } = this.options;
+        const { sort, ...filter } = filters;
+
         const queryKey = [
             ...this.keys.infinitySlug,
             'by-filter',
-            filters
+            filter,
+            sort
         ].filter(Boolean) as string[];
 
         return infiniteQueryOptions({
             // eslint-disable-next-line @tanstack/query/exhaustive-deps
             queryKey,
             queryFn: async ({
-                pageParam = 0,
+                pageParam = 1,
                 signal
             }): Promise<FilterResponse> => {
                 const response = await ProductService.productsFilterQuery({
                     params: {
-                        offset: pageParam,
-                        filters,
-                        limit
+                        page: pageParam,
+                        filter,
+                        sort
                     },
                     signal
                 });
@@ -46,31 +43,32 @@ export class FilterQueries {
 
                 return response.data;
             },
-            initialPageParam: this.getInitialPageParam({ limit, offset }),
+            initialPageParam: 0,
             getNextPageParam: lastPage => {
-                return lastPage.meta.currentPage < lastPage.meta.totalPages
-                    ? lastPage.meta.currentPage + 1
-                    : undefined;
+                const nextPageUrl = lastPage.links.next;
+                if (nextPageUrl) {
+                    const url = new URL(nextPageUrl);
+                    const nextPage = url.searchParams.get('page');
+                    return nextPage ? parseInt(nextPage, 10) : undefined;
+                }
+                return undefined;
             },
             getPreviousPageParam: firstPage => {
-                return firstPage.meta.currentPage > 1
-                    ? firstPage.meta.currentPage - 1
-                    : undefined;
+                const previousPageUrl = firstPage.links.last;
+                if (previousPageUrl) {
+                    const url = new URL(previousPageUrl);
+                    const prevPage = url.searchParams.get('page');
+                    return prevPage ? parseInt(prevPage, 10) : undefined;
+                }
+                return undefined;
             },
-            // @ts-expect-error FIXME: https://github.com/TanStack/query/issues/7341
+            // @ts-expect-error
             initialData: () =>
                 this.getInitialData<InfiniteData<FilterResponse, number>>(
                     queryKey
                 )
         });
     };
-
-    private static getInitialPageParam(filter: {
-        offset: number;
-        limit: number;
-    }) {
-        return filter.offset / filter.limit;
-    }
 
     private static getInitialData<T>(queryKey: string[]) {
         return this.queryClient.getQueryData<T>(queryKey);

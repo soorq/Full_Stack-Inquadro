@@ -4,12 +4,11 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 const font = Manrope({
+    weight: ['400', '500', '300'],
     adjustFontFallback: false,
     variable: '--font-man',
-    preload: true,
-    weight: ['400', '500', '300'],
-    display: 'swap',
-    subsets: ['latin']
+    subsets: ['latin'],
+    preload: true
 });
 
 const $app = process.env['NEXT_PUBLIC_APP_URL'] as string;

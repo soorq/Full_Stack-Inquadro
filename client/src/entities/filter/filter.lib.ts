@@ -1,4 +1,6 @@
-import { TypeFilters } from './filter.types';
+'use client';
+
+import type { TypeFilters } from './filter.types';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import qs from 'qs';
@@ -25,9 +27,9 @@ export const useQueryFilters = (filters: TypeFilters) => {
                 arrayFormat: 'comma'
             });
 
-            router.push(`?${query}`, { scroll: false });
+            router.push(`?${query}`);
         }
 
         isMounted.current = true;
-    }, [filters, router]);
+    }, [filters]);
 };

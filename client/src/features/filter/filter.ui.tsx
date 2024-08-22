@@ -1,6 +1,7 @@
 'use client';
 
-import { FiltersCheckboxGroup } from './filter-category';
+import { FiltersCheckboxGroup } from './filter-group';
+import { FilterRadioGroup } from './filter-radio';
 import { Navbar } from '~&/src/widgets/navbar';
 import React from 'react';
 import {
@@ -10,6 +11,7 @@ import {
 } from '~&/src/entities/filter';
 import {
     MFilterAvailable,
+    MFilterCategory,
     MFilterTexture,
     MFilterInvoice,
     MFilterPlating,
@@ -33,11 +35,23 @@ export const Filter = () => {
         }
     };
 
+    const handleRadioClick = (
+        filterName: filterTypes.FilterCategory,
+        id: string
+    ) => {
+        filters.setFilter(filterName, id);
+    };
+
     return (
-        <aside className="flex flex-col justify-start w-full max-w-[270px]">
+        <aside className="hidden md:flex flex-col justify-start w-full max-w-[270px]">
             <Navbar />
 
-            <div className="flex-col flex gap-1.5 max-h-[75dvh] h-full overflow-y-auto scroll-none">
+            <div className="flex-col flex gap-1.5 max-h-[90dvh] h-full overflow-y-auto scroll-none">
+                <FilterRadioGroup
+                    onClickRadio={id => handleRadioClick('category', id)}
+                    items={MFilterCategory}
+                />
+
                 <FiltersCheckboxGroup
                     onClickCheckbox={(id, isSelected) =>
                         handleCheckboxClick('usage', id, isSelected)
@@ -45,7 +59,6 @@ export const Filter = () => {
                     items={MFilterUsage}
                     selected={filters.usage}
                 />
-
                 <FiltersCheckboxGroup
                     onClickCheckbox={(id, isSelected) =>
                         handleCheckboxClick('availability', id, isSelected)

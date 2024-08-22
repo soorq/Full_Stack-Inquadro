@@ -34,8 +34,20 @@ export const MFilterAvailable = [
 
 export const MFilterCategory = [
     {
-        label: '',
-        value: ''
+        label: 'Керамическая плитка',
+        value: 'керамическая плитка'
+    },
+    {
+        label: 'Керамогранитная плитка',
+        value: 'керамогранитная плитка'
+    },
+    {
+        label: 'Фасадная плитка',
+        value: 'фасадная плитка'
+    },
+    {
+        label: 'Плитка для бассейна',
+        value: 'бассейная плитка'
     }
 ];
 

@@ -9,7 +9,6 @@ import {
 import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { cn } from '~&/src/shared/lib/tw-merge';
-import { ChevronDown } from 'lucide-react';
 
 const Select = SelectPrimitive.Root;
 
@@ -19,20 +18,20 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = React.forwardRef<
     React.ElementRef<typeof SelectPrimitive.Trigger>,
-    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+    React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & {
+        icon?: React.ReactNode;
+    }
+>(({ className, icon, children, ...props }, ref) => (
     <SelectPrimitive.Trigger
         ref={ref}
         className={cn(
-            'flex h-10 w-full select-none [&>svg]:data-[state=open]:rotate-180 items-center text-base font-[350] justify-between whitespace-nowrap rounded-[10px] text-white bg-primary px-4 py-2 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+            'flex h-10 size-10 md:w-full select-none md:[&>svg]:data-[state=open]:rotate-180 items-center text-base font-[350] justify-center md:justify-between whitespace-nowrap rounded-[10px] text-white bg-primary px-4 py-2 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 [&>span]:md:block [&>span]:hidden',
             className
         )}
         {...props}
     >
         {children}
-        <SelectPrimitive.Icon asChild>
-            <ChevronDown className="h-4 w-4 opacity-50 transform delay-100 transition-transform" />
-        </SelectPrimitive.Icon>
+        <SelectPrimitive.Icon asChild>{icon}</SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
@@ -80,15 +79,15 @@ const SelectContent = React.forwardRef<
         <SelectPrimitive.Content
             ref={ref}
             className={cn(
-                'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-[10px] border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+                'relative z-50 max-h-96 min-w-[11rem] [data-side]:left overflow-hidden rounded-[10px] border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-0 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
                 position === 'popper' &&
                     'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
                 className
             )}
+            align="end"
             position={position}
             {...props}
         >
-            <SelectScrollUpButton />
             <SelectPrimitive.Viewport
                 className={cn(
                     'p-1.5',
@@ -98,7 +97,6 @@ const SelectContent = React.forwardRef<
             >
                 {children}
             </SelectPrimitive.Viewport>
-            <SelectScrollDownButton />
         </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
 ));
@@ -133,7 +131,9 @@ const SelectItem = React.forwardRef<
                 <CheckIcon className="h-4 w-4" />
             </SelectPrimitive.ItemIndicator>
         </span>
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemText className="text-right md:text-left">
+            {children}
+        </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;

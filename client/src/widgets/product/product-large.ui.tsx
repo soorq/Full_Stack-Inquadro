@@ -14,30 +14,29 @@ import {
 
 const ProductOptions = dynamic(
     () => import('~&/src/features/product').then(cn => cn.ProductOptions),
-    { ssr: false, loading: () => <ProductOptionsSkeleton /> }
+    { loading: () => <ProductOptionsSkeleton />, ssr: false }
 );
 
 const ProductSlider = dynamic(
     () => import('~&/src/features/product').then(cn => cn.ProductSlider),
-    { ssr: false, loading: () => <ProductSliderSkeleton /> }
+    { loading: () => <ProductSliderSkeleton />, ssr: false }
 );
 
 const ProductDetails = dynamic(
     () => import('~&/src/features/product').then(cn => cn.ProductDetails),
-    { ssr: false, loading: () => <ProductDetailsSkeleton /> }
+    { loading: () => <ProductDetailsSkeleton />, ssr: false }
 );
 
 const ProductOperation = dynamic(
     () => import('~&/src/features/product').then(cn => cn.ProductOperation),
-    { ssr: false, loading: () => <ProductOperationSkeleton /> }
+    { loading: () => <ProductOperationSkeleton />, ssr: false }
 );
 
 export const ProductLarge = React.memo(
     ({ product }: { product: ProductApi }) => {
+        const { addRecentProduct } = useRecentViewStore(state => state);
         const { setProductApi, product_client, setProductClient } =
             useProductStore(state => state);
-
-        const { addRecentProduct } = useRecentViewStore(state => state);
 
         useEffect(() => {
             setProductClient(product);
@@ -51,15 +50,15 @@ export const ProductLarge = React.memo(
         }, [addRecentProduct]);
 
         return (
-            <main className="lg:flex-row flex flex-col lg:justify-between container lg:gap-5 mb-10 lg:mb-0">
+            <section className="lg:flex-row flex flex-col lg:justify-between lg:gap-5 mb-10 lg:mb-0">
                 <ProductSlider />
-                <div className="flex flex-col gap-1.5 w-full">
+                <div className="flex flex-col gap-1.5 w-full md:max-w-[400px] xl:max-w-none">
                     <ProductOptions product={product_client} />
                     <ProductOperation />
                     <OrderInfo />
                     <ProductDetails product={product_client} />
                 </div>
-            </main>
+            </section>
         );
     }
 );

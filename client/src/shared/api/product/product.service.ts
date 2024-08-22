@@ -1,3 +1,4 @@
+import { sortOptions } from '~&/src/shared/lib/constants/sort-options';
 import { formatSearchFilters } from '~&/src/shared/lib/filter-search';
 import { filterTypes, filtersContract } from '~&/src/entities/filter';
 import { AxiosContracts } from '~&/src/shared/lib/axios';
@@ -21,17 +22,20 @@ export class ProductService {
     }
 
     static async productsFilterQuery(config: {
-        params: filterTypes.FilterQuery & { limit: number; offset: number };
+        params: {
+            filter: Record<string, string | undefined> | undefined;
+            page: number;
+            sort: string;
+        };
         signal?: AbortSignal;
     }): Promise<AxiosResponse<filterTypes.FilterResponse>> {
         try {
-            const validatedParams = filtersContract.FilterQuerySchema.parse(
-                config.params
+            const filtersQueryString = formatSearchFilters(
+                config.params.filter
             );
-            const filtersQueryString = formatSearchFilters(validatedParams);
-
+            const sortBy = sortOptions[config.params?.sort || 'available'];
             return API.get<filterTypes.FilterResponse>(
-                `/product/filter?${filtersQueryString}&offset=${config.params.offset}&limit=${config.params.limit}`
+                `/product/filter?${filtersQueryString}&page=${config.params.page}&limit=12&sortBy=${sortBy?.by}:${sortBy?.order}`
             ).then(
                 AxiosContracts.responseContract(
                     filtersContract.FilterResponseSchema
@@ -53,6 +57,7 @@ export class ProductService {
                 )
             );
         } catch (error) {
+            console.log(error)
             throw handleApiError(error);
         }
     }

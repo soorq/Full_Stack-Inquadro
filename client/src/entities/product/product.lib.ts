@@ -29,7 +29,7 @@ export const transformProductClientDto = (
         name: transform(productApi.name),
         category: transform(productApi.category),
         availability: transform(productApi.availability),
-        images: transform(productApi.image),
+        // images: transform(productApi.images),
         usage: transform(productApi.usage),
         plating: transform(productApi.plating),
         texture: transform(productApi.texture),

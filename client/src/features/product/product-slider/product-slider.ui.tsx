@@ -20,7 +20,7 @@ export const ProductSlider = () => {
     const [thumbs, setThumbs] = React.useState<SwiperCore | null>(null);
 
     return (
-        <div className="flex w-auto xl:w-full xl:max-w-[705px] lg:max-w-fit lg:mx-auto md:mx-auto md:max-w-[768px] max-h-[500px] lg:max-h-[710px] h-svh gap-2.5 shrink-0 lg:mb-0 mb-10">
+        <div className="flex w-auto xl:w-full xl:max-w-[705px] lg:max-w-fit lg:mx-auto md:mx-auto md:max-w-[768px] max-h-[500px] lg:max-h-[710px] h-svh gap-2.5 shrink-0 lg:mb-0 mb-2.5">
             <Swiper
                 className="h-full !hidden sm:!block max-w-[170px] w-full"
                 direction="vertical"

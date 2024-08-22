@@ -11,16 +11,21 @@ function createFavoriteSlice() {
         [],
         TypeFavoriteActions & TypeFavoriteStates
     > = set => ({
-        quantity: 0,
-        products: [], // Инициализируем как пустой массив
+        products: [],
 
         addFn: (product: ProductClient) => {
             set(
                 state => {
-                    const updatedProducts = [...state.products, product];
+                    const existingProduct = state.products.find(
+                        p => p.article === product.article
+                    );
+
+                    if (existingProduct) {
+                        return state;
+                    }
+
                     return {
-                        products: updatedProducts,
-                        quantity: state.quantity + 1
+                        products: [...state.products, product]
                     };
                 },
                 false,
@@ -30,15 +35,9 @@ function createFavoriteSlice() {
 
         delFn: (id: string) => {
             set(
-                state => {
-                    const updatedProducts = state.products.filter(
-                        item => item.article !== id
-                    );
-                    return {
-                        products: updatedProducts,
-                        quantity: state.quantity > 0 ? state.quantity - 1 : 0
-                    };
-                },
+                state => ({
+                    products: state.products.filter(item => item.article !== id)
+                }),
                 false,
                 'delFn'
             );

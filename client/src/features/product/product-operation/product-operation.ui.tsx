@@ -1,6 +1,8 @@
+'use client';
+
+import { ProductQty } from '~&/src/features/product/product-qty';
 import { useProductStore } from '~&/src/entities/product';
 import { OptionGroup } from './product-operation.group';
-import { SpecifyQty } from '~&/src/features/qty';
 import { useEffect, useState } from 'react';
 import {
     filterOptionsByIds,
@@ -18,9 +20,8 @@ export const ProductOperation = () => {
     const [selectedShadeId, setSelectedShadeId] = useState<number | undefined>(
         undefined
     );
-    const [qty, setQty] = useState<number>(1);
 
-    const { product_api: product, setCurrentId } = useProductStore(
+    const { product_api: product, setCurrentId, product_client } = useProductStore(
         state => state
     );
 
@@ -151,8 +152,8 @@ export const ProductOperation = () => {
 
     return (
         <div className="flex-col flex gap-1.5 w-full">
-            <div className="flex sm:flex-col w-full max-w-max sm:max-w-none gap-1.5">
-                <div className="bg-secondary w-full rounded-[10px] p-2 sm:p-4">
+            <div className="flex sm:flex-col w-full sm:max-w-none gap-1.5">
+                <div className="bg-secondary w-4/12 sm:w-full rounded-[10px] p-2 sm:p-4">
                     <OptionGroup
                         options={sizeOptions}
                         selectedId={selectedSizeId}
@@ -160,7 +161,7 @@ export const ProductOperation = () => {
                         onChange={handleSizeChange}
                     />
                 </div>
-                <div className="bg-secondary w-full rounded-[10px] p-2 sm:p-4">
+                <div className="bg-secondary w-6/12 sm:w-full rounded-[10px] p-2 sm:p-4">
                     <OptionGroup
                         options={filteredUsageOptions}
                         selectedId={selectedUsageId}
@@ -168,7 +169,7 @@ export const ProductOperation = () => {
                         onChange={handleUsageChange}
                     />
                 </div>
-                <div className="bg-secondary w-full rounded-[10px] p-2 sm:p-4">
+                <div className="bg-secondary w-6/12 sm:w-full rounded-[10px] p-2 sm:p-4">
                     <OptionGroup
                         options={filteredShadeOptions}
                         selectedId={selectedShadeId}
@@ -178,7 +179,7 @@ export const ProductOperation = () => {
                 </div>
             </div>
 
-            <SpecifyQty setQty={setQty} withFavorite qty={qty} withCart />
+            <ProductQty product={product_client } />
         </div>
     );
 };

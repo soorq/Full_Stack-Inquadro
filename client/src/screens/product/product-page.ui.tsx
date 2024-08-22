@@ -1,4 +1,4 @@
-import { RecentProducts } from '../../entities/recent-view';
+import { RecentProducts } from '~&/src/entities/recent-view';
 import { ProductLarge } from '~&/src/widgets/product';
 import { ProductApi } from '~&/src/entities/product';
 import { Header } from '~&/src/widgets/header';
@@ -24,8 +24,10 @@ export const ProductPage = ({ product }: { product: ProductApi }) => {
     return (
         <>
             <Header />
-            <ProductLarge product={product} />
-            <RecentProducts />
+            <main className="w-full container h-full">
+                <ProductLarge product={product} />
+                <RecentProducts />
+            </main>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

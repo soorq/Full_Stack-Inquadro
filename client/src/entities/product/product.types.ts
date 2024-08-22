@@ -33,4 +33,6 @@ export type ProductActions = {
     reset: () => void;
 };
 
+export type ProductWithQuantity = ProductClient & { quantity: number };
+
 export type DynamicOption = { id: number; value: string };

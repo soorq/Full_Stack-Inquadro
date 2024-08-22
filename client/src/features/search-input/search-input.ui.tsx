@@ -18,7 +18,7 @@ const ProductSearch = dynamic(
     }
 );
 
-export const SearchInput = () => {
+export const SearchInput = ({ className }: { className?: string }) => {
     const ref = React.useRef(null);
 
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -55,9 +55,21 @@ export const SearchInput = () => {
             {focused && (
                 <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-10" />
             )}
-            <div className="w-full max-w-[610px] relative" ref={ref}>
+            <div
+                className={cn(
+                    'w-full z-20 fixed transition-all duration-300',
+                    focused
+                        ? 'left-0 right-0 mx-auto px-4 sm:px-0'
+                        : 'relative',
+                    className
+                )}
+                ref={ref}
+            >
                 <div
-                    className="flex items-center z-20 relative gap-3.5 shadow-sm transition-colors bg-secondary rounded-lg px-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className={cn(
+                        'flex items-center z-20 relative gap-3.5 shadow-sm transition-colors bg-secondary rounded-lg px-3',
+                        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                    )}
                     aria-label="input"
                 >
                     <Search className="h-5 w-5" />

@@ -12,7 +12,7 @@ export const CatalogPage = ({
     return (
         <>
             <Header />
-            <section className="container mb-10 flex w-full h-full gap-x-8">
+            <section className="container relative mb-10 flex w-full h-full gap-x-8">
                 <Filter />
                 <FiltersProducts filters={params} />
             </section>

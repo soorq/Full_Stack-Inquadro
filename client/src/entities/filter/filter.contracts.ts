@@ -21,7 +21,8 @@ export const QueryFiltersSchema = z.object({
     invoice: z.string().optional(),
     size: z.string().optional(),
     texture: z.string().optional(),
-    shade: z.string().optional()
+    shade: z.string().optional(),
+    sort: z.enum(['available', 'premium', 'new', 'popularity'])
 });
 
 const FilterMetaSchema = z.object({
@@ -45,6 +46,3 @@ export const FilterResponseSchema = z.object({
     links: FilterLinksSchema
 });
 
-export const FilterQuerySchema = z.object({
-    filters: z.record(z.string().optional()).optional()
-});

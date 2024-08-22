@@ -1,4 +1,4 @@
-import { FilterCategoryCheckbox } from './filter-category-checkbox.ui';
+import { FilterCheckbox } from './filter-group-checkbox.ui';
 import { Skeleton } from '~&/src/shared/ui/skeleton';
 import { useState } from 'react';
 
@@ -58,15 +58,13 @@ export const FiltersCheckboxGroup = ({
         <div className="bg-secondary py-5 px-4 gap-2.5 flex flex-col rounded-[10px]">
             <div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
                 {filteredItems.map((item, index) => (
-                    <FilterCategoryCheckbox
-                        key={index}
-                        onCheckedChange={checked =>
-                            handleCheckboxChange(item.value)
-                        }
+                    <FilterCheckbox
+                        onCheckedChange={() => handleCheckboxChange(item.value)}
                         checked={selected.has(item.value)}
                         value={item.value}
                         label={item.label}
                         name={name}
+                        key={index}
                     />
                 ))}
             </div>

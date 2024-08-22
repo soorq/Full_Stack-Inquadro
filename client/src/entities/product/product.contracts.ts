@@ -21,15 +21,15 @@ export const ProductApiSchema = z.object({
     category: dynamicFieldSchema,
     availability: dynamicFieldSchema,
     usage: dynamicFieldSchema,
-    image: z.union([
-        z.string(),
-        z.array(
-            z.object({
-                id: z.number(),
-                value: z.array(z.string()).or(z.array(z.string()).length(0))
-            })
-        )
-    ]),
+    // image: z.union([
+    //     z.string(),
+    //     z.array(
+    //         z.object({
+    //             id: z.number(),
+    //             value: z.array(z.string()).or(z.array(z.string()).length(0))
+    //         })
+    //     )
+    // ]),
     plating: dynamicFieldSchema,
     texture: dynamicFieldSchema,
     invoice: dynamicFieldSchema,

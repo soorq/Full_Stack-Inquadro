@@ -10,7 +10,7 @@ interface FilterCategoryCheckboxProps {
     name?: string;
 }
 
-export const FilterCategoryCheckbox = ({
+export const FilterCheckbox = ({
     onCheckedChange,
     checked,
     label,
