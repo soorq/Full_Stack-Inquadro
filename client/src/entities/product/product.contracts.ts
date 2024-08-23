@@ -35,7 +35,15 @@ export const ProductApiSchema = z.object({
     invoice: dynamicFieldSchema,
     size: dynamicFieldSchema,
     country: dynamicFieldSchema,
-    price: dynamicFieldSchema,
+    price: z.union([
+        z.number(),
+        z.array(
+            z.object({
+                id: z.number(),
+                value: z.number()
+            })
+        )
+    ]),
     manufacturing: dynamicFieldSchema,
     kit: dynamicFieldSchema,
     shade: dynamicFieldSchema,
@@ -54,12 +62,13 @@ export const ProductClientSchema = z.object({
     invoice: z.string(),
     size: z.string(),
     country: z.string(),
-    price: z.string(),
+    price: z.number(),
     manufacturing: z.string(),
     kit: z.string(),
     shade: z.string(),
     article: z.string(),
-    slug: z.string()
+    slug: z.string(),
+    textureType: z.string().nullable()
 });
 
 export const ProductSearchSchema = ProductClientSchema.extend({

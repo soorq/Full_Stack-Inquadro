@@ -4,7 +4,7 @@ import { useFavoriteStore } from '~&/src/entities/favorite';
 import { ProductClient } from '~&/src/entities/product';
 import { Button } from '~&/src/shared/ui/button';
 import { cn } from '~&/src/shared/lib/tw-merge';
-import { Heart } from 'lucide-react';
+import { Heart } from '@phosphor-icons/react';
 
 export const FavoriteWidget = ({
     className,
@@ -40,10 +40,12 @@ export const FavoriteWidget = ({
             onClick={toggleFavorite}
         >
             <Heart
+                weight="fill"
+                size={23}
                 className={cn('stroke-white fill-white transition-colors', {
                     'group-hover:fill-red-400 group-hover:stroke-red-400':
                         !isFavorite,
-                    'fill-red-400 stroke-red-400': isFavorite
+                    '!fill-red-400 stroke-red-400': isFavorite
                 })}
             />
         </Button>

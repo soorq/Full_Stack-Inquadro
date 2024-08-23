@@ -1,17 +1,23 @@
 import { FavoriteWidget } from '~&/src/features/favorite-widget';
 import { ProductClient } from '~&/src/entities/product';
 import { Button } from '~&/src/shared/ui/button';
-import React, { forwardRef } from 'react';
+import { cn } from '~&/src/shared/lib/tw-merge';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
 
-export const ProductSmall = forwardRef<
+export const ProductSmall = React.forwardRef<
     HTMLDivElement,
-    { product: ProductClient; withFav?: boolean }
->(({ product, withFav = false }, ref) => {
+    { product: ProductClient; withFav?: boolean; className?: string }
+>(({ product, withFav = false, className }, ref) => {
     return (
         <div className="w-full h-full" ref={ref}>
-            <div className="relative h-svh max-h-[200px] xs:max-h-[230px] sm:max-h-[250px] md:max-h-[290px] lg:max-h-[340px] w-full overflow-hidden rounded-t-xl group/small">
+            <div
+                className={cn(
+                    'relative h-svh max-h-[200px] xs:max-h-[230px] sm:max-h-[250px] md:max-h-[290px] lg:max-h-[340px] w-full overflow-hidden rounded-t-xl group/small',
+                    className
+                )}
+            >
                 <Image
                     fill
                     src="/product/main.png"
@@ -20,8 +26,8 @@ export const ProductSmall = forwardRef<
                 />
                 <div className="absolute inset-0 flex justify-center items-center transition-transform duration-300 transform translate-y-full group-hover/small:translate-y-0">
                     <Button
-                        asChild
                         className="h-10 md:h-12 px-5 text-sm sm:text-base text-white shadow-none"
+                        asChild
                     >
                         <Link href={`/product/${product.slug}`}>
                             Посмотреть

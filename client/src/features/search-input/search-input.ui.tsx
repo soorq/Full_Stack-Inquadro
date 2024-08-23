@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductSearchSkeleton } from '~&/src/widgets/product';
+import { ProductSearchSkeleton } from '~&/src/widgets/product/search';
 import { SearchQueries } from './search-input.queries';
 import { useClickAway, useDebounce } from 'react-use';
 import { useQuery } from '@tanstack/react-query';

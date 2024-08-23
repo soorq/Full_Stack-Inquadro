@@ -10,7 +10,7 @@ import {
 
 export class AuthService {
     static currentUserQuery(config: { signal?: AbortSignal }) {
-        return API.get('/user', config).then(
+        return API.get('/auth', config).then(
             AxiosContracts.responseContract(UserDtoSchema)
         );
     }
@@ -20,7 +20,7 @@ export class AuthService {
             SignUserDtoSchema,
             data.dto
         );
-        return API.post('/user/sign', { ...signUserDto }).then(
+        return API.post('/auth/sign', { ...signUserDto }).then(
             AxiosContracts.responseContract(ResponseEmailStatus)
         );
     }
@@ -31,7 +31,7 @@ export class AuthService {
             data.dto
         );
 
-        return API.put('/user/verify', { ...verifyUserDto }).then(
+        return API.put('/auth/verify', { ...verifyUserDto }).then(
             AxiosContracts.responseContract(UserDtoSchema)
         );
     }

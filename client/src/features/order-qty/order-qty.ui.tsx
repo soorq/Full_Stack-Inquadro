@@ -2,6 +2,7 @@ import type { OrderSpecifyQtyProps } from './order-qty.types';
 import { Button } from '~&/src/shared/ui/button';
 import { Input } from '~&/src/shared/ui/input';
 import { Minus, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export const OrderSpecifyQty = ({
     qty,
@@ -12,14 +13,14 @@ export const OrderSpecifyQty = ({
     isInCart,
     ...actions
 }: OrderSpecifyQtyProps) => (
-    <div className="pt-2.5 w-full h-full">
+    <div className="w-full h-full">
         <div className="flex gap-1.5 items-center mb-2 shrink-0">
             <InfoBlock value={+totalCost.toFixed(2)} unit="руб." />
             <InfoBlock value={+totalTileArea.toFixed(3)} unit="м²" />
         </div>
 
         <div className="flex gap-1.5 w-full h-auto">
-            {isInCart && (
+            {(context === 'confirm' || isInCart) && (
                 <div className="flex gap-1.5">
                     <Button
                         onClick={() => onQtyChange(qty - 1)}
@@ -54,12 +55,9 @@ export const OrderSpecifyQty = ({
                 </Button>
             )}
 
-            {context === 'cart' && 'onProceedToOrder' in actions && (
-                <Button
-                    onClick={actions.onProceedToOrder}
-                    className="w-full h-[50px]"
-                >
-                    Оформить заказ
+            {context === 'cart' && 'href' in actions && (
+                <Button className="w-full h-[50px]" asChild>
+                    <Link href={actions.href}>Оформить заказ</Link>
                 </Button>
             )}
         </div>

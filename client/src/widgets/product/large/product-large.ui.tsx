@@ -47,12 +47,12 @@ export const ProductLarge = React.memo(
             if (product_client !== null) {
                 addRecentProduct(product_client);
             }
-        }, [addRecentProduct]);
+        }, [product, product_client]);
 
         return (
             <section className="lg:flex-row flex flex-col lg:justify-between lg:gap-5 mb-10 lg:mb-0">
                 <ProductSlider />
-                <div className="flex flex-col gap-1.5 w-full md:max-w-[400px] xl:max-w-none">
+                <div className="flex flex-col gap-1.5 w-full lg:max-w-[450px] xl:max-w-none">
                     <ProductOptions product={product_client} />
                     <ProductOperation />
                     <OrderInfo />

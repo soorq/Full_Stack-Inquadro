@@ -61,7 +61,7 @@ export const OrderMakingForm = () => {
                 <TypeDelieveryForm control={form.control} />
                 <TypePayForm control={form.control} />
                 <PolicyForm control={form.control} />
-                <TotalOrder isFormSubmit total={'432'} />
+                <TotalOrder isFormSubmit />
             </form>
 
             <Conffeti isComplete={form.formState.isSubmitSuccessful} />

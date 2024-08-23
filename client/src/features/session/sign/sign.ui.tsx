@@ -31,7 +31,9 @@ export const SignBlock = () => {
 
     return (
         <div className="w-full h-full p-4 bg-secondary rounded-[10px]">
-            <p className="text-lg mb-4 leading-4">{getParagraphText()}</p>
+            <p className="text-base sm:text-lg mb-2 sm:mb-4 leading-4">
+                {getParagraphText()}
+            </p>
 
             {show ? (
                 <SignForm />
@@ -44,16 +46,16 @@ export const SignBlock = () => {
                 </Button>
             )}
 
-            <div className="text-sm flex items-center gap-1 mt-1.5">
-                <p className="text-black/50">
+            <div className="text-xs sm:text-sm mt-1.5">
+                <span className="text-black/50">
                     {isAuth
-                        ? 'если вы не зарегистрированы, то'
-                        : 'если вы зарегистрированы, то'}
-                </p>
+                        ? 'если вы не зарегистрированы, то '
+                        : 'если вы зарегистрированы, то '}
+                </span>
                 <Button
                     variant="link"
                     onClick={() => setIsAuth(prev => !prev)}
-                    className="p-0 h-auto text-blue-500 text-sm"
+                    className="p-0 h-auto text-blue-500 text-xs sm:text-sm"
                 >
                     нажмите здесь
                 </Button>

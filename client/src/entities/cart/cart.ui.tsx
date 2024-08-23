@@ -4,15 +4,17 @@ import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
 import { ProductWithQuantity } from '~&/src/entities/product';
 import { ProductOrder } from '~&/src/widgets/product';
 import { Button } from '~&/src/shared/ui/button';
-import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from './cart.model';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '~&/src/shared/ui/popover';
+import { useState } from 'react';
+import { ShoppingCart } from '@phosphor-icons/react/dist/ssr';
 
 export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
+    const [focus, setFocus] = useState(false);
     const { products: cartProducts, updateQuantityFn } = useCartStore(
         state => ({
             products: state.products,
@@ -29,14 +31,18 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     return (
         <div className="flex data-[state=open]:flex-row justify-center h-full flex-col items-center gap-1">
             {isIcon ? (
-                <Popover>
+                <Popover onOpenChange={setFocus}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
                             className="gap-2 px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
                         >
                             {cartProducts.length}
-                            <ShoppingCart className="stroke-1" />
+                            <ShoppingCart
+                                className="stroke-1 data-[state=open]:fill-white"
+                                weight="light"
+                                size={24}
+                            />
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="p-0 max-w-[610px] max-h-[500px] h-full overflow-y-auto w-svw">
@@ -55,7 +61,9 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                 </div>
             )}
 
-            <div className="data-[state=open]:fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
+            {focus && (
+                <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
+            )}
         </div>
     );
 };
@@ -68,30 +76,39 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ products, onQtyChange }) => {
     return (
         <>
-            {products.map(product => {
-                const { totalCost, totalTileArea } = calculateTileMetrics(
-                    product.size,
-                    +product.kit,
-                    +product.price,
-                    product.quantity
-                );
+            {products.length ? (
+                products.map(product => {
+                    const { totalCost, totalTileArea } = calculateTileMetrics(
+                        product.size,
+                        +product.kit,
+                        +product.price,
+                        product.quantity
+                    );
 
-                return (
-                    <ProductOrder
-                        key={`product-cart-${product.article}`}
-                        product={product}
-                        qty={product.quantity}
-                        onQtyChange={newQty =>
-                            onQtyChange(product.article, newQty)
-                        }
-                        totalCost={totalCost}
-                        totalTileArea={totalTileArea}
-                        isInCart={true}
-                        context="cart"
-                        onProceedToOrder={() => {}}
-                    />
-                );
-            })}
+                    return (
+                        <ProductOrder
+                            key={`product-cart-${product.article}`}
+                            href={'/order/podtverzhdenie-zakaza'}
+                            totalTileArea={totalTileArea}
+                            qty={product.quantity}
+                            totalCost={totalCost}
+                            product={product}
+                            onQtyChange={newQty =>
+                                onQtyChange(product.article, newQty)
+                            }
+                            isInCart={true}
+                            context="cart"
+                        />
+                    );
+                })
+            ) : (
+                <div className="w-full h-40 flex text-center justify-center flex-col items-center backdrop-blur-lg">
+                    <h4 className="text-xl mb-1 font-medium">Корзина пустая</h4>
+                    <p className="w-2/3 text-sm">
+                        А скидок полно - забегайте посмотреть
+                    </p>
+                </div>
+            )}
         </>
     );
 };

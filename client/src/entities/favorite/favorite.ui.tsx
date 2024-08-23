@@ -1,19 +1,21 @@
 'use client';
 
 import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
+import { ProductClient } from '~&/src/entities/product';
 import { ProductOrder } from '~&/src/widgets/product';
 import { useCartStore } from '~&/src/entities/cart';
 import { useFavoriteStore } from './favorite.model';
 import { Button } from '~&/src/shared/ui/button';
-import { Heart } from 'lucide-react';
+import { Heart } from '@phosphor-icons/react';
+import { useState } from 'react';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '~&/src/shared/ui/popover';
-import { ProductClient } from '~&/src/entities/product';
 
 export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
+    const [focus, setFocus] = useState(false);
     const { products: fav_products } = useFavoriteStore(state => state);
     const {
         addFn: addToCart,
@@ -56,14 +58,18 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     return (
         <div className="flex items-center data-[state=open]:flex-row  justify-center h-full flex-col gap-1">
             {isIcon ? (
-                <Popover>
+                <Popover onOpenChange={setFocus}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
                             className="gap-2 px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
                         >
                             {fav_products.length || 0}
-                            <Heart className="stroke-1 data-[state=open]:fill-white" />
+                            <Heart
+                                className="stroke-1 data-[state=open]:fill-white"
+                                weight="light"
+                                size={24}
+                            />
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="p-0 max-w-[610px] w-svw max-h-[500px] h-full overflow-y-auto">
@@ -87,7 +93,9 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                     />
                 </div>
             )}
-            <div className="data-[state=open]:fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
+            {focus && (
+                <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
+            )}
         </div>
     );
 };
@@ -109,32 +117,45 @@ const FavoriteList: React.FC<FavoriteListProps> = ({
 }) => {
     return (
         <>
-            {favProducts.map(product => {
-                const isInCart = isProductInCart(product.article);
-                const qty = getProductQty(product.article);
-                const { totalCost, totalTileArea } = calculateTileMetrics(
-                    product.size,
-                    +product.kit,
-                    +product.price,
-                    qty
-                );
+            {favProducts.length ? (
+                favProducts.map(product => {
+                    const isInCart = isProductInCart(product.article);
+                    const qty = getProductQty(product.article);
+                    const { totalCost, totalTileArea } = calculateTileMetrics(
+                        product.size,
+                        +product.kit,
+                        +product.price,
+                        qty
+                    );
 
-                return (
-                    <ProductOrder
-                        key={`favorite-order-${product.article}`}
-                        onQtyChange={newQty =>
-                            handleQtyChange(product.article, newQty)
-                        }
-                        onAddToCart={() => handleAddToCart(product.article, 1)}
-                        totalTileArea={totalTileArea}
-                        totalCost={totalCost}
-                        isInCart={isInCart}
-                        context="favorites"
-                        product={product}
-                        qty={qty}
-                    />
-                );
-            })}
+                    return (
+                        <ProductOrder
+                            key={`favorite-order-${product.article}`}
+                            onQtyChange={newQty =>
+                                handleQtyChange(product.article, newQty)
+                            }
+                            onAddToCart={() =>
+                                handleAddToCart(product.article, 1)
+                            }
+                            totalTileArea={totalTileArea}
+                            totalCost={totalCost}
+                            isInCart={isInCart}
+                            context="favorites"
+                            product={product}
+                            qty={qty}
+                        />
+                    );
+                })
+            ) : (
+                <div className="w-full h-40 flex text-center justify-center flex-col items-center backdrop-blur-lg">
+                    <h4 className="text-xl mb-1 font-medium">
+                        Сохраняйте здесь товары
+                    </h4>
+                    <p className="w-2/3 text-sm">
+                        Чтобы следить за ценой и не терять то, что понравилось
+                    </p>
+                </div>
+            )}
         </>
     );
 };

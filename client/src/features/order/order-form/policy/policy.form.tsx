@@ -35,7 +35,7 @@ export const PolicyForm = ({
                                             value="true"
                                         />
                                     </FormControl>
-                                    <FormLabel className="font-normal w-6/12 leading-4 text-base">
+                                    <FormLabel className="font-normal md:w-6/12 lg:w-9/12 leading-4 text-base">
                                         я ознакомлен(-на) и полностью
                                         согласен(-на){' '}
                                         <Link

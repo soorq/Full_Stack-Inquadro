@@ -22,11 +22,11 @@ export const OrderMakingPage = () => {
     return (
         <>
             <Header />
-            <main className="w-full mt-5 relative overflow-hidden">
-                <Breadcrumb className="container">
+            <main className="w-full mt-5 container overflow-hidden max-w-full">
+                <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbLink>Каталог</BreadcrumbLink>
+                            <BreadcrumbLink href='/'>Главная</BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -40,7 +40,7 @@ export const OrderMakingPage = () => {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <section className="container space-y-1.5 mt-5 mb-10">
+                <section className="space-y-1.5 mt-5 mb-10">
                     <SignBlock />
                     <OrderMakingForm />
                 </section>

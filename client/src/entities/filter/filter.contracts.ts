@@ -45,4 +45,3 @@ export const FilterResponseSchema = z.object({
     meta: FilterMetaSchema,
     links: FilterLinksSchema
 });
-

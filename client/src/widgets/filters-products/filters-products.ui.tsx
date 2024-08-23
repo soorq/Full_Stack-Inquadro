@@ -2,7 +2,7 @@
 
 import { FilterQueries, useFiltersStore } from '~&/src/entities/filter';
 import { TypeQueryFilters } from '~&/src/entities/filter/filter.types';
-import { ProductSmallSkeleton } from '~&/src/widgets/product';
+import { ProductSmallSkeleton } from '~&/src/widgets/product/small';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '~&/src/shared/ui/button';
@@ -32,7 +32,8 @@ export const FiltersProducts = memo(
             data: products,
             isFetchingNextPage,
             fetchNextPage,
-            hasNextPage
+            hasNextPage,
+            error
         } = useInfiniteQuery(FilterQueries.infinityProductsQuery(filters));
 
         useEffect(() => {
@@ -42,7 +43,7 @@ export const FiltersProducts = memo(
         }, [inView, hasNextPage]);
 
         return (
-            <div className="relative w-full h-full">
+            <section className="relative w-full h-full">
                 <div className="flex justify-between items-center py-2.5 w-full">
                     <Button
                         className={`h-10 gap-2 leading-5 font-[350] ${isActiveFilter ? 'visible' : 'invisible'}`}
@@ -64,10 +65,19 @@ export const FiltersProducts = memo(
                     xl:grid-cols-[repeat(3,minmax(280px,1fr))]
                     2xl:grid-cols-[repeat(auto-fit,minmax(290px,1fr))]"
                 >
+                    {products?.pages &&
+                        products.pages.every(
+                            page => page.data.length === 0
+                        ) && (
+                            <div className="row-start-7 col-start-2 shadow-xl shadow-black/30 text-center bg-primary text-white py-2.5 rounded-[10px]">
+                                Ничего не найдено
+                            </div>
+                        )}
+
                     {products?.pages.map(page =>
                         page.data.map(product => (
                             <ProductSmall
-                                key={`product-small-${product.slug}`}
+                                key={`product-catalog-small-${product.slug}`}
                                 product={product}
                                 withFav
                             />
@@ -78,15 +88,9 @@ export const FiltersProducts = memo(
                         <div className="loading">Loading...</div>
                     )}
 
-                    <span ref={ref} className="invisible">
-                        intersection observer marker
-                    </span>
+                    <span ref={ref} className="invisible col-span-3 h-10" />
                 </div>
-
-                <div
-                    className={`scroll-down ${products?.pages[0].data.length > 1 || hasNextPage ? 'visible' : 'invisible'}`}
-                />
-            </div>
+            </section>
         );
     }
 );

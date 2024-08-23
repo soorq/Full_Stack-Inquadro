@@ -7,7 +7,7 @@ interface BaseContextProps {
 
 export interface CartContextProps extends BaseContextProps {
     context: 'cart';
-    onProceedToOrder: () => void;
+    href: string;
 }
 
 export interface FavoritesContextProps extends BaseContextProps {
@@ -15,7 +15,12 @@ export interface FavoritesContextProps extends BaseContextProps {
     onAddToCart: () => void;
 }
 
+export interface ConfirmContextProps extends BaseContextProps {
+    context: 'confirm';
+}
+
 export type OrderSpecifyQtyProps = (
-    | CartContextProps
     | FavoritesContextProps
-) & { isInCart: boolean };
+    | ConfirmContextProps
+    | CartContextProps
+) & { isInCart?: boolean };

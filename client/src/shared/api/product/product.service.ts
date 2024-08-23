@@ -57,7 +57,7 @@ export class ProductService {
                 )
             );
         } catch (error) {
-            console.log(error)
+            console.log(error);
             throw handleApiError(error);
         }
     }

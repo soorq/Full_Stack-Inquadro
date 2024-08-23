@@ -15,7 +15,6 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
 
     useEffect(() => {
         if (isComplete && !play) {
-            // Запускаем только если play еще не true
             setPlay(true);
         }
     }, [isComplete, play]);
@@ -26,7 +25,8 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
 
     return (
         <LConfetti
-            height={height * 2}
+            className="absolute max-w-full w-full overflow-hidden top-0 left-0 right-0 bottom-0"
+            height={height * 3.1}
             width={width * 1.5}
             style={{ pointerEvents: 'none', inset: '0' }}
             numberOfPieces={play ? 2500 : 0}
@@ -37,7 +37,8 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
                 confetti?.reset();
             }}
             drawShape={ctx => {
-                const colors = ['#F5C300', '#FFDAB9', '#00BFFF', '#FF69B4'];
+                // const colors = ['#F5C300', '#FFDAB9', '#00BFFF', '#FF69B4'];
+                const colors = ['#ff9999', '#db97ff', '#9ab9ff', '#9affc1', '#fdffa6'];
                 const randomColor =
                     colors[Math.floor(Math.random() * colors.length)];
                 const width = Math.random() * 10 + 10;

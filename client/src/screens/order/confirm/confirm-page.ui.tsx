@@ -1,3 +1,4 @@
+import { ConfirmProducts } from '~&/src/widgets/confirm-products';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
 import dynamic from 'next/dynamic';
@@ -31,7 +32,7 @@ export const OrderConfirmPage = () => {
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbLink>Каталог</BreadcrumbLink>
+                            <BreadcrumbLink href="/">Главная</BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
@@ -42,12 +43,12 @@ export const OrderConfirmPage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
 
-                {/*<ProductOrder />*/}
+                <ConfirmProducts />
 
-                <div className="flex gap-1.5 flex-col">
+                <section className="flex gap-1.5 flex-col my-10">
                     <PromoCode />
-                    <TotalOrder total={'2000'} />
-                </div>
+                    <TotalOrder />
+                </section>
             </main>
 
             <Footer />

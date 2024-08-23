@@ -76,10 +76,10 @@ export const SignForm = () => {
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className={cn(
-                    'gap-x-5',
+                    'gap-y-2.5 sm:gap-x-5',
                     step === 'code'
-                        ? 'flex '
-                        : 'grid grid-cols-[425px,300px,1.2fr]'
+                        ? 'flex flex-col sm:flex-row'
+                        : 'grid grid-cols-1 sm:grid-cols-[300px_1fr] lg:grid-cols-[425px,300px,1.2fr]'
                 )}
             >
                 {step === 'email' ? (
@@ -106,7 +106,7 @@ const EmailStep = ({ control }: { control: Control<EmailFormValues> }) => (
         render={({ field }) => (
             <FormItem>
                 <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="youremail@yourmail.domain" />
                 </FormControl>
             </FormItem>
         )}

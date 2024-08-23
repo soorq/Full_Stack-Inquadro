@@ -18,7 +18,6 @@ function createRecentViewSlice() {
         addRecentProduct: product => {
             set(
                 state => {
-                    // Проверка, что продукт не является массивом и является объектом с полем article
                     if (
                         !product ||
                         Array.isArray(product) ||
@@ -33,10 +32,8 @@ function createRecentViewSlice() {
                             item !== null && item?.article !== product?.article
                     );
 
-                    // Добавляем продукт в начало массива
                     updatedProducts.unshift(product);
 
-                    // Ограничиваем список до 6 элементов
                     if (updatedProducts.length > 6) {
                         updatedProducts.pop();
                     }
@@ -56,7 +53,6 @@ function createRecentViewSlice() {
     return recentProductsSlice;
 }
 
-// Persist и devtools как и раньше
 const slice = createRecentViewSlice();
 const withPersist = persist(slice, {
     name: 'recent-products',

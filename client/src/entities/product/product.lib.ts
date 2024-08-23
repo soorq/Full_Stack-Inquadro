@@ -25,6 +25,7 @@ export const transformProductClientDto = (
         field: string | { id: number; value: string }[] | null
     ): string => getDefaultValue(field);
 
+    // @ts-ignore
     return {
         name: transform(productApi.name),
         category: transform(productApi.category),
@@ -36,7 +37,7 @@ export const transformProductClientDto = (
         invoice: transform(productApi.invoice),
         size: transform(productApi.size),
         country: transform(productApi.country),
-        price: transform(productApi.price),
+        price: +transform(productApi.price.toString()),
         manufacturing: transform(productApi.manufacturing),
         kit: transform(productApi.kit),
         shade: transform(productApi.shade),

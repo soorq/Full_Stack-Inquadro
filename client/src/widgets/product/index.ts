@@ -1,9 +1,4 @@
-export {
-    ProductSearchSkeleton,
-    ProductSmallSkeleton
-} from './product.skeleton';
-
-export { ProductSearch } from './product-search.ui';
-export { ProductOrder } from './product-order.ui';
-export { ProductLarge } from './product-large.ui';
-export { ProductSmall } from './product-small.ui';
+export * from './search/product-search.ui';
+export * from './large/product-large.ui';
+export * from './small/product-small.ui';
+export * from './order/product-order.ui';

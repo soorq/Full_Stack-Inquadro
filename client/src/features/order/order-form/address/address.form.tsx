@@ -39,7 +39,7 @@ export const AddressForm = ({
 
     return (
         <div className="bg-secondary p-4 rounded-[10px]">
-            <h3 className="text-lg leading-5 mb-2.5 font-medium">
+            <h3 className="text-base sm:text-lg leading-5 mb-2.5 font-medium">
                 Выбрать адрес доставки
             </h3>
 
@@ -50,12 +50,19 @@ export const AddressForm = ({
                     render={({ field, fieldState }) => {
                         return (
                             <FormItem className="space-y-1">
-                                <FormLabel className="mb-1.5">
-                                    Населенный пункт
-                                </FormLabel>
-                                <FormControl className="grid grid-cols-[425px,1fr,1fr] gap-4">
+                                <div className="flex sm:block items-center justify-between">
+                                    <FormLabel className="sm:mb-1.5 text-sm sm:text-base">
+                                        Населенный пункт
+                                    </FormLabel>
+                                    {fieldState.error && (
+                                        <FormMessage className="text-xs block sm:hidden text-red-500">
+                                            {fieldState.error.message}
+                                        </FormMessage>
+                                    )}
+                                </div>
+                                <FormControl className="grid grid-cols-1 sm:grid-cols-[300px_1fr] lg:grid-cols-[425px_1fr_1fr] gap-2 sm:gap-4">
                                     <Command
-                                        className="grid grid-cols-[425px,1fr] gap-4"
+                                        className="grid grid-cols-1 sm:grid-cols-[300px_1fr] lg:grid-cols-[425px,1fr] gap-2 sm:gap-4"
                                         ref={search}
                                     >
                                         <CommandInput
@@ -66,10 +73,10 @@ export const AddressForm = ({
                                             value={find(field.value)}
                                             disabled={field.disabled}
                                         />
-                                        <div className="col-span-1 relative w-full transition-all h-0">
+                                        <div className="col-span-1 relative w-full transition-all h-auto sm:h-0">
                                             <CommandList
                                                 className={cn(
-                                                    'absolute w-full ease-in-out transition-opacity delay-500 custom-scroll',
+                                                    'sm:absolute block w-full ease-in-out transition-opacity delay-500 custom-scroll',
                                                     isListVisible
                                                         ? 'h-svh py-1'
                                                         : 'h-0 py-0'
@@ -95,10 +102,17 @@ export const AddressForm = ({
                     control={control}
                     render={({ field, fieldState }) => (
                         <FormItem className="space-y-1">
-                            <FormLabel className="mb-1.5">
-                                Улица и дом
-                            </FormLabel>
-                            <div className="grid grid-cols-[425px,1fr,1fr] gap-4 items-center">
+                            <div className="flex sm:block items-center justify-between">
+                                <FormLabel className="sm:mb-1.5 text-sm sm:text-base">
+                                    Улица и дом
+                                </FormLabel>
+                                {fieldState.error && (
+                                    <FormMessage className="text-xs block sm:hidden text-red-500">
+                                        {fieldState.error.message}
+                                    </FormMessage>
+                                )}
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-[300px_1fr] lg:grid-cols-[425px_1fr_1fr] gap-4">
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -106,7 +120,7 @@ export const AddressForm = ({
                                     />
                                 </FormControl>
                                 {fieldState.error && (
-                                    <FormMessage className="text-red-500">
+                                    <FormMessage className="text-red-500 hidden sm:block">
                                         {fieldState.error.message}
                                     </FormMessage>
                                 )}
@@ -120,18 +134,25 @@ export const AddressForm = ({
                     control={control}
                     render={({ field, fieldState }) => (
                         <FormItem className="space-y-1">
-                            <FormLabel className="mb-1.5">
-                                Подъезд{' '}
-                                <span className="text-black/50 text-sm">
-                                    (если отсутствует, пропустите строку)
-                                </span>
-                            </FormLabel>
-                            <div className="grid grid-cols-[425px,1fr,1fr] gap-4 items-center">
+                            <div className="flex sm:block items-center justify-between">
+                                <FormLabel className="sm:mb-1.5 text-sm sm:text-base">
+                                    Подъезд{' '}
+                                    <span className="text-black/50 text-xs md:text-sm">
+                                        (если отсутствует, пропустите строку)
+                                    </span>
+                                </FormLabel>
+                                {fieldState.error && (
+                                    <FormMessage className="text-xs block sm:hidden text-red-500">
+                                        {fieldState.error.message}
+                                    </FormMessage>
+                                )}
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-[300px_1fr] lg:grid-cols-[425px_1fr_1fr] gap-4">
                                 <FormControl>
                                     <Input {...field} placeholder="1" />
                                 </FormControl>
                                 {fieldState.error && (
-                                    <FormMessage className="text-red-500">
+                                    <FormMessage className="text-red-500 hidden sm:block">
                                         {fieldState.error.message}
                                     </FormMessage>
                                 )}
