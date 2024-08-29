@@ -2,8 +2,10 @@ import { SignDto, UpdateUserDto } from '@app/shared';
 import { EUser } from '@app/entities';
 
 export abstract class UserRepository {
-    abstract findOneByEmail(email: string): Promise<EUser>;
-    abstract sign(dto: SignDto): Promise<{ status: string }>;
-    abstract update(email: string, dto: UpdateUserDto): Promise<EUser>;
-    abstract verifyCodeSign(email: string, code: string): Promise<EUser>;
+    abstract saveUser(
+        dto: SignDto,
+        verifyCode: string
+    ): Promise<{ status: string }>;
+    abstract findUserByEmail(email: string, withCode?: boolean): Promise<EUser>;
+    abstract updateUser(email: string, dto: UpdateUserDto): Promise<EUser>;
 }

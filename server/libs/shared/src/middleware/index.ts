@@ -1,1 +1,2 @@
-export * from './http.middleware'
+export * from './user-agent.middleware';
+export * from './http.middleware';

@@ -5,13 +5,13 @@ import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as chalk from 'chalk';
-import helmet from 'helmet';
 import {
     HttpException,
     HttpStatus,
     Logger,
     ValidationPipe
 } from '@nestjs/common';
+// import * as csurf from 'csurf';
 
 declare const module: any;
 
@@ -32,6 +32,8 @@ async function bootstrap() {
     const PORT = config.get('PUBLIC_PORT');
     const DOMAIN = config.get('PUBLIC_DOMAIN');
 
+    // app.use(csurf())
+
     /**
      * Sets the global prefix of the app to 'api' and enables CORS with specific configurations:
      */
@@ -42,8 +44,6 @@ async function bootstrap() {
      * Sets a global filter using CsrfFilter for handling CSRF protection.
      */
     app.use(cookieParser());
-
-    app.use(helmet());
 
     /**
      * Adds a global validation pipe to the NestJS application with the option to transform the payload.

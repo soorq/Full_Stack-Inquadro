@@ -14,15 +14,15 @@ import { join } from 'path';
             isGlobal: true,
             envFilePath: join(process.cwd(), '.env')
         }),
-        RedisModule,
-        TypeormModule,
         ThrottlerModule.forRoot([
             {
                 ttl: 60000,
                 limit: 10
             }
         ]),
-        EventEmitterModule.forRoot({ global: true })
+        EventEmitterModule.forRoot({ global: true }),
+        TypeormModule,
+        RedisModule
     ],
     providers: [
         {

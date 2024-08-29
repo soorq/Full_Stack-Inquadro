@@ -1,19 +1,17 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { UserService } from '../../../../src/user/user.service';
 import { TelegrafExecutionContext } from 'nestjs-telegraf';
-import { AdminService } from 'src/admin/admin.service';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-    constructor(private readonly admins: AdminService) {}
+    constructor(private readonly admins: UserService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const telegrafCtx =
             TelegrafExecutionContext.create(context).getContext();
         const userId = telegrafCtx.from.id;
 
-        const admins = await this.admins
-            .findAll()
-            .then(res => res.map(admin => +admin.telegram_id));
+        const admins = [910875462]
 
         if (admins.includes(userId)) {
             telegrafCtx.session.isAdmin = true;

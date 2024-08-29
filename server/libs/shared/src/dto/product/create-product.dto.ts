@@ -3,14 +3,14 @@ export class CreateProductDto {
     name: string;
     availability: string;
     usage: string;
-    image: string;
+    images: string[];
     plating: string;
     texture: string;
     invoice: string;
     size: string;
     shade: string;
     country: string;
-    price: string;
+    price: number;
     manufacturing: string;
     kit: string;
     article: string;

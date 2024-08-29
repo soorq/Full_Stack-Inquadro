@@ -1,13 +1,12 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { BackButton, UpdateProduct } from '@app/shared/telegram';
 import { Message } from 'telegraf/typings/core/types/typegram';
 import { ProductService } from 'src/product/product.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { CreateProductDto } from '@app/shared';
 import * as xlsx from 'xlsx';
 import * as path from 'path';
-import axios from 'axios';
 import * as fs from 'fs';
+import axios from 'axios';
 
 @Injectable()
 export class BotService {
@@ -18,7 +17,6 @@ export class BotService {
         console.log(payload);
     }
 
-    // Метод для скачивания файла и его обработки
     getXLSXTable = async ctx => {
         try {
             const { file_id: fileId } = (ctx.message as Message.DocumentMessage)
@@ -47,7 +45,7 @@ export class BotService {
     private generateFilePath(userId: string, userFirstName: string): string {
         return path.join(
             process.cwd(),
-            `documents/by-${userId}-${userFirstName}.xlsx`
+            `/static/documents/by-${userId}-${userFirstName}.xlsx`
         );
     }
 
@@ -137,7 +135,7 @@ export class BotService {
             name: rowObject['name'],
             availability: rowObject['availability'],
             usage: rowObject['usage'],
-            image: rowObject['image'],
+            images: [],
             plating: rowObject['plating'],
             texture: rowObject['texture'],
             invoice: rowObject['invoice'],
@@ -181,41 +179,6 @@ export class BotService {
             writer.on('error', reject);
         });
     };
-
-    // Метод для выхода из сцены
-    leaveButton = async ctx => {
-        const chatId = ctx.update.callback_query.message?.chat?.id;
-        const messageThreadId = ctx.update.callback_query?.message?.message_id;
-
-        await ctx.telegram.deleteMessage(chatId, messageThreadId);
-    };
-
-    // Метод для отправки уведомления о загрузке таблицы
-    sendNotifyAboutTable = async ctx => {
-        ctx.answerCbQuery('Теперь следуйте шагам ниже!');
-        await ctx.reply(
-            'Чтобы загрузить файл с товаром в базу данных, проделайте эти шаги: \n\n<b>1. Нажмите на скрепку около поля ввода.</b> \n<b>2. Выберите файл в формате .xlsx*.</b> \n<b>3. Нажмите на него и он начнет загружаться - вам бот отправит результат загрузки.</b> \n\n* Заметка, что бот работает только с файлами из excel и загрузка происходит исключительно из него.',
-            { parse_mode: 'HTML', reply_markup: BackButton }
-        );
-    };
-
-    // Метод для получения списка продуктов
-    getProducts = async ctx => {
-        ctx.answerCbQuery('Отлично, товары отобразятся ниже');
-        const products = await this.product.findAll();
-        const message = this.formatProductMessages(products);
-        await ctx.reply(message, { reply_markup: UpdateProduct });
-    };
-
-    // Метод для форматирования сообщений с продуктами
-    private formatProductMessages(products: any[]): string {
-        return products
-            .map(
-                product =>
-                    `🔗 Артикуль: ${product.article} 📦 Наличие: ${product.availability}`
-            )
-            .join('\n');
-    }
 
     // Метод для обработки ошибок и отправки сообщений об ошибках
     private handleError(ctx, error, defaultMessage: string) {

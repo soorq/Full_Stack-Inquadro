@@ -1,11 +1,11 @@
 import { Logger, NotFoundException } from '@nestjs/common';
+import { Postgres } from '@telegraf/session/pg';
 import { ConfigService } from '@nestjs/config';
+import { session } from 'telegraf';
 import {
     TelegrafModuleAsyncOptions,
     TelegrafModuleOptions
 } from 'nestjs-telegraf';
-import { Postgres } from '@telegraf/session/pg';
-import { session } from 'telegraf';
 
 const telegrafModuleOptions = (
     config: ConfigService
@@ -17,6 +17,7 @@ const telegrafModuleOptions = (
         host: config.get<string>('POSTGRES_HOST'),
         user: config.get<string>('POSTGRES_USER'),
         password: config.get<string>('POSTGRES_PASSWORD'),
+        port: 5432,
         onInitError(err) {
             throw new NotFoundException(`Config value in not found`, err);
         }

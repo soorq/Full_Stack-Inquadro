@@ -1,13 +1,12 @@
 import { MailService } from './mail.service';
-import { RequestDto } from '@app/shared';
+import { ApiTags } from '@nestjs/swagger';
 import {
     InternalServerErrorException,
     Controller,
     Body,
-    Post
+    Post,
+    Logger
 } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Orders')
 @Controller('requests')
@@ -15,20 +14,16 @@ export class MailController {
     constructor(private readonly service: MailService) {}
 
     @Post('/')
-    async sendRequest(@Body() dto: RequestDto) {
+    async sendRequest(@Body() dto) {
         try {
-            return dto;
-            // return this.service.sendRequestToMail(dto);
+            return this.service.sendRequestToMail(dto);
         } catch (error) {
+            console.log(error);
+            Logger.debug(error);
             throw new InternalServerErrorException(
                 'Ошибка со стороны сервера',
                 error
             );
         }
-    }
-
-    @OnEvent('user.created', { async: true })
-    async sendCodeToEmail(payload: { email: string; code: string }) {
-        return this.service.sendCodeToVerify(payload);
     }
 }

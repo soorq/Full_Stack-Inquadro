@@ -14,7 +14,7 @@ import { join } from 'path';
                 transport: {
                     host: cfg.get('SMTP_HOST'),
                     auth: {
-                        user: cfg.get('SMTP_USER'),
+                        user: cfg.get('MAIL_USER'),
                         pass: cfg.get('SMTP_PASS')
                     }
                 },
@@ -31,8 +31,8 @@ import { join } from 'path';
             })
         })
     ],
-
     controllers: [MailController],
-    providers: [MailService]
+    providers: [MailService],
+    exports: [MailService]
 })
 export class MailModule {}

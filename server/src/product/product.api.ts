@@ -2,6 +2,8 @@ import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { EProduct } from '@app/entities';
 import {
     ApiBadRequestResponse,
+    ApiBody,
+    ApiConsumes,
     ApiOkResponse,
     ApiOperation,
     ApiQuery
@@ -10,8 +12,11 @@ import {
     applyDecorators,
     Get,
     HttpStatus,
+    Patch,
+    Post,
     UseInterceptors
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 export const ApiGetAllProducts = () =>
     applyDecorators(
@@ -52,27 +57,6 @@ export const ApiGetOneProductOneById = () =>
         UseInterceptors(CacheInterceptor),
         CacheTTL(60 * 5),
         Get('get/:slug')
-    );
-
-export const ApiGetManyProductsByPagination = () =>
-    applyDecorators(
-        ApiOperation({
-            summary: 'Получение отсортированных',
-            description: 'Для получения сортированных постов'
-        }),
-        ApiOkResponse({
-            status: HttpStatus.OK,
-            type: EProduct,
-            description: 'Отдает фильтрованные посты по бд'
-        }),
-        ApiBadRequestResponse({
-            status: HttpStatus.BAD_REQUEST,
-            description: 'Плохой запроос или не найдены данные'
-        }),
-        UseInterceptors(CacheInterceptor),
-        CacheKey('Products-pagination'),
-        CacheTTL(60 * 5),
-        Get('pagination')
     );
 
 export const ApiSearchProducts = () =>
@@ -134,4 +118,31 @@ export const ApiGetManyProductsByParams = () =>
         UseInterceptors(CacheInterceptor),
         CacheTTL(60 * 5), // Кэшируем на 5 минут
         Get('filter')
+    );
+
+export const ApiUpdateProductsImages = () =>
+    applyDecorators(
+        ApiOperation({
+            summary: 'Загрузка в бд изображений и клауд',
+            description: 'Возвращает список продуктов на основе фильтров'
+        }),
+        ApiConsumes('multipart/form-data'),
+        ApiBody({
+            schema: {
+                type: 'object',
+                properties: { file: { type: 'string', format: 'binary' } }
+            }
+        }),
+        UseInterceptors(FileInterceptor('file')),
+        Patch('images')
+    );
+
+export const ApiGetProductsFilter = () =>
+    applyDecorators(
+        ApiOperation({
+            summary:
+                'Получение для фронта фильтров, исходя относительно бд параметров у товаров',
+            description: 'Возвращает категории у продуктов к основе фильтров'
+        }),
+        Get('categories')
     );

@@ -53,8 +53,8 @@ export class EProduct {
         title: 'Изображение',
         description: 'Вводится вручную'
     })
-    @Column()
-    image: string;
+    @Column({ type: 'varchar', array: true })
+    images: string[];
 
     @ApiProperty({
         type: 'string',
@@ -105,12 +105,12 @@ export class EProduct {
     country: string;
 
     @ApiProperty({
-        type: 'string',
+        type: 'price',
         title: 'Цена',
         description: 'Вводится вручную цена'
     })
     @Column()
-    price: string;
+    price: number;
 
     @ApiProperty({
         type: 'string',
@@ -143,6 +143,14 @@ export class EProduct {
     })
     @Column({ type: 'varchar', unique: true })
     slug: string;
+
+    @ApiProperty({
+        type: 'string',
+        title: 'Изображение текстуры',
+        description: 'Параметр для рисунка - изображение текстуры'
+    })
+    @Column({ type: 'varchar', nullable: true })
+    textureType: string;
 
     @ApiProperty({
         type: 'string',

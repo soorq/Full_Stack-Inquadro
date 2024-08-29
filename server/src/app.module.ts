@@ -1,16 +1,27 @@
+import { HttpLoggerMiddleware, UserAgentMiddleware } from '@app/shared';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ProductModule } from './product/product.module';
-import { HttpLoggerMiddleware } from '@app/shared';
 import { ProvidersModule } from '@app/providers';
 import { UserModule } from './user/user.module';
 import { MailModule } from './mail/mail.module';
+import { AuthModule } from './auth/auth.module';
 import { BotModule } from './bot/bot.module';
+import helmet from 'helmet';
 
 @Module({
-    imports: [ProductModule, ProvidersModule, BotModule, MailModule, UserModule]
+    imports: [
+        ProvidersModule,
+        ProductModule,
+        MailModule,
+        UserModule,
+        AuthModule,
+        // BotModule
+    ]
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer): void {
-        consumer.apply(HttpLoggerMiddleware).forRoutes('*');
+        consumer
+            .apply(HttpLoggerMiddleware, UserAgentMiddleware, helmet())
+            .forRoutes('*');
     }
 }

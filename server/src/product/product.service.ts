@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from '@app/shared';
+import { CreateProductDto, ExcelService, UpdateProductDto } from '@app/shared';
+import { YCloudService } from '../y-cloud/y-cloud.service';
 import { ProductRepository } from './product.repository';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,35 +8,43 @@ import { transliterate } from 'transliteration';
 import { Brackets, Repository } from 'typeorm';
 import { EProduct } from '@app/entities';
 import { Cache } from 'cache-manager';
-import { v4 as uuidv4 } from 'uuid';
 import {
     FilterOperator,
-    PaginateQuery,
     paginate,
+    PaginateConfig,
     Paginated,
-    PaginateConfig
+    PaginateQuery
 } from 'nestjs-paginate';
+import * as unzipper from 'unzipper';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class ProductService implements ProductRepository {
+    private readonly tempDir = path.join(process.cwd(), `documents/temp`);
+
     constructor(
         @InjectRepository(EProduct) private readonly db: Repository<EProduct>,
-        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+        private readonly YCloud: YCloudService,
+        private excel: ExcelService
     ) {}
 
     public async create(dto: CreateProductDto) {
         const existingProduct = await this.findByArticul(dto.article);
-
         if (existingProduct) {
             throw new HttpException(
                 'Такой товар уже существует',
                 HttpStatus.CONFLICT
             );
         }
-
-        const slug = this.generateSlug(dto.name);
-        const product = this.db.create({ ...dto, slug });
-
+        const slug = this.generateSlug(dto.name, dto.article);
+        const product = this.db.create({
+            ...dto,
+            slug,
+            images: [],
+            textureType: null
+        });
         try {
             await this.clearCache();
             return await this.db.save(product);
@@ -111,7 +120,6 @@ export class ProductService implements ProductRepository {
 
         return product;
     }
-
     public async findAndMergeBySlug(slug: string) {
         const product = await this.db.findOne({ where: { slug } });
 
@@ -122,7 +130,34 @@ export class ProductService implements ProductRepository {
         const { name } = product;
         const productsWithSameName = await this.db.find({ where: { name } });
 
+        const mergeImages = () => {
+            const imagesGroupedById = productsWithSameName.reduce(
+                (acc, p) => {
+                    if (!p.images || p.images.length === 0) return acc;
+                    const productId = Number(p.id);
+                    let entry = acc.find(item => item.id === productId);
+                    if (!entry) {
+                        entry = { id: productId, links: [] };
+                        acc.push(entry);
+                    }
+                    entry.links.push(...p.images);
+                    return acc;
+                },
+                [] as { id: number; links: string[] }[]
+            );
+
+            imagesGroupedById.forEach(entry => {
+                entry.links = Array.from(new Set(entry.links));
+            });
+
+            return imagesGroupedById;
+        };
+
         const mergeField = (field: string) => {
+            if (field === 'images') {
+                return mergeImages();
+            }
+
             const uniqueValues = Array.from(
                 new Set(productsWithSameName.map(p => p[field]))
             );
@@ -136,7 +171,7 @@ export class ProductService implements ProductRepository {
             category: mergeField('category'),
             availability: mergeField('availability'),
             usage: mergeField('usage'),
-            image: mergeField('image'),
+            images: mergeField('images'),
             plating: mergeField('plating'),
             texture: mergeField('texture'),
             invoice: mergeField('invoice'),
@@ -198,18 +233,28 @@ export class ProductService implements ProductRepository {
     public findByFilter(query: PaginateQuery): Promise<Paginated<EProduct>> {
         const config: PaginateConfig<EProduct> = {
             filterableColumns: {
-                category: [FilterOperator.EQ],
-                usage: [FilterOperator.EQ],
-                plating: [FilterOperator.EQ],
-                invoice: [FilterOperator.EQ],
-                texture: [FilterOperator.EQ],
-                size: [FilterOperator.EQ],
-                shade: [FilterOperator.EQ],
-                availability: [FilterOperator.EQ],
+                category: [FilterOperator.IN, FilterOperator.CONTAINS],
+                usage: [FilterOperator.IN, FilterOperator.CONTAINS],
+                plating: [FilterOperator.IN, FilterOperator.CONTAINS],
+                invoice: [FilterOperator.IN, FilterOperator.CONTAINS],
+                texture: [FilterOperator.IN, FilterOperator.CONTAINS],
+                size: [FilterOperator.IN, FilterOperator.CONTAINS],
+                shade: [FilterOperator.IN, FilterOperator.CONTAINS],
+                availability: [FilterOperator.IN, FilterOperator.CONTAINS],
                 price: [FilterOperator.GTE, FilterOperator.LTE],
                 createdAt: [FilterOperator.GTE, FilterOperator.LTE],
                 updatedAt: [FilterOperator.GTE, FilterOperator.LTE]
             },
+            searchableColumns: [
+                'category',
+                'usage',
+                'plating',
+                'invoice',
+                'texture',
+                'size',
+                'shade',
+                'availability'
+            ],
             sortableColumns: [
                 'category',
                 'usage',
@@ -228,6 +273,82 @@ export class ProductService implements ProductRepository {
         return paginate(query, this.db, config);
     }
 
+    public getCategories = async () => {
+        const products = await this.findAll();
+
+        return {
+            name: this.formatToFilter(products.map(product => product.name)),
+            availability: this.formatToFilter(
+                products.map(product => product.availability)
+            ),
+            usage: this.formatToFilter(products.map(product => product.usage)),
+            plating: this.formatToFilter(
+                products.map(product => product.plating)
+            ),
+            texture: this.formatToFilter(
+                products.map(product => product.texture)
+            ),
+            invoice: this.formatToFilter(
+                products.map(product => product.invoice)
+            ),
+            size: this.formatToFilter(products.map(product => product.size)),
+            shade: this.formatToFilter(products.map(product => product.shade)),
+            country: this.formatToFilter(
+                products.map(product => product.country)
+            ),
+            manufacturing: this.formatToFilter(
+                products.map(product => product.manufacturing)
+            )
+        };
+    };
+
+    private formatToFilter(
+        values: string[]
+    ): { label: string; value: string }[] {
+        const uniqueValues = [...new Set(values)]; // Удаляем дубликаты
+        return uniqueValues.map(value => ({
+            label: value,
+            value: value
+        }));
+    }
+
+    async parseLinksByArticules(): Promise<{
+        updated: number;
+        notFound: number;
+        notUpdatedArticles: string[];
+    }> {
+        const articules = await this.db.find({ select: ['article', 'id'] });
+
+        let updatedCount = 0;
+        let notFoundCount = 0;
+        const notUpdatedArticles: string[] = [];
+
+        for (const { article, id } of articules) {
+            const images = await this.YCloud.getItem(article);
+
+            if (images.length > 0) {
+                await this.db.update(id, { images });
+                updatedCount++;
+            } else {
+                notFoundCount++;
+                notUpdatedArticles.push(article);
+            }
+        }
+
+        return {
+            updated: updatedCount,
+            notFound: notFoundCount,
+            notUpdatedArticles
+        };
+    }
+
+    private cleanupTempDirectory(dir: string) {
+        if (fs.existsSync(dir)) {
+            fs.rmdirSync(dir);
+            console.log(`Удалена временная директория: ${dir}`);
+        }
+    }
+
     private async getCachedResult<T>(cacheKey: string): Promise<T | undefined> {
         return (await this.cacheManager.get(cacheKey)) as T | undefined;
     }
@@ -240,23 +361,17 @@ export class ProductService implements ProductRepository {
         }
     }
 
-    private generateCacheKey(
-        filter: Record<string, string | number | undefined>
-    ): string {
-        const validFilter = Object.entries(filter)
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .filter(([_, value]) => value !== undefined && value !== '')
-            .map(([key, value]) => `${key}-${value}`);
-        return `Category_filters:products_filter_${validFilter.sort().join('|')}`;
-    }
-
-    private generateSlug(name: string): string {
+    private generateSlug(name: string, article: string): string {
         const transliteratedName = transliterate(name)
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
 
-        const uniqueId = uuidv4();
-        return `${transliteratedName}-${uniqueId}`;
+        const transliteratedArticle = transliterate(article)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+        return `${transliteratedName}-${transliteratedArticle}`;
     }
 }
