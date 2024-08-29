@@ -19,10 +19,6 @@ const TotalOrder = dynamic(() =>
     import('~&/src/widgets/total-order').then(p => p.TotalOrder)
 );
 
-const ProductOrder = dynamic(() =>
-    import('~&/src/widgets/product').then(p => p.ProductOrder)
-);
-
 export const OrderConfirmPage = () => {
     return (
         <>
@@ -42,15 +38,12 @@ export const OrderConfirmPage = () => {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-
-                <ConfirmProducts />
-
-                <section className="flex gap-1.5 flex-col my-10">
+                <section className="my-10">
+                    <ConfirmProducts />
                     <PromoCode />
                     <TotalOrder />
                 </section>
             </main>
-
             <Footer />
         </>
     );

@@ -1,11 +1,8 @@
+import { TypeQueryFilters } from '~&/src/features/filter';
 import dynamic from 'next/dynamic';
-import { TypeQueryFilters } from '~&/src/entities/filter/filter.types';
 
 const Page = dynamic(
-    () =>
-        import('~&/src/screens/catalog/catalog-page.ui').then(
-            page => page.CatalogPage
-        ),
+    () => import('~&/src/screens/catalog').then(page => page.CatalogPage),
     { suspense: true }
 );
 

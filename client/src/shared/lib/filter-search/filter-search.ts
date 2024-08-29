@@ -6,8 +6,12 @@ export function formatSearchFilters(
     if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
             if (value !== undefined) {
-                if (Array.isArray(value)) {
-                    queryParams.append(`filter.${key}`, value.join(','));
+                if (value.includes(',')) {
+                    const valueArray = value.split(',');
+                    queryParams.append(
+                        `filter.${key}`,
+                        `$in:${valueArray.join(',')}`
+                    );
                 } else {
                     queryParams.append(`filter.${key}`, String(value));
                 }

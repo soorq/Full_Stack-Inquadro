@@ -1,4 +1,6 @@
 import { FavoritePreview } from '~&/src/entities/favorite';
+import { HelperInfo } from '~&/src/widgets/helper-info';
+import { HintOrder } from '~&/src/widgets/hint-order';
 import { Footer } from '~&/src/widgets/footer';
 import { Header } from '~&/src/widgets/header';
 import {
@@ -15,7 +17,7 @@ export const FavoritePage = () => {
     return (
         <>
             <Header />
-            <main className="container w-full">
+            <main className="container w-full mb-6">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -30,7 +32,9 @@ export const FavoritePage = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
                 <FavoritePreview isIcon={false} />
+                <HelperInfo />
             </main>
+            <HintOrder />
             <Footer />
         </>
     );

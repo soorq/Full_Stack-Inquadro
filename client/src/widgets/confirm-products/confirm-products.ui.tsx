@@ -1,29 +1,29 @@
 'use client';
 
 import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
-import { ProductOrder } from '~&/src/widgets/product';
+import { ProductOrder } from '~&/src/features/product/order';
 import { useCartStore } from '~&/src/entities/cart';
 import { useShallow } from 'zustand/react/shallow';
 import { useEffect } from 'react';
 
 export const ConfirmProducts = () => {
-    const { products, updateQuantityFn, setTotalPrice } = useCartStore(
-        useShallow(({ products, updateQuantityFn, setTotalPrice }) => ({
+    const { products, updateQuantityFn, setTotal } = useCartStore(
+        useShallow(({ products, updateQuantityFn, setTotal }) => ({
             products,
             updateQuantityFn,
-            setTotalPrice
+            setTotal
         }))
     );
 
     const updateProductCosts = () => {
         products.forEach(product => {
-            const { totalCost } = calculateTileMetrics(
+            const { totalCost, totalTileArea } = calculateTileMetrics(
                 product.size,
                 +product.kit,
                 +product.price,
                 product.quantity
             );
-            setTotalPrice(product.article, totalCost);
+            setTotal(product.article, totalCost, totalTileArea);
         });
     };
 
@@ -38,32 +38,30 @@ export const ConfirmProducts = () => {
     };
 
     return (
-        <section className="h-full mb-10 mt-5 w-1/2">
-            <div className="flex flex-col gap-3">
-                {products.map(product => {
-                    const { totalCost, totalTileArea } = calculateTileMetrics(
-                        product.size,
-                        +product.kit,
-                        +product.price,
-                        product.quantity
-                    );
+        <div className="flex flex-col gap-3 h-full mb-10 lg:w-7/12 xl:w-2/4">
+            {products.map(product => {
+                const { totalCost, totalTileArea } = calculateTileMetrics(
+                    product.size,
+                    +product.kit,
+                    +product.price,
+                    product.quantity
+                );
 
-                    return (
-                        <ProductOrder
-                            key={`product-order-confirm-${product.quantity}-${product.slug}`}
-                            onQtyChange={newQty =>
-                                handleQtyChange(product.article, newQty)
-                            }
-                            qty={product.quantity}
-                            product={product}
-                            className="px-0"
-                            context="confirm"
-                            totalTileArea={totalTileArea}
-                            totalCost={totalCost}
-                        />
-                    );
-                })}
-            </div>
-        </section>
+                return (
+                    <ProductOrder
+                        key={`product-order-confirm-${product.quantity}-${product.slug}`}
+                        onQtyChange={newQty =>
+                            handleQtyChange(product.article, newQty)
+                        }
+                        qty={product.quantity}
+                        product={product}
+                        className="px-0"
+                        context="confirm"
+                        totalTileArea={totalTileArea}
+                        totalCost={totalCost}
+                    />
+                );
+            })}
+        </div>
     );
 };

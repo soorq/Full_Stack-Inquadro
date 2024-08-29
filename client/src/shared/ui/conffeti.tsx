@@ -29,16 +29,21 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
             height={height * 3.1}
             width={width * 1.5}
             style={{ pointerEvents: 'none', inset: '0' }}
-            numberOfPieces={play ? 2500 : 0}
+            numberOfPieces={play ? 1500 : 0}
             recycle={false}
-            gravity={0.2}
+            debug
             onConfettiComplete={confetti => {
                 setPlay(false);
                 confetti?.reset();
             }}
             drawShape={ctx => {
-                // const colors = ['#F5C300', '#FFDAB9', '#00BFFF', '#FF69B4'];
-                const colors = ['#ff9999', '#db97ff', '#9ab9ff', '#9affc1', '#fdffa6'];
+                const colors = [
+                    '#ff9999',
+                    '#db97ff',
+                    '#9ab9ff',
+                    '#9affc1',
+                    '#fdffa6'
+                ];
                 const randomColor =
                     colors[Math.floor(Math.random() * colors.length)];
                 const width = Math.random() * 10 + 10;
@@ -47,7 +52,6 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
                 ctx.fillStyle = randomColor;
                 ctx.beginPath();
 
-                // Рисуем прямоугольник
                 ctx.rect(-width / 2, -height / 2, width, height);
                 ctx.closePath();
                 ctx.fill();

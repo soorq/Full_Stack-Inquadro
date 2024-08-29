@@ -2,6 +2,7 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import type { TypeCartStates, TypeCartActions } from './cart.types';
 import { createSelectors } from '~&/src/shared/lib/zustand';
 import { type StateCreator, create } from 'zustand';
+import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
 
 const cartSlice: StateCreator<
     TypeCartActions & TypeCartStates,
@@ -13,39 +14,57 @@ const cartSlice: StateCreator<
 
     addFn: (product, qty = 1) => {
         set(state => {
-            const existingProduct = state.products.find(
-                item => item.article === product.article
-            );
+            const updatedProducts = state.products.map(item => {
+                if (item.article === product.article) {
+                    const newQuantity = item.quantity + qty;
 
-            if (existingProduct) {
-                const updatedProducts = state.products.map(item =>
-                    item.article === product.article
-                        ? {
-                              ...item,
-                              quantity: item.quantity + qty,
-                              totalPrice: item.price * qty
-                          }
-                        : item
-                );
-                return {
-                    products: updatedProducts
-                };
+                    const { totalCost, totalTileArea } = calculateTileMetrics(
+                        item.size,
+                        +item.kit,
+                        item.price,
+                        newQuantity
+                    );
+
+                    return {
+                        ...item,
+                        quantity: newQuantity,
+                        totalPrice: totalCost,
+                        totalArea: totalTileArea
+                    };
+                }
+                return item;
+            });
+
+            if (state.products.some(item => item.article === product.article)) {
+                return { products: updatedProducts };
             }
+
+            const { totalCost, totalTileArea } = calculateTileMetrics(
+                product.size,
+                +product.kit,
+                product.price,
+                qty
+            );
 
             return {
                 products: [
-                    ...state.products,
-                    { ...product, quantity: qty, totalPrice: 0 }
+                    ...updatedProducts,
+                    {
+                        ...product,
+                        quantity: qty,
+                        totalPrice: totalCost,
+                        totalArea: totalTileArea
+                    }
                 ]
             };
         });
     },
 
-    setTotalPrice: (article, totalPrice) => {
+    setTotal: (article, totalPrice, area) => {
         set(state => ({
             products: state.products.map(product =>
                 product.article === article
-                    ? { ...product, totalPrice }
+                    ? { ...product, totalPrice, totalArea: area }
                     : product
             )
         }));
@@ -109,6 +128,34 @@ const cartSlice: StateCreator<
         return products.reduce((total, product) => {
             return total + Math.round(product.totalPrice);
         }, 0);
+    },
+
+    getCartSummary: () => {
+        const products = get().products;
+        const totalPrice = products.reduce(
+            (total, product) => total + (product.totalPrice || 0),
+            0
+        );
+        const totalQuantity = products.reduce(
+            (total, product) => total + (product.quantity || 0),
+            0
+        );
+
+        const totalArea = products.reduce(
+            (total, product) => total + (product.totalArea || 0),
+            0
+        );
+
+        return {
+            sqmetrs: totalArea,
+            price: totalPrice,
+            quantity: totalQuantity,
+            products
+        };
+    },
+
+    clearCart: () => {
+        set({ products: [] });
     }
 });
 

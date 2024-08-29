@@ -9,10 +9,10 @@ export const UserDtoSchema = z.object({
     updatedAt: z.string(),
     createdAt: z.string(),
     email: z.string(),
-    id: z.string()
+    id: z.number()
 });
 
-export const ResponseEmailStatus = z.object({ status: z.string() });
+export const ResponseEmailStatus = z.object({ isSent: z.boolean() });
 
 export const SignUserDtoSchema = z.object({
     email: z

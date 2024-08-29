@@ -1,7 +1,7 @@
 import { persist, devtools, createJSONStorage } from 'zustand/middleware';
 import type { ProductState, ProductActions } from './product.types';
-import { transformProductClientDto } from '~&/src/entities/product';
 import { createSelectors } from '~&/src/shared/lib/zustand';
+import { transformProductClientDto } from './product.lib';
 import { StateCreator, create } from 'zustand';
 
 function createProductSlice(): StateCreator<

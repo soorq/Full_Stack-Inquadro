@@ -1,14 +1,9 @@
 'use client';
 
-import * as React from 'react';
-import {
-    CheckIcon,
-    ChevronDownIcon,
-    ChevronUpIcon
-} from '@radix-ui/react-icons';
+import { Check, CaretDown, CaretUp } from '@phosphor-icons/react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-
 import { cn } from '~&/src/shared/lib/tw-merge';
+import * as React from 'react';
 
 const Select = SelectPrimitive.Root;
 
@@ -48,7 +43,7 @@ const SelectScrollUpButton = React.forwardRef<
         )}
         {...props}
     >
-        <ChevronUpIcon />
+        <CaretUp />
     </SelectPrimitive.ScrollUpButton>
 ));
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
@@ -65,7 +60,7 @@ const SelectScrollDownButton = React.forwardRef<
         )}
         {...props}
     >
-        <ChevronDownIcon />
+        <CaretDown />
     </SelectPrimitive.ScrollDownButton>
 ));
 SelectScrollDownButton.displayName =
@@ -128,7 +123,7 @@ const SelectItem = React.forwardRef<
     >
         <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
             <SelectPrimitive.ItemIndicator>
-                <CheckIcon className="h-4 w-4" />
+                <Check className="h-4 w-4" />
             </SelectPrimitive.ItemIndicator>
         </span>
         <SelectPrimitive.ItemText className="text-right md:text-left">

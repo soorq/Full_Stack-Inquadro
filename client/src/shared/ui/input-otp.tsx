@@ -1,10 +1,8 @@
 'use client';
 
-import * as React from 'react';
-import { DashIcon } from '@radix-ui/react-icons';
 import { OTPInput, OTPInputContext } from 'input-otp';
-
 import { cn } from '~&/src/shared/lib/tw-merge';
+import * as React from 'react';
 
 const InputOTP = React.forwardRef<
     React.ElementRef<typeof OTPInput>,
@@ -62,14 +60,4 @@ const InputOTPSlot = React.forwardRef<
 });
 InputOTPSlot.displayName = 'InputOTPSlot';
 
-const InputOTPSeparator = React.forwardRef<
-    React.ElementRef<'div'>,
-    React.ComponentPropsWithoutRef<'div'>
->(({ ...props }, ref) => (
-    <div ref={ref} role="separator" {...props}>
-        <DashIcon />
-    </div>
-));
-InputOTPSeparator.displayName = 'InputOTPSeparator';
-
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };
+export { InputOTP, InputOTPGroup, InputOTPSlot };

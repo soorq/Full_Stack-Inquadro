@@ -1,11 +1,10 @@
-import * as React from 'react';
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 import { cva } from 'class-variance-authority';
-
-import { cn } from '~&/src/shared/lib/tw-merge';
-import Link from 'next/link';
-import { Menu } from 'lucide-react';
 import { Button } from '~&/src/shared/ui/button';
+import { cn } from '~&/src/shared/lib/tw-merge';
+import { List } from '@phosphor-icons/react';
+import * as React from 'react';
+import Link from 'next/link';
 
 const NavigationMenu = React.forwardRef<
     React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -56,8 +55,9 @@ const NavigationMenuTrigger = React.forwardRef<
         {...props}
     >
         {children}{' '}
-        <Menu
+        <List
             className="relative top-[1px] size-5 transition duration-300"
+            weight="light"
             aria-hidden="true"
         />
     </NavigationMenuPrimitive.Trigger>

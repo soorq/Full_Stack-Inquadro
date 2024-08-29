@@ -55,7 +55,7 @@ export const SignBlock = () => {
                 <Button
                     variant="link"
                     onClick={() => setIsAuth(prev => !prev)}
-                    className="p-0 h-auto text-blue-500 text-xs sm:text-sm"
+                    className="p-0 h-auto text-blue-500 text-xs sm:text-sm sm:px-0"
                 >
                     нажмите здесь
                 </Button>

@@ -5,14 +5,23 @@ const nextConfig = {
     experimental: {
         optimizePackageImports: [
             '@radix-ui/react-dialog',
-            '@radix-ui/react-icons',
-            'lucide-react',
+            '@phosphor-icons',
             'swiper',
             'zod'
         ]
     },
     reactStrictMode: true,
     transpilePackages: ['@radix-ui/*'],
+    images: {
+        remotePatterns: [
+            {
+                hostname: 'inquadra.storage.yandexcloud.net',
+                protocol: 'https',
+                pathname: '**',
+            }
+        ]
+    },
+
     webpack(cfg) {
         const fileLoaderRule = cfg.module.rules.find(rule =>
             rule.test?.test?.('.svg')

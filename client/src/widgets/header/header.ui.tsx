@@ -1,13 +1,10 @@
-import { SearchInputSkeleton } from '~&/src/features/search-input';
 import { FavoritePreview } from '~&/src/entities/favorite';
+import { LOGO } from '~&/src/shared/contants/gateway';
 import { CartPreview } from '~&/src/entities/cart';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-const SearchInput = dynamic(
-    () => import('~&/src/features/search-input').then(cn => cn.SearchInput),
-    { loading: () => <SearchInputSkeleton /> }
-);
+const HeaderSearch = dynamic(() => import('./search').then(cn => cn.SearchUi));
 
 export const Header = () => {
     return (
@@ -36,20 +33,29 @@ export const Header = () => {
             <div className="container flex items-center gap-8 py-2.5">
                 <div className="max-w-[270px] w-full h-auto">
                     <div className="relative w-36 h-12 shrink-0">
-                        <Image src="/logo/logo.png" alt="logo.inquadro" fill />
+                        <Image
+                            sizes='(max-width: 150px) 100vw, 150px'
+                            alt="Logo. Логотип. Inquadra"
+                            placeholder='blur'
+                            blurDataURL={LOGO}
+                            rel='preload'
+                            height={50}
+                            width={150}
+                            src={LOGO}
+                        />
                     </div>
                 </div>
 
                 <div
                     className="
-                w-full grid gap-5
+                w-full md:grid md:gap-5 h-12 md:h-auto
                 sm:grid-cols-[repeat(2,minmax(170px,1fr))]
                 lg:grid-cols-[repeat(3,minmax(170px,1fr))]
                 xl:grid-cols-[repeat(3,minmax(280px,1fr))]
                 2xl:grid-cols-[repeat(3,minmax(290px,1fr))]
                 "
                 >
-                    <SearchInput className="col-span-2" />
+                    <HeaderSearch className="col-span-2" />
 
                     <div className="hidden lg:flex gap-2.5 justify-end">
                         <FavoritePreview />

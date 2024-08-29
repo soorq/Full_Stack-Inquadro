@@ -1,5 +1,6 @@
 import { RecentProducts } from '~&/src/entities/recent-view';
-import { ProductLarge } from '~&/src/widgets/product';
+import { ProductLarge } from '~&/src/features/product/large';
+import { HintOrder } from '~&/src/widgets/hint-order';
 import { ProductApi } from '~&/src/entities/product';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
@@ -28,6 +29,7 @@ export const ProductPage = ({ product }: { product: ProductApi }) => {
                 <ProductLarge product={product} />
                 <RecentProducts />
             </main>
+            <HintOrder />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

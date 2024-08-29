@@ -17,17 +17,11 @@ export class SearchService {
             return API.get<ProductsSearchApi>(
                 `/product/search?query=${query}`,
                 config
-            ).then(res => {
-                console.log(
-                    AxiosContracts.responseContract(
-                        productContract.ProductsSearchSchema
-                    )(res)
-                );
-
-                return AxiosContracts.responseContract(
+            ).then(
+                AxiosContracts.responseContract(
                     productContract.ProductsSearchSchema
-                )(res);
-            });
+                )
+            );
         } catch (error) {
             throw handleApiError(error);
         }

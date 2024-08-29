@@ -4,8 +4,8 @@ export const transformProductClientDto = (
     productApi: ProductApi,
     selectedId?: number
 ): ProductClient => {
-    const getDefaultValue = (
-        field: string | { id: number; value: string }[] | null
+    const transformToString = (
+        field: unknown | { id: number; value: string }[] | null
     ): string => {
         if (typeof field === 'string') {
             const valuesArray = field.split(', ').map(item => item.trim());
@@ -21,27 +21,52 @@ export const transformProductClientDto = (
         return '';
     };
 
-    const transform = (
-        field: string | { id: number; value: string }[] | null
-    ): string => getDefaultValue(field);
+    const getNumberValue = (
+        field: number | { id: number; value: number }[] | null
+    ): number => {
+        if (typeof field === 'number') {
+            return field;
+        }
+        if (Array.isArray(field) && field.length > 0) {
+            if (selectedId !== undefined) {
+                const item = field.find(f => f.id === selectedId);
+                if (item) return item.value;
+            }
+            return field[0].value;
+        }
+        return 0;
+    };
 
-    // @ts-ignore
+      const transformImages = (): string[] => {
+        if (Array.isArray(productApi.images)) {
+            if (selectedId !== undefined) {
+                const selectedImageGroup = productApi.images.find(
+                    group => group.id === selectedId
+                );
+                if (selectedImageGroup) return selectedImageGroup.links;
+            }
+            return productApi.images.length > 0 ? productApi.images[0].links : [];
+        }
+        return [];
+    };
+
     return {
-        name: transform(productApi.name),
-        category: transform(productApi.category),
-        availability: transform(productApi.availability),
-        // images: transform(productApi.images),
-        usage: transform(productApi.usage),
-        plating: transform(productApi.plating),
-        texture: transform(productApi.texture),
-        invoice: transform(productApi.invoice),
-        size: transform(productApi.size),
-        country: transform(productApi.country),
-        price: +transform(productApi.price.toString()),
-        manufacturing: transform(productApi.manufacturing),
-        kit: transform(productApi.kit),
-        shade: transform(productApi.shade),
-        article: transform(productApi.article),
-        slug: transform(productApi.slug)
+        name: transformToString(productApi.name),
+        category: transformToString(productApi.category),
+        availability: transformToString(productApi.availability),
+        images: transformImages(),
+        usage: transformToString(productApi.usage),
+        textureType: null,
+        plating: transformToString(productApi.plating),
+        texture: transformToString(productApi.texture),
+        invoice: transformToString(productApi.invoice),
+        size: transformToString(productApi.size),
+        country: transformToString(productApi.country),
+        price: getNumberValue(productApi.price),
+        manufacturing: transformToString(productApi.manufacturing),
+        kit: transformToString(productApi.kit),
+        shade: transformToString(productApi.shade),
+        article: transformToString(productApi.article),
+        slug: transformToString(productApi.slug)
     };
 };

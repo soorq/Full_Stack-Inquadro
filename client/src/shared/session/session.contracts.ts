@@ -9,5 +9,5 @@ export const SessionSchema = z.object({
     updatedAt: z.string(),
     createdAt: z.string(),
     email: z.string(),
-    id: z.string()
+    id: z.number()
 });

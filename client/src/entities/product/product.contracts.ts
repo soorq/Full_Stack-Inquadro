@@ -21,15 +21,15 @@ export const ProductApiSchema = z.object({
     category: dynamicFieldSchema,
     availability: dynamicFieldSchema,
     usage: dynamicFieldSchema,
-    // image: z.union([
-    //     z.string(),
-    //     z.array(
-    //         z.object({
-    //             id: z.number(),
-    //             value: z.array(z.string()).or(z.array(z.string()).length(0))
-    //         })
-    //     )
-    // ]),
+    images: z.union([
+        z.number(),
+        z.array(
+            z.object({
+                id: z.number(),
+                links: z.array(z.string()).or(z.array(z.string()).length(0))
+            })
+        )
+    ]),
     plating: dynamicFieldSchema,
     texture: dynamicFieldSchema,
     invoice: dynamicFieldSchema,
@@ -56,7 +56,7 @@ export const ProductClientSchema = z.object({
     category: z.string(),
     availability: z.string(),
     usage: z.string(),
-    images: z.array(z.string()).or(z.array(z.string()).length(0)),
+    images: z.array(z.string()).optional(),
     plating: z.string(),
     texture: z.string(),
     invoice: z.string(),

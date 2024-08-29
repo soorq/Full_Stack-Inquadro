@@ -1,3 +1,5 @@
+'use client';
+
 import { Form, FormControl, FormField, FormItem } from '~&/src/shared/ui/form';
 import { useSignMutation, useVerifyMutation } from './sign.mutation';
 import type { CodeFormValues, EmailFormValues } from './sign.types';
@@ -23,15 +25,18 @@ export const SignForm = () => {
         },
         onError(error) {
             toast.error(`${error}`);
+            setStep('email');
         }
     });
 
     const { mutate: signUser } = useSignMutation({
         onSuccess() {
             toast.success('Отправили вам код на почту!');
+            setStep('code');
         },
         onError(error) {
             toast.error(`${error}`);
+            setStep('email');
         }
     });
 
@@ -48,7 +53,6 @@ export const SignForm = () => {
     const onSubmitEmail = async (data: EmailFormValues) => {
         try {
             signUser({ email: data.email });
-            setStep('code');
         } catch (e) {
             toast.error('Что-то пошло не так или не верная почта');
         }

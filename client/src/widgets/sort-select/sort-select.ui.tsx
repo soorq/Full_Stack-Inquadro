@@ -1,5 +1,6 @@
 'use client';
 
+import { CaretDown, SlidersHorizontal } from '@phosphor-icons/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -10,7 +11,6 @@ import {
     SelectTrigger,
     SelectValue
 } from '~&/src/shared/ui/select';
-import { ChevronDown, SlidersHorizontal } from 'lucide-react';
 import * as React from 'react';
 
 export const SortSelect = () => {
@@ -35,7 +35,7 @@ export const SortSelect = () => {
                 className="self-end md:w-[182px] md:gap-2.5 p-1.5 md:py-2.5 md:px-4"
                 icon={
                     <>
-                        <ChevronDown className="hidden size-4 md:block opacity-50 transform delay-100 transition-transform" />
+                        <CaretDown className="hidden size-4 md:block opacity-50 transform delay-100 transition-transform" />
                         <SlidersHorizontal className="block size-5 md:hidden transform delay-100 transition-transform shrink-0" />
                     </>
                 }

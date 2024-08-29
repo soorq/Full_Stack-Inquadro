@@ -1,8 +1,8 @@
 'use client';
 
 import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
+import { ProductOrder } from '~&/src/features/product/order';
 import { ProductClient } from '~&/src/entities/product';
-import { ProductOrder } from '~&/src/widgets/product';
 import { useCartStore } from '~&/src/entities/cart';
 import { useFavoriteStore } from './favorite.model';
 import { Button } from '~&/src/shared/ui/button';
@@ -62,7 +62,7 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
-                            className="gap-2 px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
+                            className="gap-2 sm:px-0 px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
                         >
                             {fav_products.length || 0}
                             <Heart
@@ -83,15 +83,13 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                     </PopoverContent>
                 </Popover>
             ) : (
-                <div className="w-full">
-                    <FavoriteList
-                        favProducts={fav_products}
-                        getProductQty={getProductQty}
-                        isProductInCart={isProductInCart}
-                        handleAddToCart={handleAddToCart}
-                        handleQtyChange={handleQtyChange}
-                    />
-                </div>
+                <FavoriteList
+                    favProducts={fav_products}
+                    getProductQty={getProductQty}
+                    isProductInCart={isProductInCart}
+                    handleAddToCart={handleAddToCart}
+                    handleQtyChange={handleQtyChange}
+                />
             )}
             {focus && (
                 <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
@@ -130,6 +128,7 @@ const FavoriteList: React.FC<FavoriteListProps> = ({
 
                     return (
                         <ProductOrder
+                            className="sm:p-4 px-0 w-full"
                             key={`favorite-order-${product.article}`}
                             onQtyChange={newQty =>
                                 handleQtyChange(product.article, newQty)

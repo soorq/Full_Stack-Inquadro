@@ -9,7 +9,7 @@ import {
 
 export const Navbar = () => {
     return (
-        <NavigationMenu className="justify-start py-2.5">
+        <NavigationMenu className="justify-start">
             <NavigationMenuList>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>
@@ -18,7 +18,7 @@ export const Navbar = () => {
                     <NavigationMenuContent>
                         <ul className="grid gap-2 p-3.5 w-[270px] grid-cols-1">
                             <ListItem href="/about">о компании</ListItem>
-                            <ListItem href="/delievery">
+                            <ListItem href="/delivery">
                                 доставка и оплата
                             </ListItem>
                             <ListItem href="/gift-card">

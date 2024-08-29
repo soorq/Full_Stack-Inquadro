@@ -1,3 +1,4 @@
+import { LOGO } from '~&/src/shared/contants/gateway';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -7,10 +8,14 @@ export const Footer = () => {
             <div className="container w-full h-full">
                 <div className="flex justify-between items-center">
                     <Image
-                        src="/logo/logo.png"
-                        alt=""
-                        width={150}
+                        sizes='(max-width: 150px) 100vw, 150px'
+                        alt="Logo. Логотип. Inquadra"
+                        placeholder='blur'
+                        blurDataURL={LOGO}
+                        rel='preload'
                         height={50}
+                        width={150}
+                        src={LOGO}
                     />
                     <div className="flex items-center gap-2.5">
                         <Link href="/" rel="norefferer nopener">

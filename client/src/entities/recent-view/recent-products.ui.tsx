@@ -1,16 +1,16 @@
 'use client';
 
-import { ProductSmallSkeleton } from '~&/src/widgets/product/small';
+import { ProductSmallSkeleton } from '~&/src/features/product/small';
 import { useRecentViewStore } from './recent-product.model';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { SwiperOptions } from 'swiper/types';
+import { Heart } from '@phosphor-icons/react';
 import { Autoplay } from 'swiper/modules';
-import { Heart } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import 'swiper/css';
-import { SwiperOptions } from 'swiper/types';
 
 const ProductSmall = dynamic(
-    () => import('~&/src/widgets/product').then(cn => cn.ProductSmall),
+    () => import('~&/src/features/product/small').then(cn => cn.ProductSmall),
     {
         loading: () => <ProductSmallSkeleton />,
         ssr: false
@@ -46,12 +46,15 @@ export const RecentProducts = () => {
     if (!products || products.length === 0) return null;
 
     return (
-        <section className="mb-20 w-full h-full">
+        <section className="w-full h-full mb-10">
             <div className="flex items-center gap-1 mb-5">
                 <h3 className="text-lg">
                     Просмотренное, которое можно отложить в
                 </h3>
-                <Heart className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-[10px]" />
+                <Heart
+                    weight="fill"
+                    className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-[10px]"
+                />
             </div>
             <Swiper
                 {...breakers}

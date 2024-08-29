@@ -36,6 +36,7 @@ export type ProductActions = {
 export type ProductWithQuantity = ProductClient & {
     quantity: number;
     totalPrice: number;
+    totalArea: number;
 };
 
 export type DynamicOption = { id: number; value: string };

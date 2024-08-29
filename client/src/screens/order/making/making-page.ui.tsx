@@ -15,24 +15,18 @@ const SignBlock = dynamic(() =>
 );
 
 const OrderMakingForm = dynamic(() =>
-    import('~&/src/features/order').then(cn => cn.OrderMakingForm)
+    import('~&/src/entities/order').then(cn => cn.OrderMakingForm)
 );
 
 export const OrderMakingPage = () => {
     return (
         <>
             <Header />
-            <main className="w-full mt-5 container overflow-hidden max-w-full">
+            <main className="w-full mt-5 container overflow-hidden">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbLink href='/'>Главная</BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbLink>
-                                Подтверждение заказа
-                            </BreadcrumbLink>
+                            <BreadcrumbLink href="/">Главная</BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>

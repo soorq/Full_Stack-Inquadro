@@ -7,8 +7,10 @@ import Link from 'next/link';
 import { useCartStore } from '~&/src/entities/cart';
 
 export const TotalOrder = ({
-    isFormSubmit = false
+    isFormSubmit = false,
+    isDisable = false
 }: {
+    isDisable?: boolean
     isFormSubmit?: boolean;
 }) => {
     const { getTotalCount } = useCartStore(state => state);
@@ -17,7 +19,9 @@ export const TotalOrder = ({
 
     return (
         <div className="bg-secondary w-full h-auto rounded-[10px] p-4">
-            <p className="text-lg leading-5">Итоговая сумма вашего заказа</p>
+            <p className="text-base sm:text-lg leading-5">
+                Итоговая сумма вашего заказа
+            </p>
             <div className="flex flex-col sm:flex-row gap-2.5 max-w-[550px] mt-3 mb-2.5">
                 <Input
                     value={totalPriceCart + ' руб.'}
@@ -26,14 +30,14 @@ export const TotalOrder = ({
                 />
 
                 {isFormSubmit ? (
-                    <Button className="w-full h-[50px] max-w-[300px] rounded-lg text-lg">
+                    <Button type='submit' disabled={isDisable} className="w-full h-[50px] md:max-w-[300px] rounded-lg text-lg">
                         Оформить
                     </Button>
                 ) : (
                     <Button
                         asChild
                         disabled={+totalPriceCart <= 0}
-                        className="w-full h-[50px] max-w-[300px] rounded-lg text-lg"
+                        className="w-full h-[50px] md:max-w-[300px] rounded-lg text-lg"
                     >
                         <Link href={'/order/oformlenie-zakaza'}>
                             Подтвердить

@@ -1,17 +1,26 @@
 'use client';
 
 import { calculateTileMetrics } from '~&/src/shared/lib/calculate-price';
+import { ProductOrderSkeleton } from '~&/src/features/product/order';
 import { ProductWithQuantity } from '~&/src/entities/product';
-import { ProductOrder } from '~&/src/widgets/product';
+import { ShoppingCart } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '~&/src/shared/ui/button';
 import { useCartStore } from './cart.model';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '~&/src/shared/ui/popover';
-import { useState } from 'react';
-import { ShoppingCart } from '@phosphor-icons/react/dist/ssr';
+
+const ProductOrder = dynamic(
+    () => import('~&/src/features/product/order').then(cm => cm.ProductOrder),
+    {
+        ssr: false,
+        loading: () => <ProductOrderSkeleton />
+    }
+);
 
 export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     const [focus, setFocus] = useState(false);
@@ -29,13 +38,13 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     };
 
     return (
-        <div className="flex data-[state=open]:flex-row justify-center h-full flex-col items-center gap-1">
+        <div className="flex data-[state=open]:flex-row justify-center h-full flex-col items-center gap-y-2.5 sm:gap-1">
             {isIcon ? (
                 <Popover onOpenChange={setFocus}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
-                            className="gap-2 px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
+                            className="gap-2 sm:px-0 hover:bg-transparent text-base font-normal data-[state=open]:z-30 data-[state=open]:relative data-[state=open]:text-white"
                         >
                             {cartProducts.length}
                             <ShoppingCart
@@ -53,12 +62,10 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                     </PopoverContent>
                 </Popover>
             ) : (
-                <div className="w-full">
-                    <ProductList
-                        products={cartProducts}
-                        onQtyChange={handleQtyChange}
-                    />
-                </div>
+                <ProductList
+                    products={cartProducts}
+                    onQtyChange={handleQtyChange}
+                />
             )}
 
             {focus && (

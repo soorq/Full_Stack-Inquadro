@@ -1,4 +1,4 @@
-import { Banknote, Truck } from 'lucide-react';
+import { Money, Truck } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '~&/src/shared/lib/tw-merge';
 
 export const OrderInfo = ({ withBg = true }: { withBg?: boolean }) => {
@@ -9,13 +9,13 @@ export const OrderInfo = ({ withBg = true }: { withBg?: boolean }) => {
             )}
         >
             <div className="flex gap-2.5 mb-0.5 items-center">
-                <Banknote className="size-5" />
+                <Money className="size-5" weight="light" />
                 <span className="text-sm leading-4 text-black/50">
                     минимальная сумма заказа от 10000 руб.
                 </span>
             </div>
             <div className="w-full flex gap-2.5 items-center">
-                <Truck className="size-5" />
+                <Truck className="size-5" weight="light" />
                 <span className="text-sm leading-4 text-black/50">
                     бесплатная доставка заказа от 20000 руб.
                 </span>

@@ -7,7 +7,7 @@ const config = {
     theme: {
         container: {
             center: true,
-            padding: '1rem',
+            padding: '0.625rem',
             screens: {
                 '2xl': '1280px'
             }
@@ -55,6 +55,9 @@ const config = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))'
                 }
+            },
+            backgroundImage: {
+                c_order: 'url(https://inquadra.storage.yandexcloud.net/static/order.png)'
             },
             borderRadius: {
                 lg: 'var(--radius)',

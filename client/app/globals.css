@@ -49,7 +49,7 @@ body {
 
     .scroll-down::before,
     .scroll-down::after {
-        content: "";
+        content: '';
         @apply absolute h-[10px] w-[10px] border-2 border-black;
         border-top-color: transparent;
         border-left-color: transparent;
@@ -87,9 +87,10 @@ body {
     border-radius: 50%;
     background: white !important;
     margin: 0 2px !important; /* Space between bullets */
-    transition: background 0.3s ease,
-    width 0.3s ease,
-    transform 0.3s ease;
+    transition:
+        background 0.3s ease,
+        width 0.3s ease,
+        transform 0.3s ease;
 }
 
 /* Style for the active bullet */
