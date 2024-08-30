@@ -99,10 +99,10 @@ export const ProductQty = memo(
                     </div>
                 </div>
 
-                <div className="flex gap-1.5 w-full h-auto">
+                <div className="flex gap-1.5 w-full h-auto items-center">
                     <div
                         className={cn(
-                            'flex gap-1.5',
+                            'flex gap-1.5 items-center',
                             isInCart ? 'md:flex-row w-full' : 'w-full'
                         )}
                     >
@@ -138,7 +138,7 @@ export const ProductQty = memo(
                             qty={qty}
                         />
                         <FavoriteWidget
-                            className="[&>svg]:fill-red-400 [&>svg]:size-7 size-[50px]"
+                            className="[&>svg]:fill-red-400"
                             product={product}
                             qty={qty}
                         />

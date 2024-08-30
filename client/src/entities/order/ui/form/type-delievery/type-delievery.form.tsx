@@ -22,7 +22,7 @@ export const TypeDelieveryForm = ({
             <FormField
                 name="shipping_method"
                 control={control}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                     <FormItem>
                         <FormControl>
                             <RadioGroup
@@ -34,7 +34,7 @@ export const TypeDelieveryForm = ({
                                     <FormControl className="shrink-0">
                                         <RadioGroupItem
                                             withIndicator
-                                            value="yourself"
+                                            value="самовывоз"
                                             disabled={field.disabled}
                                         />
                                     </FormControl>
@@ -46,7 +46,7 @@ export const TypeDelieveryForm = ({
                                     <FormControl className="shrink-0">
                                         <RadioGroupItem
                                             withIndicator
-                                            value="courier"
+                                            value="курьер"
                                             disabled={field.disabled}
                                         />
                                     </FormControl>

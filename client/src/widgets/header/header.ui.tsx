@@ -34,11 +34,11 @@ export const Header = () => {
                 <div className="max-w-[270px] w-full h-auto">
                     <div className="relative w-36 h-12 shrink-0">
                         <Image
-                            sizes='(max-width: 150px) 100vw, 150px'
+                            sizes="(max-width: 150px) 100vw, 150px"
                             alt="Logo. Логотип. Inquadra"
-                            placeholder='blur'
+                            placeholder="blur"
                             blurDataURL={LOGO}
-                            rel='preload'
+                            rel="preload"
                             height={50}
                             width={150}
                             src={LOGO}

@@ -55,7 +55,7 @@ export const ConfirmProducts = () => {
                         }
                         qty={product.quantity}
                         product={product}
-                        className="px-0"
+                        className="sm:px-0"
                         context="confirm"
                         totalTileArea={totalTileArea}
                         totalCost={totalCost}

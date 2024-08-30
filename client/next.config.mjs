@@ -17,7 +17,7 @@ const nextConfig = {
             {
                 hostname: 'inquadra.storage.yandexcloud.net',
                 protocol: 'https',
-                pathname: '**',
+                pathname: '**'
             }
         ]
     },

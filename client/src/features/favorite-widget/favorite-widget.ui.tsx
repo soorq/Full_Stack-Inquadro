@@ -31,27 +31,23 @@ export const FavoriteWidget = ({
         <Button
             size="icon"
             className={cn(
-                'group shadow-none shrink-0',
+                'group/favorite shadow-none cursor-pointer',
                 {
                     'hover:bg-red-400/35 bg-white/25 ': !isFavorite,
                     'bg-red-400/35 hover:bg-red-400/35': isFavorite
                 },
                 className
             )}
-            asChild
             onClick={toggleFavorite}
         >
             <Heart
                 weight="fill"
                 size={23}
-                className={cn(
-                    'stroke-white size-10 p-1.5 sm:p-1 fill-white transition-colors',
-                    {
-                        'group-hover:fill-red-400 group-hover:stroke-red-400':
-                            !isFavorite,
-                        '!fill-red-400 stroke-red-400': isFavorite
-                    }
-                )}
+                className={cn('stroke-white transition-colors size-full', {
+                    'group-hover/favorite:fill-red-400 group-hover/favorite:stroke-red-400':
+                        !isFavorite,
+                    '!fill-red-400 stroke-red-400': isFavorite
+                })}
             />
         </Button>
     );

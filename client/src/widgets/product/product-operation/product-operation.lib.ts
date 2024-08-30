@@ -1,5 +1,10 @@
 import type { DynamicOption } from '~&/src/entities/product';
 
+interface Option {
+    id: number;
+    value: string;
+}
+
 export const getUniqueOptions = (options: DynamicOption[]): DynamicOption[] => {
     const seen = new Set<string>();
     return options.filter(option => {
@@ -8,11 +13,6 @@ export const getUniqueOptions = (options: DynamicOption[]): DynamicOption[] => {
         return true;
     });
 };
-
-interface Option {
-    id: number;
-    value: string;
-}
 
 // Вспомогательная функция для фильтрации опций
 export const filterOptionsByIds = (

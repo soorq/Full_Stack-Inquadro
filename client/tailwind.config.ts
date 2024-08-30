@@ -57,7 +57,8 @@ const config = {
                 }
             },
             backgroundImage: {
-                c_order: 'url(https://inquadra.storage.yandexcloud.net/static/order.png)'
+                c_order:
+                    'url(https://inquadra.storage.yandexcloud.net/static/order.png)'
             },
             borderRadius: {
                 lg: 'var(--radius)',

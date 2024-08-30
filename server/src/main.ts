@@ -16,6 +16,7 @@ import {
 declare const module: any;
 
 const MOCK_APP_URLS = [
+    'http://89.23.116.190:3000',
     'https://89.23.116.190:3000',
     'http://localhost:3000',
     'https://inquadro.vercel.app',

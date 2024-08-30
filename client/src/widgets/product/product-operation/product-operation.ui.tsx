@@ -10,6 +10,11 @@ import {
     getOptions
 } from './product-operation.lib';
 
+type DynamicOption = {
+    id: number;
+    value: string;
+};
+
 export const ProductOperation = () => {
     const [selectedSizeId, setSelectedSizeId] = useState<number | undefined>(
         undefined
@@ -50,7 +55,15 @@ export const ProductOperation = () => {
         if (product) {
             const sizeOptions = getOptions(product.size, true);
             const usageOptions = getOptions(product.usage);
-            const shadeOptions = getOptions(product.shade);
+            const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
+                ? getOptions(product.shade).filter(
+                      (option): option is DynamicOption =>
+                          option.id !== undefined
+                  )
+                : [{ id: selectedShadeId ?? 0, value: product.shade }].filter(
+                      (option): option is DynamicOption =>
+                          option.id !== undefined
+                  );
 
             const relatedSizeIds = getRelatedSizeIds(
                 sizeOptions,
@@ -90,9 +103,15 @@ export const ProductOperation = () => {
 
     useEffect(() => {
         if (selectedUsageId && product) {
-            const shadeOptions = Array.isArray(product.shade)
-                ? getOptions(product.shade)
-                : [{ id: selectedUsageId, value: product.shade }];
+            const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
+                ? getOptions(product.shade).filter(
+                      (option): option is DynamicOption =>
+                          option.id !== undefined
+                  )
+                : [{ id: selectedUsageId ?? 0, value: product.shade }].filter(
+                      (option): option is DynamicOption =>
+                          option.id !== undefined
+                  );
 
             const usageOptions = getOptions(product.usage);
 
@@ -104,9 +123,10 @@ export const ProductOperation = () => {
                 .filter(usage => relatedUsageValues.includes(usage.value))
                 .map(usage => usage.id);
 
-            const filteredShadeOptions = Array.isArray(product.shade)
-                ? filterOptionsByIds(shadeOptions, relatedUsageIds)
-                : [{ id: selectedUsageId, value: product.shade }];
+            const filteredShadeOptions = filterOptionsByIds(
+                shadeOptions,
+                relatedUsageIds
+            );
 
             setSelectedShadeId(
                 filteredShadeOptions.length > 0
@@ -120,7 +140,13 @@ export const ProductOperation = () => {
 
     const sizeOptions = getOptions(product.size, true);
     const usageOptions = getOptions(product.usage);
-    const shadeOptions = getOptions(product.shade);
+    const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
+        ? getOptions(product.shade).filter(
+              (option): option is DynamicOption => option.id !== undefined
+          )
+        : [{ id: selectedShadeId ?? 0, value: product.shade }].filter(
+              (option): option is DynamicOption => option.id !== undefined
+          );
 
     const relatedSizeIds = getRelatedSizeIds(sizeOptions, selectedSizeId ?? 0);
 

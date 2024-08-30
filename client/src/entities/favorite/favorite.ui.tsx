@@ -128,7 +128,6 @@ const FavoriteList: React.FC<FavoriteListProps> = ({
 
                     return (
                         <ProductOrder
-                            className="sm:p-4 px-0 w-full"
                             key={`favorite-order-${product.article}`}
                             onQtyChange={newQty =>
                                 handleQtyChange(product.article, newQty)

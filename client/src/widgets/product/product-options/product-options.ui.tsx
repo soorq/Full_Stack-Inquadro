@@ -21,7 +21,7 @@ export const ProductOptions = ({
             </div>
 
             <div className="bg-secondary p-4 w-full flex justify-between items-center rounded-[10px]">
-                <h2 className="text-2xl">
+                <h2 className="text-2xl leading-6">
                     {Math.floor((product && product?.price) || 0)}
                     {' рублей за '}
                     {product?.kit ? (+product.kit === 1 ? 'шт.' : 'м²') : ''}

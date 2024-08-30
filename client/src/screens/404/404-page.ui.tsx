@@ -55,10 +55,10 @@ export const NotFoundPage = () => {
                                     alt="404 page. Inquadra"
                                     blurDataURL={NOT_FOUND_IMAGE}
                                     className="!-top-1/4"
-                                    placeholder='blur'
-                                    loading='eager'
+                                    placeholder="blur"
+                                    loading="eager"
                                     src={NOT_FOUND_IMAGE}
-                                    rel='preload'
+                                    rel="preload"
                                     fill
                                 />
                             </div>

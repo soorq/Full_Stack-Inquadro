@@ -31,12 +31,17 @@ export const ProductOrder = ({
     >
         <div className="relative w-full shrink-0 h-auto md:h-svh max-w-[130px] xs:max-w-[150px] md:max-w-[170px] md:max-h-[230px]">
             <Image
-                className={cn("rounded-[10px] object-cover", product?.images ? 'border border-secondary shadow-lg shadow-secondary' : '')}
+                className={cn(
+                    'rounded-[10px] object-cover',
+                    product?.images
+                        ? 'border border-secondary shadow-lg shadow-secondary'
+                        : ''
+                )}
                 blurDataURL={product.images?.[0] || NOT_IMAGE}
                 sizes="(max-width: 170px) 100vw, 170px"
                 src={product.images?.[0] || NOT_IMAGE}
                 alt={product.name}
-                loading='lazy'
+                loading="lazy"
                 fill
             />
 

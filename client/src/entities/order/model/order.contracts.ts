@@ -15,8 +15,8 @@ export const OrderSchemaCreate = z.object({
     city: z.string(),
     address: z.string(),
     entrance: z.string(),
-    shipping_method: z.enum(['yourself', 'courier']),
-    payment_method: z.enum(['cash', 'payment']),
+    shipping_method: z.enum(['самовывоз', 'курьер']),
+    payment_method: z.enum(['наличка', 'карта']),
     products: z.array(ProductWithQuantitySchema),
     quantity: z.number(),
     price: z.number()
@@ -31,7 +31,7 @@ export const OrderSchema = z.object({
     city: z.string({ required_error: 'Необходимо заполнить' }),
     address: z.string({ required_error: 'Необходимо заполнить' }),
     entrance: z.string().optional().default(''),
-    shipping_method: z.enum(['yourself', 'courier']),
-    payment_method: z.enum(['cash', 'payment']),
+    shipping_method: z.enum(['самовывоз', 'курьер']),
+    payment_method: z.enum(['наличка', 'карта']),
     isPolicy: z.boolean({ required_error: 'Поле ознакомлен - обязательно' })
 });

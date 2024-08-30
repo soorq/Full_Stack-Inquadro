@@ -8,11 +8,11 @@ export const Footer = () => {
             <div className="container w-full h-full">
                 <div className="flex justify-between items-center">
                     <Image
-                        sizes='(max-width: 150px) 100vw, 150px'
+                        sizes="(max-width: 150px) 100vw, 150px"
                         alt="Logo. Логотип. Inquadra"
-                        placeholder='blur'
+                        placeholder="blur"
                         blurDataURL={LOGO}
-                        rel='preload'
+                        rel="preload"
                         height={50}
                         width={150}
                         src={LOGO}
@@ -55,34 +55,38 @@ export const Footer = () => {
                 </div>
                 <div className="flex mt-10 mb-5 flex-col md:flex-row gap-5">
                     <ul className="md:w-1/4 [&>li]:mb-1">
-                        <li className="">
-                            <Link href="">о компании</Link>
+                        <li>
+                            <Link href="/about">о компании</Link>
                         </li>
-                        <li className="">
-                            <Link href="">подарочная карта</Link>
+                        <li>
+                            <Link href="/gift-card">подарочная карта</Link>
                         </li>
-                        <li className="">
-                            <Link href="">партнерская программа</Link>
+                        <li>
+                            <Link href="/partner">партнерская программа</Link>
                         </li>
-                        <li className="">
-                            <Link href="">акционная программа</Link>
+                        <li>
+                            <Link href="/promotional">акционная программа</Link>
                         </li>
-                        <li className="">
-                            <Link href="">контактная информация</Link>
+                        <li>
+                            <Link href="/contact">контактная информация</Link>
                         </li>
                     </ul>
 
                     <ul className="md:w-2/4 [&>li]:mb-1">
                         <li>
-                            <Link href="/">
+                            <Link href="/personal">
                                 условия обработки персональных данных
                             </Link>
                         </li>
                         <li>
-                            <Link href="/">условия обработки файлов куки</Link>
+                            <Link href="/cookie">
+                                условия обработки файлов куки
+                            </Link>
                         </li>
                         <li>
-                            <Link href="/">условия доставки товаров</Link>
+                            <Link href="/delivery">
+                                условия доставки товаров
+                            </Link>
                         </li>
                         <li>
                             <Link href="/">публичная оферта</Link>

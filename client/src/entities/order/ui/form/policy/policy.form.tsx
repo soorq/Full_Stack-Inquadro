@@ -40,7 +40,7 @@ export const PolicyForm = ({
                                         я ознакомлен(-на) и полностью
                                         согласен(-на){' '}
                                         <Link
-                                            href={'/optovik'}
+                                            href={'/delivery'}
                                             className="text-blue-500 underline hover:text-blue-400"
                                         >
                                             с условиями доставки товара
@@ -54,7 +54,7 @@ export const PolicyForm = ({
                                         </Link>
                                         , <br />
                                         <Link
-                                            href="/policy"
+                                            href="/personal"
                                             className="text-blue-500 underline hover:text-blue-400"
                                         >
                                             с условиями обработки персональных

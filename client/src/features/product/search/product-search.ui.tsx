@@ -18,12 +18,17 @@ export const ProductSearch = ({
         <div className="flex gap-5 px-4 py-2 sm:p-4 w-full h-auto">
             <div className="relative shrink-0 w-full max-w-[135px] h-auto sm:max-w-[170px]">
                 <Image
-                    className={cn("rounded-[10px] object-cover", product?.images ? 'border border-secondary shadow-lg shadow-secondary' : '')}
+                    className={cn(
+                        'rounded-[10px] object-cover',
+                        product?.images
+                            ? 'border border-secondary shadow-lg shadow-secondary'
+                            : ''
+                    )}
                     blurDataURL={product.images?.[0] || NOT_IMAGE}
                     sizes="(max-width: 170px) 100vw, 170px"
                     src={product.images?.[0] || NOT_IMAGE}
                     alt={product.name}
-                    loading='lazy'
+                    loading="lazy"
                     fill
                 />
 

@@ -37,7 +37,7 @@ export const transformProductClientDto = (
         return 0;
     };
 
-      const transformImages = (): string[] => {
+    const transformImages = (): string[] => {
         if (Array.isArray(productApi.images)) {
             if (selectedId !== undefined) {
                 const selectedImageGroup = productApi.images.find(
@@ -45,7 +45,9 @@ export const transformProductClientDto = (
                 );
                 if (selectedImageGroup) return selectedImageGroup.links;
             }
-            return productApi.images.length > 0 ? productApi.images[0].links : [];
+            return productApi.images.length > 0
+                ? productApi.images[0].links
+                : [];
         }
         return [];
     };

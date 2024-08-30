@@ -36,7 +36,7 @@ export const TypePayForm = ({
                                         <FormControl className="shrink-0">
                                             <RadioGroupItem
                                                 withIndicator
-                                                value="cash"
+                                                value="наличка"
                                                 disabled={field.disabled}
                                             />
                                         </FormControl>
@@ -48,7 +48,7 @@ export const TypePayForm = ({
                                         <FormControl className="shrink-0">
                                             <RadioGroupItem
                                                 withIndicator
-                                                value="payment"
+                                                value="карта"
                                                 disabled={field.disabled}
                                             />
                                         </FormControl>

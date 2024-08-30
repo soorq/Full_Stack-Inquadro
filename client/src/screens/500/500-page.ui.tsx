@@ -55,10 +55,10 @@ export const ErrorPage = () => {
                                     alt="404 page. Inquadra"
                                     blurDataURL={ERROR_IMAGE}
                                     className="!-top-1/4"
-                                    placeholder='blur'
-                                    loading='eager'
+                                    placeholder="blur"
+                                    loading="eager"
                                     src={ERROR_IMAGE}
-                                    rel='preload'
+                                    rel="preload"
                                     fill
                                 />
                             </div>

@@ -1,4 +1,4 @@
-import type { OrderSchemaCreateDto } from './order.types';
+import type { OrderSchemaCreateDto } from '../model';
 import { OrderService } from './order.api';
 import {
     type DefaultError,

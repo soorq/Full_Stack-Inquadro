@@ -58,9 +58,7 @@ export const SearchUi = ({ className }: { className?: string }) => {
             <div
                 className={cn(
                     'w-auto md:w-full z-20 h-[50px] fixed md:relative transition-all duration-300',
-                    focused
-                        ? 'inset-2.5 md:inset-0 md:px-4'
-                        : 'relative',
+                    focused ? 'inset-2.5 md:inset-0 md:px-4' : 'relative',
                     className
                 )}
                 ref={ref}

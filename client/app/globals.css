@@ -63,6 +63,20 @@ body {
         top: 30%;
         animation-delay: 0.3s;
     }
+
+    .list-counter {
+        @apply list-none;
+        counter-reset: item;
+    }
+
+    .list-counter > li {
+        display: block;
+        counter-increment: item;
+    }
+
+    .list-counter > li::before {
+        content: counters(item, '.') '. ';
+    }
 }
 
 @keyframes scroll-down {

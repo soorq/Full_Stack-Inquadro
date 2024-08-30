@@ -10,7 +10,7 @@ export const TotalOrder = ({
     isFormSubmit = false,
     isDisable = false
 }: {
-    isDisable?: boolean
+    isDisable?: boolean;
     isFormSubmit?: boolean;
 }) => {
     const { getTotalCount } = useCartStore(state => state);
@@ -30,7 +30,11 @@ export const TotalOrder = ({
                 />
 
                 {isFormSubmit ? (
-                    <Button type='submit' disabled={isDisable} className="w-full h-[50px] md:max-w-[300px] rounded-lg text-lg">
+                    <Button
+                        type="submit"
+                        disabled={isDisable}
+                        className="w-full h-[50px] md:max-w-[300px] rounded-lg text-lg"
+                    >
                         Оформить
                     </Button>
                 ) : (

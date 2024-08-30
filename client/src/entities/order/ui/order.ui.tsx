@@ -27,7 +27,11 @@ export const OrderMakingForm = () => {
     const [isDisabling, setIsDisabling] = useState(false);
     const session = useSessionStore(state => state.session);
 
-    const { mutate: createOrder, data, isSuccess } = useOrderMutation({
+    const {
+        mutate: createOrder,
+        data,
+        isSuccess
+    } = useOrderMutation({
         onSuccess: data => {
             clearCart();
         }
@@ -38,8 +42,8 @@ export const OrderMakingForm = () => {
         reValidateMode: 'onChange',
         disabled: isDisabling,
         defaultValues: {
-            shipping_method: 'yourself',
-            payment_method: 'cash',
+            shipping_method: 'самовывоз',
+            payment_method: 'наличка',
             isPolicy: false
         }
     });
@@ -88,7 +92,16 @@ export const OrderMakingForm = () => {
                         <PolicyForm control={form.control} />
                         <TotalOrder isFormSubmit isDisable={isSuccess} />
                     </>
-                ) : <div className="md:w-1/2 w-full"><CardOrder order_id='2024_di1' quantity={12} sqmetrs={123} total={134} /></div>}
+                ) : (
+                    <div className="md:w-1/2 w-full">
+                        <CardOrder
+                            order_id="2024_di1"
+                            quantity={12}
+                            sqmetrs={123}
+                            total={134}
+                        />
+                    </div>
+                )}
             </form>
 
             <Conffeti isComplete={false} />
