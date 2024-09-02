@@ -38,7 +38,7 @@ export const OrderConfirmPage = () => {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <section className="my-10">
+                <section className="my-4">
                     <ConfirmProducts />
                     <PromoCode />
                     <TotalOrder />

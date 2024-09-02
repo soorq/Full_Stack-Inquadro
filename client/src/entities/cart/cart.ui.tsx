@@ -7,7 +7,6 @@ import { ShoppingCart } from '@phosphor-icons/react/dist/ssr';
 import { Button } from '~&/src/shared/ui/button';
 import { useCartStore } from './cart.model';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
 import {
     Popover,
     PopoverContent,
@@ -23,24 +22,43 @@ const ProductOrder = dynamic(
 );
 
 export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
-    const [focus, setFocus] = useState(false);
-    const { products: cartProducts, updateQuantityFn } = useCartStore(
-        state => ({
-            products: state.products,
-            updateQuantityFn: state.updateQuantityFn
-        })
-    );
+    const {
+        products: cartProducts,
+        updateQuantityFn,
+        setOpenCart,
+        delFn,
+        open
+    } = useCartStore(state => ({
+        open: state.open,
+        products: state.products,
+        delFn: state.delFn,
+        setOpenCart: state.setOpenCart,
+        updateQuantityFn: state.updateQuantityFn
+    }));
 
     const handleQtyChange = (article: string, newQty: number) => {
+        const product = cartProducts.find(item => item.article === article);
+
+        if (newQty < 1) {
+            delFn(product?.article || '')
+        }
         if (newQty >= 1 && newQty <= 99) {
             updateQuantityFn(article, newQty);
         }
     };
 
+    const handleCloseCart = () => {
+        setOpenCart(false)
+    };
+
     return (
         <div className="flex data-[state=open]:flex-row justify-center h-full flex-col items-center gap-y-2.5 sm:gap-1">
             {isIcon ? (
-                <Popover onOpenChange={setFocus}>
+                <Popover
+                    onOpenChange={setOpenCart}
+                    defaultOpen={false}
+                    open={open}
+                >
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
@@ -54,10 +72,11 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                             />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="p-0 max-w-[610px] max-h-[500px] h-full overflow-y-auto w-svw">
+                    <PopoverContent className="p-0 hidden md:block max-w-[610px] max-h-[525px] h-full overflow-y-auto scroll-none w-svw">
                         <ProductList
                             products={cartProducts}
                             onQtyChange={handleQtyChange}
+                            handleCloseCart={handleCloseCart}
                         />
                     </PopoverContent>
                 </Popover>
@@ -68,8 +87,8 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                 />
             )}
 
-            {focus && (
-                <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
+            {open && (
+                <div className="fixed hidden md:block top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
             )}
         </div>
     );
@@ -78,9 +97,10 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
 interface ProductListProps {
     products: ProductWithQuantity[];
     onQtyChange: (article: string, qty: number) => void;
+    handleCloseCart?: () => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products, onQtyChange }) => {
+const ProductList: React.FC<ProductListProps> = ({ products, onQtyChange, handleCloseCart }) => {
     return (
         <>
             {products.length ? (
@@ -96,6 +116,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onQtyChange }) => {
                         <ProductOrder
                             key={`product-cart-${product.article}`}
                             href={'/order/podtverzhdenie-zakaza'}
+                            handleCloseCart={handleCloseCart}
                             totalTileArea={totalTileArea}
                             qty={product.quantity}
                             totalCost={totalCost}

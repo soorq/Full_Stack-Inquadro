@@ -1,10 +1,5 @@
 'use client';
 
-import {
-    TypeQueryFilters,
-    useFiltersStore,
-    FilterQueries
-} from '~&/src/features/filter';
 import { ProductSmallSkeleton } from '~&/src/features/product/small';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SortSelect } from '~&/src/widgets/sort-select';
@@ -13,6 +8,11 @@ import { Button } from '~&/src/shared/ui/button';
 import { X } from '@phosphor-icons/react';
 import { useEffect, memo } from 'react';
 import dynamic from 'next/dynamic';
+import {
+    TypeQueryFilters,
+    useFiltersStore,
+    FilterQueries
+} from '~&/src/features/filter';
 
 const ProductSmall = dynamic(
     () => import('~&/src/features/product/small').then(cn => cn.ProductSmall),
@@ -51,7 +51,7 @@ export const FiltersProducts = memo(
                         className={`h-10 gap-2 leading-5 hidden md:flex font-[350] ${isActiveFilter ? 'visible' : 'invisible'}`}
                         onClick={resetFilters}
                     >
-                        <span>Сбросить фильтр</span>
+                        <span>сбросить фильтр</span>
                         <X
                             weight="light"
                             className="size-5 stroke-1 self-center"

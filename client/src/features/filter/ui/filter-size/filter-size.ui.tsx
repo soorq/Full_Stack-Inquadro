@@ -2,38 +2,40 @@ import { ToggleGroup, ToggleGroupItem } from '~&/src/shared/ui/toggle-group';
 
 export const FilterSize = ({
     items,
-    className,
     defaultItems,
-    limit,
     loading,
-    name,
     onClickCheckbox,
     selected
 }: {
     onClickCheckbox?: (id: string, isSelected: boolean) => void;
     defaultItems?: { label: string; value: string }[];
-    className?: string;
-    limit?: number;
     selected?: Set<string>;
     loading?: boolean;
     items: { label: string; value: string }[];
-    name?: string;
 }) => {
-    const initial = (defaultItems || items).slice(0, limit);
+    const initial = items || defaultItems;
 
-    const handleCheckboxChange = (value: string) => {
-        const isSelected = selected?.has(value) || false;
-        onClickCheckbox?.(value, !isSelected);
-    };
+    const valueArray = Array.from(selected || []);
 
     return (
         <div className="bg-secondary p-4 flex flex-col rounded-[10px]">
             <ToggleGroup
                 type="multiple"
-                className="flex-wrap justify-start"
-                defaultValue={Array.from(selected || [])}
+                className="grid grid-cols-[repeat(3,1fr)] auto-rows-fr"
+                value={valueArray}
                 onValueChange={values => {
-                    values.forEach(handleCheckboxChange);
+                    // Сначала очищаем все выбранные элементы
+                    selected?.forEach(value => {
+                        if (!values.includes(value)) {
+                            onClickCheckbox?.(value, false);
+                        }
+                    });
+
+                    values.forEach(value => {
+                        if (!selected?.has(value)) {
+                            onClickCheckbox?.(value, true);
+                        }
+                    });
                 }}
             >
                 {initial.map(size => (

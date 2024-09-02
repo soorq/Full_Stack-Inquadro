@@ -1,7 +1,7 @@
 import { FilterCheckbox } from './filter-group-checkbox.ui';
 import { Skeleton } from '~&/src/shared/ui/skeleton';
-import { useState } from 'react';
 import { Button } from '~&/src/shared/ui/button';
+import { useState } from 'react';
 
 export interface FilterCheckboxProps {
     label: string;
@@ -23,11 +23,11 @@ export const FiltersCheckboxGroup = ({
 }: {
     onClickCheckbox?: (id: string, isSelected: boolean) => void;
     defaultItems?: { label: string; value: string }[];
-    className?: string;
-    limit?: number;
-    selected?: Set<string>;
-    loading?: boolean;
     items: FilterCheckboxProps[];
+    selected?: Set<string>;
+    className?: string;
+    loading?: boolean;
+    limit?: number;
     name?: string;
 }) => {
     const [showAll, setShowAll] = useState(false);
@@ -45,7 +45,7 @@ export const FiltersCheckboxGroup = ({
 
     const filteredItems = showAll
         ? items
-        : (defaultItems || items).slice(0, limit);
+        : (items || defaultItems).slice(0, limit);
 
     const handleCheckboxChange = (id: string) => {
         const isSelected = selected.has(id);

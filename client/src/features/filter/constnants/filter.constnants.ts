@@ -108,7 +108,7 @@ export const MFilterPlating = [
     },
     {
         label: 'глянцевое покрытие',
-        value: 'матовое покрытие'
+        value: 'глянцевое покрытие'
     }
 ];
 

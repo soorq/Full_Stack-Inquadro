@@ -28,6 +28,7 @@ export class BotService {
 
             await this.downloadFile(url.href, filePath);
             const jsonDataExcel = await this.parseExcel(filePath);
+            console.log(jsonDataExcel);
             fs.unlinkSync(filePath);
 
             await this.saveExcelToDb(jsonDataExcel);
@@ -59,7 +60,10 @@ export class BotService {
             for (const row of rows) {
                 const productDto = this.mapRowToDto(headers, row);
                 try {
-                    await this.product.create(productDto);
+                    await this.product.create({
+                        ...productDto,
+                        price: Math.round(productDto.price)
+                    });
                 } catch (error) {
                     this.handleProductSaveError(
                         error,
@@ -128,6 +132,24 @@ export class BotService {
                 return acc;
             },
             {} as Record<string, any>
+        );
+
+        console.log(
+            rowObject['category'],
+            rowObject['name'],
+            rowObject['availability'],
+            rowObject['usage'],
+            [],
+            rowObject['plating'],
+            rowObject['texture'],
+            rowObject['invoice'],
+            rowObject['size'] || 'N/A',
+            rowObject['shade'] || 'N/A',
+            rowObject['country'],
+            rowObject['price'] || '0',
+            rowObject['manufacturing'],
+            rowObject['article'],
+            rowObject['kit'] || '1'
         );
 
         return {

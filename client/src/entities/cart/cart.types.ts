@@ -16,8 +16,10 @@ export type TypeCartActions = {
         sqmetrs: number;
         products: ProductWithQuantity[];
     };
+    setOpenCart: (open: boolean) => void; 
 };
 
 export type TypeCartStates = {
+    open: boolean;
     products: ProductWithQuantity[];
 };

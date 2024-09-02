@@ -56,10 +56,6 @@ const config = {
                     foreground: 'hsl(var(--card-foreground))'
                 }
             },
-            backgroundImage: {
-                c_order:
-                    'url(https://inquadra.storage.yandexcloud.net/static/order.png)'
-            },
             borderRadius: {
                 lg: 'var(--radius)',
                 md: 'calc(var(--radius) - 2px)',

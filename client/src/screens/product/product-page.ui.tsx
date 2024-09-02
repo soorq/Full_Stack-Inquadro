@@ -4,6 +4,14 @@ import { HintOrder } from '~&/src/widgets/hint-order';
 import { ProductApi } from '~&/src/entities/product';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
+} from '~&/src/shared/ui/breadcrumb';
 
 export const ProductPage = ({ product }: { product: ProductApi }) => {
     const productJsonLd = {
@@ -26,6 +34,17 @@ export const ProductPage = ({ product }: { product: ProductApi }) => {
         <>
             <Header />
             <main className="w-full container h-full">
+                <Breadcrumb className="mt-2.5 mb-5">
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">Главная</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage>{product.name}</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
                 <ProductLarge product={product} />
                 <RecentProducts />
             </main>

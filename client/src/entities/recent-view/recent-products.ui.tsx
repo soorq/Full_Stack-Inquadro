@@ -53,7 +53,7 @@ export const RecentProducts = () => {
                 </h3>
                 <Heart
                     weight="fill"
-                    className="size-10 bg-black/10 fill-white stroke-white p-2 rounded-[10px]"
+                    className="size-0 md:size-10 bg-black/10 fill-white stroke-white p-2 rounded-[10px]"
                 />
             </div>
             <Swiper

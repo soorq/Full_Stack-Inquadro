@@ -11,6 +11,11 @@ export const ProductSmall = React.forwardRef<
     HTMLDivElement,
     { product: ProductClient; withFav?: boolean; className?: string }
 >(({ product, withFav = false, className }, ref) => {
+    const isBordur = Array.isArray(product?.usage)
+        ? product?.usage.some(item =>
+            /бордюр/.test(item)
+        )
+        : /бордюр/.test(product?.usage || '')
     return (
         <div className="w-full h-full col-span-1" ref={ref}>
             <div
@@ -21,10 +26,11 @@ export const ProductSmall = React.forwardRef<
             >
                 <Image
                     className={cn(
-                        'object-cover object-center transition-transform duration-700 group-hover/small:scale-105',
+                        'object-center transition-transform duration-700 group-hover/small:scale-105',
                         product?.images
                             ? 'border border-secondary shadow-lg shadow-secondary'
-                            : ''
+                            : '',
+                        isBordur ? 'object-contain' : 'object-cover'
                     )}
                     blurDataURL={product.images?.[0] || NOT_IMAGE}
                     sizes="(max-width: 170px) 100vw, 170px"
@@ -33,7 +39,7 @@ export const ProductSmall = React.forwardRef<
                     loading="lazy"
                     fill
                 />
-                <div className="absolute inset-0 flex justify-center items-center transition-transform duration-300 transform translate-y-full group-hover/small:translate-y-0">
+                <div className="absolute inset-0 flex justify-center items-center transition-all duration-300 transform scale-0 opacity-0 group-hover/small:scale-90 group-hover/small:opacity-100">
                     <Button
                         className="h-10 md:h-12 px-5 text-sm sm:text-base text-white shadow-none"
                         asChild
@@ -74,7 +80,7 @@ export const ProductSmall = React.forwardRef<
                             </span>
                         </p>
                     </div>
-                    <span className="absolute !leading-3 -top-5 left-3 px-1.5 md:px-2 py-0.5 md:py-1 text-xs md:text-sm rounded-t-md bg-secondary text-black/50">
+                    <span className="absolute !leading-3 -top-3 md:-top-5 left-3 px-1.5 md:px-2 py-0.5 md:py-1 text-xs md:text-sm rounded-t-md bg-secondary text-black/50">
                         {product.availability}
                     </span>
                 </Link>

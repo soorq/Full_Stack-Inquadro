@@ -12,6 +12,9 @@ function createFavoriteSlice() {
         TypeFavoriteActions & TypeFavoriteStates
     > = set => ({
         products: [],
+        open: false,
+
+        setOpen: (open) => set(() => ({ open })),
 
         addFn: (product: ProductClient) => {
             set(

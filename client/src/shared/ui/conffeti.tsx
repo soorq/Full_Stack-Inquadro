@@ -5,8 +5,8 @@ import { useWindowSize } from 'react-use';
 import LConfetti from 'react-confetti';
 
 export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
-    const [play, setPlay] = useState(isComplete);
     const [mounted, setMounted] = useState(false);
+    const [play, setPlay] = useState(false);
     const { width, height } = useWindowSize();
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
     }, []);
 
     useEffect(() => {
-        if (isComplete && !play) {
+        if (isComplete && play) {
             setPlay(true);
         }
     }, [isComplete, play]);
@@ -31,18 +31,17 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
             style={{ pointerEvents: 'none', inset: '0' }}
             numberOfPieces={play ? 1500 : 0}
             recycle={false}
-            debug
-            onConfettiComplete={confetti => {
+            onConfettiComplete={(confetti) => {
                 setPlay(false);
                 confetti?.reset();
             }}
-            drawShape={ctx => {
+            drawShape={(ctx) => {
                 const colors = [
                     '#ff9999',
                     '#db97ff',
                     '#9ab9ff',
                     '#9affc1',
-                    '#fdffa6'
+                    '#fdffa6',
                 ];
                 const randomColor =
                     colors[Math.floor(Math.random() * colors.length)];
@@ -51,7 +50,6 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
 
                 ctx.fillStyle = randomColor;
                 ctx.beginPath();
-
                 ctx.rect(-width / 2, -height / 2, width, height);
                 ctx.closePath();
                 ctx.fill();

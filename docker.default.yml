@@ -80,7 +80,7 @@ services:
     ports:
       - '6379:6379'
     env_file:
-      - server/.env
+      - server/.env    
 
 volumes:
   db-data:

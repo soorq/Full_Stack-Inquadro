@@ -7,6 +7,7 @@ import { FilterQueries } from '../api/filter.queries';
 import { FilterRadioGroup } from './filter-radio';
 import { cn } from '~&/src/shared/lib/tw-merge';
 import { Navbar } from '~&/src/widgets/navbar';
+import { FilterSize } from './filter-size';
 import { useQueryFilters } from '../lib';
 import React from 'react';
 import {
@@ -19,7 +20,6 @@ import {
     MFilterUsage,
     MFilterSize
 } from '../constnants/filter.constnants';
-import { FilterSize } from './filter-size';
 
 export const Filter = () => {
     const { data, isLoading } = useSuspenseQuery(
@@ -40,15 +40,10 @@ export const Filter = () => {
         }
     };
 
-    const selectedSizes = Array.from(filters.size).map(value => ({
-        label: value,
-        value
-    }));
-
     const FiltersGroups = () => (
         <div
             className={cn(
-                'flex-col gap-1.5 max-h-[90dvh] h-full overflow-y-auto scroll-none',
+                'flex-col gap-1.5 h-full overflow-y-auto scroll-none',
                 filters.isOpenFilters ? 'flex' : 'md:flex hidden'
             )}
         >
@@ -95,7 +90,8 @@ export const Filter = () => {
                 }
                 defaultItems={MFilterSize}
                 selected={filters.size}
-                items={selectedSizes}
+                loading={isLoading}
+                items={data.size}
             />
 
             <FiltersCheckboxGroup
@@ -154,7 +150,7 @@ export const Filter = () => {
                         : 'hidden md:hidden'
                 )}
                 items={MFilterCategory}
-                selected={Array.from(filters.category)[0]} // Берем первое значение из Set
+                selected={Array.from(filters.category)[0]}
             />
         </aside>
     );

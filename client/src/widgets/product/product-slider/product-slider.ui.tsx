@@ -11,7 +11,13 @@ import React from 'react';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
-export const ProductSlider = ({ images }: { images: string[] | undefined }) => {
+export const ProductSlider = ({
+    images,
+    isBordur
+}: {
+    images: string[] | undefined;
+    isBordur: boolean;
+}) => {
     const [thumbs, setThumbs] = React.useState<SwiperCore | null>(null);
 
     const validImages = filterValidImages(images);
@@ -44,14 +50,17 @@ export const ProductSlider = ({ images }: { images: string[] | undefined }) => {
                                 <Image
                                     alt={`thumb-product-${index}`}
                                     className={cn(
-                                        'rounded-[10px]',
+                                        'rounded-[10px] object-center',
                                         image === NOT_IMAGE
                                             ? 'border object-contain border-secondary'
                                             : '',
                                         index > 0 &&
                                             processedImages.length === 3
                                             ? 'opacity-50'
-                                            : ''
+                                            : '',
+                                        isBordur
+                                            ? 'object-contain'
+                                            : 'object-cover'
                                     )}
                                     sizes="(max-width: 170px) 100vw, 170px"
                                     blurDataURL={image}
@@ -87,13 +96,14 @@ export const ProductSlider = ({ images }: { images: string[] | undefined }) => {
                         <div className="relative w-full h-full">
                             <Image
                                 className={cn(
-                                    'rounded-[10px]',
+                                    'rounded-[10px] object-center',
                                     image === NOT_IMAGE
-                                        ? 'object-contain border-secondary border'
+                                        ? 'border-secondary border'
                                         : '',
                                     index > 0 && processedImages.length === 3
                                         ? 'opacity-50'
-                                        : ''
+                                        : '',
+                                    isBordur ? 'object-contain' : 'object-cover'
                                 )}
                                 alt={`main-product-${index}`}
                                 sizes="(max-width: 525px) 100vw, 525px"

@@ -10,6 +10,7 @@ interface BaseContextProps {
 interface CartContextProps extends BaseContextProps {
     context: 'cart';
     href: string;
+    handleCloseCart?: () => void;
 }
 
 interface FavoritesContextProps extends BaseContextProps {

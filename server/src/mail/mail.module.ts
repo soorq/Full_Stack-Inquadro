@@ -1,13 +1,17 @@
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailController } from './mail.controller';
+import { UserModule } from 'src/user/user.module';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from './mail.service';
 import { Module } from '@nestjs/common';
 import { join } from 'path';
+import { OrderModule } from 'src/order/order.module';
 
 @Module({
     imports: [
+        UserModule,
+        OrderModule,
         MailerModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (cfg: ConfigService) => ({

@@ -12,21 +12,36 @@ export const useQueryFilters = (filters: TypeFilters) => {
     React.useEffect(() => {
         if (isMounted.current) {
             const params = {
-                category: Array.from(filters.category),
-                usage: Array.from(filters.usage),
-                availability: Array.from(filters.availability),
-                plating: Array.from(filters.plating),
-                invoice: Array.from(filters.invoice),
-                size: Array.from(filters.size),
-                texture: Array.from(filters.texture),
-                shade: Array.from(filters.shade),
-                images: Array.from(filters.images)
+                ...(filters.category && { category: filters.category }),
+                ...(filters.usage.size > 0 && {
+                    usage: Array.from(filters.usage)
+                }),
+                ...(filters.availability.size > 0 && {
+                    availability: Array.from(filters.availability)
+                }),
+                ...(filters.plating.size > 0 && {
+                    plating: Array.from(filters.plating)
+                }),
+                ...(filters.invoice.size > 0 && {
+                    invoice: Array.from(filters.invoice)
+                }),
+                ...(filters.size.size > 0 && {
+                    size: Array.from(filters.size)
+                }),
+                ...(filters.texture.size > 0 && {
+                    texture: Array.from(filters.texture)
+                }),
+                ...(filters.shade.size > 0 && {
+                    shade: Array.from(filters.shade)
+                }),
+                ...(filters.images.size > 0 && {
+                    images: Array.from(filters.images)
+                })
             };
-            const query = qs.stringify(params, {
-                arrayFormat: 'comma'
-            });
-            router.push(`?${query}`);
+
+            const query = qs.stringify(params, { arrayFormat: 'comma' });
+            router.push(`?${query}`, { scroll: false });
         }
         isMounted.current = true;
-    }, [filters]);
+    }, [filters, router]);
 };

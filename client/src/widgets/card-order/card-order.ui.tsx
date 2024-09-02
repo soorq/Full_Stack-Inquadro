@@ -8,10 +8,10 @@ import toast from 'react-hot-toast';
 import Image from 'next/image';
 
 export const CardOrder = ({
-    order_id = '24072024-1',
-    quantity = 99,
-    sqmetrs = 199,
-    total = 199999
+    order_id,
+    quantity,
+    sqmetrs,
+    total
 }: {
     order_id: string;
     total: number;
@@ -50,7 +50,7 @@ export const CardOrder = ({
     return (
         <div
             ref={cardRef}
-            className="rounded-[10px] bg-c_order relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/50 after:z-0 bg-center w-full h-full bg-cover bg-no-repeat"
+            className="rounded-[10px] overflow-hidden relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/50 after:z-0 w-full h-full"
         >
             <div className="p-4 w-full h-full relative z-10">
                 <div className="flex mb-2 justify-between">
@@ -112,6 +112,20 @@ export const CardOrder = ({
                             <Copy />
                         </Button>
                     )}
+                </div>
+            </div>
+            <div className="absolute top-0 left-0 w-full h-full">
+                <div className="relative w-full h-full">
+                    <Image
+                        sizes="(max-width: 620px) 100vw, 620px"
+                        alt="Задний фон заказа. Заказ."
+                        blurDataURL={'/order.png'}
+                        className="object-cover"
+                        src={'/order.png'}
+                        placeholder="blur"
+                        rel="preload"
+                        fill
+                    />
                 </div>
             </div>
         </div>

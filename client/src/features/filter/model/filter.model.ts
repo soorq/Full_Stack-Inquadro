@@ -40,6 +40,9 @@ const createFiltersSlice: StateCreator<
 
     removeFilter: (name: keyof Omit<TypeFilters, 'prices'>, value: string) => {
         set(state => {
+            if (name === 'category') {
+                return { category: value };
+            }
             const newSet = new Set(state[name]);
             newSet.delete(value);
             return { [name]: newSet } as unknown as Pick<
@@ -89,7 +92,7 @@ const createFiltersSlice: StateCreator<
         set(() => ({
             category: '',
             usage: new Set<string>(),
-            available: new Set<string>(),
+            availability: new Set<string>(),
             plating: new Set<string>(),
             invoice: new Set<string>(),
             size: new Set<string>(),

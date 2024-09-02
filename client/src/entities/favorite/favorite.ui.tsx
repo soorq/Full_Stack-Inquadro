@@ -15,15 +15,20 @@ import {
 } from '~&/src/shared/ui/popover';
 
 export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
-    const [focus, setFocus] = useState(false);
-    const { products: fav_products } = useFavoriteStore(state => state);
+    const { products: fav_products, setOpen: setFavoriteOpen, open: favorite_open } = useFavoriteStore(state => state);
     const {
         addFn: addToCart,
         products: cart_products,
-        updateQuantityFn
+        setOpenCart,
+        updateQuantityFn, delFn
     } = useCartStore(state => state);
 
     const handleQtyChange = (article: string, newQty: number) => {
+        const product = fav_products.find(item => item.article === article);
+
+        if (newQty < 1) {
+            delFn(product?.article || '')
+        }
         if (newQty >= 1 && newQty <= 99) {
             updateQuantityFn(article, newQty);
         }
@@ -32,15 +37,9 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     const handleAddToCart = (article: string, qty: number = 1) => {
         const product = fav_products.find(item => item.article === article);
         if (product) {
-            const existingProduct = cart_products.find(
-                item => item.article === article
-            );
-            if (existingProduct) {
-                const newQty = existingProduct.quantity + qty;
-                handleQtyChange(article, newQty);
-            } else {
-                addToCart(product, qty);
-            }
+            addToCart(product, qty);
+            setFavoriteOpen(false);
+            setOpenCart(true);
         }
     };
 
@@ -58,7 +57,7 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     return (
         <div className="flex items-center data-[state=open]:flex-row  justify-center h-full flex-col gap-1">
             {isIcon ? (
-                <Popover onOpenChange={setFocus}>
+                <Popover onOpenChange={setFavoriteOpen} defaultOpen={false} open={favorite_open}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"
@@ -72,7 +71,7 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                             />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="p-0 max-w-[610px] w-svw max-h-[500px] h-full overflow-y-auto">
+                    <PopoverContent className="p-0 max-w-[610px] max-h-[525px] h-full overflow-y-auto scroll-none w-svw">
                         <FavoriteList
                             favProducts={fav_products}
                             getProductQty={getProductQty}
@@ -91,7 +90,7 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
                     handleQtyChange={handleQtyChange}
                 />
             )}
-            {focus && (
+            {favorite_open && (
                 <div className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-20" />
             )}
         </div>

@@ -90,7 +90,6 @@ export const ProductOrder = ({
                             <div className="flex gap-1.5">
                                 <Button
                                     onClick={() => onQtyChange(qty - 1)}
-                                    disabled={qty <= 1}
                                     className="size-10 sm:size-[50px] "
                                 >
                                     <Minus weight="regular" />
@@ -151,6 +150,7 @@ export const ProductOrder = ({
                     {context === 'cart' && 'href' in other && (
                         <Button
                             className="w-full h-10 hidden md:flex sm:h-[50px]"
+                            onClick={() => other?.handleCloseCart?.()}
                             asChild
                         >
                             <Link href={other.href}>Оформить заказ</Link>

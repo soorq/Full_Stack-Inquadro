@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 const RootPage = dynamic(() =>
@@ -5,5 +6,5 @@ const RootPage = dynamic(() =>
 );
 
 export default function Home() {
-    return <RootPage />;
+    return redirect('/catalog');
 }

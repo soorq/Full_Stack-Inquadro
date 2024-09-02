@@ -12,21 +12,23 @@ import dynamic from 'next/dynamic';
 
 const CartWidget = dynamic(
     () => import('~&/src/features/cart-widget').then(cn => cn.CartWidget),
-    { ssr: false, loading: () => <></> }
+    { ssr: false }
 );
 
 const FavoriteWidget = dynamic(
     () =>
         import('~&/src/features/favorite-widget').then(cn => cn.FavoriteWidget),
-    { ssr: false, loading: () => <></> }
+    { ssr: false }
 );
 
 export const ProductQty = memo(
     ({ product }: { product: ProductClient | null }) => {
         const [qty, setQty] = useState<number>(1);
-        const { products: cartProducts, updateQuantityFn } = useCartStore(
-            state => state
-        );
+        const {
+            products: cartProducts,
+            updateQuantityFn,
+            delFn
+        } = useCartStore(state => state);
 
         useEffect(() => {
             if (product) {
@@ -47,16 +49,20 @@ export const ProductQty = memo(
 
         const updateCartQuantity = useCallback(
             (newQty: number) => {
-                if (product && isInCart) {
-                    updateQuantityFn(product.article, newQty);
+                if (product) {
+                    if (newQty < 1) {
+                        delFn(product.article);
+                    } else {
+                        updateQuantityFn(product.article, newQty);
+                    }
                 }
             },
-            [product, isInCart, updateQuantityFn]
+            [product, updateQuantityFn, delFn]
         );
 
         const changeQty = (diff: number) => {
             setQty(prevState => {
-                const newQty = Math.max(1, Math.min(99, prevState + diff));
+                const newQty = Math.max(0, Math.min(99, prevState + diff));
                 updateCartQuantity(newQty);
                 return newQty;
             });
@@ -66,21 +72,22 @@ export const ProductQty = memo(
             const newQty = Number(e.target.value);
             if (newQty >= 1 && newQty <= 99) {
                 setQty(newQty);
+                updateCartQuantity(newQty);
+            } else if (newQty < 1) {
+                setQty(0);
                 if (product) {
-                    updateCartQuantity(newQty);
+                    updateCartQuantity(0);
                 }
             } else if (e.target.value === '') {
                 setQty(1);
-                if (product) {
-                    updateCartQuantity(1);
-                }
+                updateCartQuantity(1);
             }
         };
 
         if (!product) return null;
 
         const { totalCost, totalTileArea } = calculateTileMetrics(
-            product.size ?? '', // Обеспечиваем, что значения не равны null
+            product.size ?? '',
             +product.kit,
             +product.price,
             qty
@@ -110,7 +117,6 @@ export const ProductQty = memo(
                             <div className="flex gap-1.5">
                                 <Button
                                     onClick={() => changeQty(-1)}
-                                    disabled={qty <= 1}
                                     className="size-[50px]"
                                 >
                                     <Minus weight="light" />

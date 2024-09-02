@@ -1,6 +1,6 @@
-import { cn } from '~&/src/shared/lib/tw-merge';
-import { RadioGroup, RadioGroupItem } from '~&/src/shared/ui/radio-group';
 import { FilterCategoryRadio } from './filter-radio-checkbox.ui';
+import { RadioGroup } from '~&/src/shared/ui/radio-group';
+import { cn } from '~&/src/shared/lib/tw-merge';
 
 export const FilterRadioGroup = ({
     onClickRadio,

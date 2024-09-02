@@ -15,7 +15,6 @@ import {
     Paginated,
     PaginateQuery
 } from 'nestjs-paginate';
-import * as unzipper from 'unzipper';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -49,10 +48,7 @@ export class ProductService implements ProductRepository {
             await this.clearCache();
             return await this.db.save(product);
         } catch (error) {
-            throw new HttpException(
-                'Ошибка при сохранении товара в БД',
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -99,7 +99,16 @@ export const ProductLarge = memo(({ product }: { product: ProductApi }) => {
             className="relative lg:flex-row flex flex-col lg:justify-between lg:gap-5 mb-5"
             ref={container}
         >
-            <ProductSlider images={product_client?.images} />
+            <ProductSlider
+                images={product_client?.images}
+                isBordur={
+                    Array.isArray(product_client?.usage)
+                        ? product_client?.usage.some(item =>
+                              /бордюр/.test(item)
+                          )
+                        : /бордюр/.test(product_client?.usage || '')
+                }
+            />
             <div className="flex flex-col gap-1.5 w-full lg:max-w-[450px] xl:max-w-none">
                 <ProductOptions product={product_client} />
                 <ProductOperation />

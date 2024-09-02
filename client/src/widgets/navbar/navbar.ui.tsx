@@ -9,7 +9,7 @@ import {
 
 export const Navbar = () => {
     return (
-        <NavigationMenu className="justify-start">
+        <NavigationMenu className="justify-start" delayDuration={5}>
             <NavigationMenuList>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>

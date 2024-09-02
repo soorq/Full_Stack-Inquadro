@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
 import { BotModule } from './bot/bot.module';
+import { OrderModule } from './order/order.module';
 import helmet from 'helmet';
 
 @Module({
@@ -15,7 +16,8 @@ import helmet from 'helmet';
         MailModule,
         UserModule,
         AuthModule,
-        // BotModule
+        OrderModule,
+        BotModule
     ]
 })
 export class AppModule {

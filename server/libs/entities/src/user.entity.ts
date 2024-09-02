@@ -51,6 +51,13 @@ export class EUser {
     @Column({ type: 'varchar', nullable: true })
     address: string;
 
+    @ApiProperty({
+        type: 'string',
+        title: 'Подъезд'
+    })
+    @Column({ type: 'varchar', nullable: true })
+    entrance: string;
+
     @Column({ type: 'varchar', nullable: true, select: false })
     codeVerified: string;
 

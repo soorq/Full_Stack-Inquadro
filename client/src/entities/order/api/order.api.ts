@@ -1,7 +1,11 @@
-import { OrderSchemaCreateDto, OrderSchemaCreate } from '~&/src/entities/order';
 import { API, handleGenericError } from '~&/src/shared/api';
 import { AxiosContracts } from '~&/src/shared/lib/axios';
 import type { AxiosResponse } from 'axios';
+import {
+    OrderSchemaCreateDto,
+    OrderResponse,
+    OrderResponseSchema
+} from '~&/src/entities/order';
 
 export class OrderService {
     static async orderCreate(
@@ -9,15 +13,17 @@ export class OrderService {
         config?: {
             signal?: AbortSignal;
         }
-    ): Promise<AxiosResponse<OrderSchemaCreateDto>> {
+    ): Promise<AxiosResponse<OrderResponse>> {
         try {
-            const response = await API.post<OrderSchemaCreateDto>(
+            const response = await API.post<OrderResponse>(
                 '/requests',
                 data,
                 config
             );
 
-            return AxiosContracts.responseContract(OrderSchemaCreate)(response);
+            return AxiosContracts.responseContract(OrderResponseSchema)(
+                response
+            );
         } catch (error) {
             throw handleApiError(error);
         }

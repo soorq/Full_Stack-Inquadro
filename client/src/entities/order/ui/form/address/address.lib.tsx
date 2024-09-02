@@ -1,9 +1,9 @@
 import { REGIONS } from '~&/src/shared/contants/cities';
 import { CommandItem } from '~&/src/shared/ui/command';
 import type { UseFormSetValue } from 'react-hook-form';
-import type { Region } from './address.types';
-import { useCallback, useMemo } from 'react';
 import { OrderSchemaDto } from '../../../model';
+import type { Region } from './address.types';
+import React, { useCallback, useMemo } from 'react';
 
 export const useFindRegionLabel = (regions: Region[]) => {
     return useCallback(
@@ -20,7 +20,10 @@ export const useFindRegionLabel = (regions: Region[]) => {
     );
 };
 
-export const useCachedRegions = (setValue: UseFormSetValue<OrderSchemaDto>) =>
+export const useCachedRegions = (
+    setValue: UseFormSetValue<OrderSchemaDto>,
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>
+) =>
     useMemo(() => {
         return REGIONS.flatMap((country, i) =>
             country.cities.map(city => {
@@ -31,7 +34,10 @@ export const useCachedRegions = (setValue: UseFormSetValue<OrderSchemaDto>) =>
                         key={key}
                         value={city.name}
                         className="cursor-pointer"
-                        onSelect={() => setValue('city', city.value)}
+                        onSelect={() => {
+                            setVisible(false);
+                            setValue('city', city.value);
+                        }}
                     >
                         {city.name}, {country.region}
                     </CommandItem>

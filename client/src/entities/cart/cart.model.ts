@@ -11,7 +11,8 @@ const cartSlice: StateCreator<
     TypeCartActions & TypeCartStates
 > = (set, get) => ({
     products: [],
-
+    open: false,
+    setOpenCart: open => set(() => ({ open })),
     addFn: (product, qty = 1) => {
         set(state => {
             const updatedProducts = state.products.map(item => {

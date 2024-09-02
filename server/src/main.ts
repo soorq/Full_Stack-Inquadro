@@ -20,6 +20,8 @@ const MOCK_APP_URLS = [
     'https://89.23.116.190:3000',
     'http://localhost:3000',
     'https://inquadro.vercel.app',
+    'https://rnyai-176-52-35-243.a.free.pinggy.link',
+    'http://rnyai-176-52-35-243.a.free.pinggy.link',
     '*'
 ];
 
@@ -63,24 +65,26 @@ async function bootstrap() {
      * - Sets credentials to true
      * - Specifies allowed headers and methods for the CORS policy
      */
-    app.enableCors({
-        origin: (origin, cb) => {
-            if (!origin || MOCK_APP_URLS.indexOf(origin) !== -1) {
-                cb(null, true);
-            } else {
-                cb(
-                    new HttpException(
-                        'Ошибка на уровне CORS политики.',
-                        HttpStatus.CONFLICT
-                    )
-                );
-            }
-        },
-        credentials: true,
-        allowedHeaders:
-            'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, X',
-        methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
-    });
+    // app.enableCors({
+    //     origin: (origin, cb) => {
+    //         if (!origin || MOCK_APP_URLS.indexOf(origin) !== -1) {
+    //             cb(null, true);
+    //         } else {
+    //             cb(
+    //                 new HttpException(
+    //                     'Ошибка на уровне CORS политики.',
+    //                     HttpStatus.CONFLICT
+    //                 )
+    //             );
+    //         }
+    //     },
+    //     credentials: true,
+    //     allowedHeaders:
+    //         'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, X',
+    //     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
+    // });
+
+    app.enableCors({ origin: '*', credentials: true, methods: '*', allowedHeaders: '*' });
 
     /**
      * Creates a Swagger document configuration using the DocumentBuilder with title 'Test-Api', tag 'test', version '1.0.0'.
