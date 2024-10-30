@@ -70,7 +70,7 @@ export class FilterQueries {
                 }
                 return undefined;
             },
-            placeholderData: keepPreviousData, // @ts-expect-error
+            placeholderData: keepPreviousData,
             initialData: () =>
                 this.getInitialData<InfiniteData<FilterResponse, number>>(
                     queryKey

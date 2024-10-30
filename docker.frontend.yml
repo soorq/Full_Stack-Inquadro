@@ -8,6 +8,9 @@ services:
     build:
       context: ./client/
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_URL: http://localhost:3000
+        NEXT_PUBLIC_API_URL: http://192.87.43.122/api
     env_file:
       - ./client/.env
     ports:

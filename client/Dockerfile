@@ -1,28 +1,45 @@
-# Base on offical Node.js Alpine image
-FROM node:alpine
+FROM node:20 AS deps
+WORKDIR /app
 
-# Set working directory
-WORKDIR /usr/app
+COPY package.json ./
+RUN npm install yarn --force
+RUN yarn install --force
 
-# Copy package.json and package-lock.json before other files
-# Utilise Docker cache to save re-installing dependencies if unchanged
-COPY ./package*.json ./
+FROM node:20 AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-# Install dependencies
-RUN npm install --production
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_API_URL
 
-# Copy all files
-COPY ./ ./
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-# Build app
-RUN npm run build
+ENV NEXT_STATIC_PROPS_TIMEOUT=300
 
-# Expose the listening port
+RUN yarn build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/public ./public
+
+USER nextjs
+
 EXPOSE 3000
 
-# Run container as non-root (unprivileged) user
-# The node user is provided in the Node.js Alpine base image
-USER node
+ENV PORT 3000
 
-# Run npm start script when container starts
-CMD [ "npm", "start" ]
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["yarn", "start"]
