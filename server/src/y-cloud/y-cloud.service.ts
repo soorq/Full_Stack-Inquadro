@@ -1,25 +1,39 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import EasyYandexS3 from 'easy-yandex-s3';
 import * as path from 'path';
 import * as fs from 'fs';
+import {
+    ListObjectsV2Command,
+    PutObjectCommand,
+    S3Client
+} from '@aws-sdk/client-s3';
 
 @Injectable()
 export class YCloudService {
-    private readonly HOST_URL: string;
     private readonly BUCKET: string;
     private readonly ACCESS: string;
     private readonly SECRET: string;
 
+    private s3: S3Client;
+
     constructor(private readonly cfg: ConfigService) {
-        this.HOST_URL = this.cfg.get('CLOUD_HOST_URL');
         this.BUCKET = this.cfg.get('CLOUD_BUCKET');
         this.ACCESS = this.cfg.get('CLOUD_ACCESS');
         this.SECRET = this.cfg.get('CLOUD_SECRET');
+
+        this.s3 = new S3Client({
+            region: 'us-east-1',
+            endpoint: 'https://storage.yandexcloud.net',
+            logger: console,
+            credentials: {
+                accessKeyId: this.ACCESS,
+                secretAccessKey: this.SECRET
+            }
+        });
     }
 
     public uploadToCloud = async (rootPath: string) => {
-        const upload = await this.getYandexS3();
+        const { s3 } = this;
         const uploadDirectory = async (directoryPath: string) => {
             const filesAndFolders = fs.readdirSync(directoryPath);
 
@@ -31,12 +45,13 @@ export class YCloudService {
                     await uploadDirectory(fullPath);
                 } else {
                     const relativePath = path.relative(rootPath, directoryPath);
-                    const filePath = path.join(relativePath, item);
 
-                    console.log(`Uploading ${filePath} from ${fullPath}`);
-                    await upload.Upload(
-                        { path: fullPath, name: item },
-                        `/${relativePath}/`
+                    await s3.send(
+                        new PutObjectCommand({
+                            Bucket: this.BUCKET,
+                            Key: path.join(relativePath, item),
+                            Body: fs.createReadStream(fullPath)
+                        })
                     );
                 }
             }
@@ -46,30 +61,24 @@ export class YCloudService {
     };
 
     public getItem = async (article: string) => {
-        const getLists = await this.getYandexS3();
-        const images = await getLists.GetList(`/${article}`);
+        const { s3, BUCKET: Bucket } = this;
+        const images = await s3.send(
+            new ListObjectsV2Command({ Bucket, Prefix: article })
+        );
         return this.generateUrlsWithMainFirst(images);
     };
 
     public getItems = async () => {
-        const getLists = await this.getYandexS3();
-        const images = await getLists.GetList('');
-        return images;
+        const { s3, BUCKET: Bucket } = this;
+        return s3.send(new ListObjectsV2Command({ Bucket }));
     };
-
-    private async getYandexS3() {
-        return new EasyYandexS3({
-            auth: {
-                accessKeyId: this.ACCESS,
-                secretAccessKey: this.SECRET
-            },
-            Bucket: this.BUCKET,
-            debug: false
-        });
-    }
 
     private generateUrlsWithMainFirst(data) {
         const { Contents } = data;
+
+        if (!Contents) {
+            return [];
+        }
 
         return Contents.map(
             link => `https://${this.BUCKET}.storage.yandexcloud.net/${link.Key}`

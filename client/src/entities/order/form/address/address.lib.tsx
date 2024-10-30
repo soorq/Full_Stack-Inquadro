@@ -1,9 +1,9 @@
 import { REGIONS } from '~&/src/shared/contants/cities';
 import { CommandItem } from '~&/src/shared/ui/command';
 import type { UseFormSetValue } from 'react-hook-form';
-import { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
+import { useCallback, useMemo } from 'react';
 import type { Region } from './address.types';
-import React, { useCallback, useMemo } from 'react';
 
 export const useFindRegionLabel = (regions: Region[]) => {
     return useCallback(
@@ -21,7 +21,7 @@ export const useFindRegionLabel = (regions: Region[]) => {
 };
 
 export const useCachedRegions = (
-    setValue: UseFormSetValue<OrderSchemaDto>,
+    setValue: UseFormSetValue<orderT.OrderForm>,
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) =>
     useMemo(() => {
@@ -44,4 +44,4 @@ export const useCachedRegions = (
                 );
             })
         );
-    }, [setValue]);
+    }, [setValue, setVisible]);

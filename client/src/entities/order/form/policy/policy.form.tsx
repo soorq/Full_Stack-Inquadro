@@ -1,5 +1,5 @@
 import { RadioGroup, RadioGroupItem } from '~&/src/shared/ui/radio-group';
-import type { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
 import { Control } from 'react-hook-form';
 import {
     FormControl,
@@ -9,11 +9,7 @@ import {
 } from '~&/src/shared/ui/form';
 import Link from 'next/link';
 
-export const PolicyForm = ({
-    control
-}: {
-    control: Control<OrderSchemaDto>;
-}) => {
+function PolicyForm({ control }: { control: Control<orderT.OrderForm> }) {
     return (
         <div className="bg-secondary p-4 rounded-[10px]">
             <FormField
@@ -69,4 +65,6 @@ export const PolicyForm = ({
             />
         </div>
     );
-};
+}
+
+export { PolicyForm };

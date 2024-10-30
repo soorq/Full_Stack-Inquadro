@@ -1,35 +1,21 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { Message } from 'telegraf/typings/core/types/typegram';
 import { ProductService } from 'src/product/product.service';
-import { OnEvent } from '@nestjs/event-emitter';
 import { CreateProductDto } from '@app/shared';
 import * as xlsx from 'xlsx';
-import * as path from 'path';
-import * as fs from 'fs';
 import axios from 'axios';
 
 @Injectable()
 export class BotService {
     constructor(private readonly product: ProductService) {}
 
-    @OnEvent('request.created')
-    private async onRequestCreated(payload) {
-        console.log(payload);
-    }
-
     getXLSXTable = async ctx => {
         try {
             const { file_id: fileId } = (ctx.message as Message.DocumentMessage)
                 .document;
-            const { first_name: userFirstName, id: userId } =
-                ctx.update?.message?.from;
             const url = await ctx.telegram.getFileLink(fileId);
-            const filePath = this.generateFilePath(userId, userFirstName);
-
-            await this.downloadFile(url.href, filePath);
-            const jsonDataExcel = await this.parseExcel(filePath);
-            console.log(jsonDataExcel);
-            fs.unlinkSync(filePath);
+            const data = await this.downloadFile(url.href);
+            const jsonDataExcel = await this.parseExcelData(data);
 
             await this.saveExcelToDb(jsonDataExcel);
             await ctx.reply('Файл успешно сохранён в БД');
@@ -41,14 +27,6 @@ export class BotService {
             );
         }
     };
-
-    // Метод для генерации пути к файлу
-    private generateFilePath(userId: string, userFirstName: string): string {
-        return path.join(
-            process.cwd(),
-            `/static/documents/by-${userId}-${userFirstName}.xlsx`
-        );
-    }
 
     // Метод для сохранения данных Excel в базу данных
     private saveExcelToDb = async (jsonData: any[]): Promise<void> => {
@@ -98,17 +76,16 @@ export class BotService {
             failedArticles.push(article);
         }
     }
-
-    // Метод для выброса ошибки с сообщением о неудачах при сохранении
     private throwIfSaveErrors(
         existingArticles: string[],
         failedArticles: string[]
     ): void {
+        // Исправлено условие
         if (existingArticles.length || failedArticles.length) {
             const messages = [];
             if (existingArticles.length) {
                 messages.push(
-                    `*Товары с артикулом:* _${existingArticles.join(', ')}_ *уже существуют.*`
+                    `  *Товары с артикулом:* _${existingArticles.join(', ')}_ *уже существуют.*`
                 );
             }
             if (failedArticles.length) {
@@ -123,7 +100,6 @@ export class BotService {
         }
     }
 
-    // Метод для преобразования строки Excel в DTO
     private mapRowToDto(headers: string[], row: any[]): CreateProductDto {
         const rowObject = headers.reduce(
             (acc, header, index) => {
@@ -132,24 +108,6 @@ export class BotService {
                 return acc;
             },
             {} as Record<string, any>
-        );
-
-        console.log(
-            rowObject['category'],
-            rowObject['name'],
-            rowObject['availability'],
-            rowObject['usage'],
-            [],
-            rowObject['plating'],
-            rowObject['texture'],
-            rowObject['invoice'],
-            rowObject['size'] || 'N/A',
-            rowObject['shade'] || 'N/A',
-            rowObject['country'],
-            rowObject['price'] || '0',
-            rowObject['manufacturing'],
-            rowObject['article'],
-            rowObject['kit'] || '1'
         );
 
         return {
@@ -161,17 +119,16 @@ export class BotService {
             plating: rowObject['plating'],
             texture: rowObject['texture'],
             invoice: rowObject['invoice'],
-            size: rowObject['size'] || 'N/A',
-            shade: rowObject['shade'] || 'N/A',
+            size: rowObject['size'] || 'N/A', // Исправлено на '||'
+            shade: rowObject['shade'] || 'N/A', // Исправлено на '||'
             country: rowObject['country'],
-            price: rowObject['price'] || '0',
+            price: rowObject['price'] || '0', // Исправлено на '||'
             manufacturing: rowObject['manufacturing'],
             article: rowObject['article'],
-            kit: rowObject['kit'] || '1'
+            kit: rowObject['kit'] || '1' // Исправлено на '||'
         };
     }
 
-    // Метод для очистки значения
     private sanitizeValue(value: any): any {
         if (typeof value === 'string') {
             return value.trim() === '' ? null : value.trim();
@@ -179,27 +136,22 @@ export class BotService {
         return value === undefined ? null : value;
     }
 
-    // Метод для разбора Excel-файла
-    private parseExcel = async (filename: string) => {
-        const data = xlsx.readFile(filename);
-        return Object.keys(data.Sheets).map(name => ({
-            data: xlsx.utils.sheet_to_json(data.Sheets[name], {
+    private parseExcelData = (data: Buffer) => {
+        const workbook = xlsx.read(data, { type: 'buffer' });
+        return Object.keys(workbook.Sheets).map(sheetName => ({
+            data: xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], {
                 defval: '',
                 header: 1
             })
         }));
     };
 
-    // Метод для скачивания файла
-    private downloadFile = async (url: string, filePath: string) => {
-        const writer = fs.createWriteStream(filePath);
-        const response = await axios.get(url, { responseType: 'stream' });
-        response.data.pipe(writer);
-
-        return new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-        });
+    private downloadFile = async (url: string) => {
+        try {
+            return (await axios.get(url, { responseType: 'arraybuffer' })).data;
+        } catch (error) {
+            throw new Error(`Ошибка при скачивании файла: ${error.message}`);
+        }
     };
 
     // Метод для обработки ошибок и отправки сообщений об ошибках

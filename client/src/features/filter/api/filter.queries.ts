@@ -8,6 +8,7 @@ import type {
 import {
     type InfiniteData,
     infiniteQueryOptions,
+    keepPreviousData,
     QueryClient,
     queryOptions
 } from '@tanstack/react-query';
@@ -55,20 +56,21 @@ export class FilterQueries {
                 if (nextPageUrl) {
                     const url = new URL(nextPageUrl);
                     const nextPage = url.searchParams.get('page');
-                    return nextPage ? parseInt(nextPage, 10) : undefined;
+                    return nextPage ? parseInt(nextPage, 9) : undefined;
                 }
                 return undefined;
             },
+            networkMode: 'offlineFirst',
             getPreviousPageParam: firstPage => {
                 const previousPageUrl = firstPage.links.last;
                 if (previousPageUrl) {
                     const url = new URL(previousPageUrl);
                     const prevPage = url.searchParams.get('page');
-                    return prevPage ? parseInt(prevPage, 10) : undefined;
+                    return prevPage ? parseInt(prevPage, 9) : undefined;
                 }
                 return undefined;
             },
-            // @ts-expect-error
+            placeholderData: keepPreviousData, // @ts-expect-error
             initialData: () =>
                 this.getInitialData<InfiniteData<FilterResponse, number>>(
                     queryKey
@@ -85,7 +87,10 @@ export class FilterQueries {
                 });
 
                 return response.data;
-            }
+            },
+            networkMode: 'offlineFirst',
+            staleTime: 60 * 60 * 15 * 1000,
+            placeholderData: keepPreviousData
         });
     };
 

@@ -1,6 +1,6 @@
 import { Command, Ctx, Start, Update, On } from 'nestjs-telegraf';
 import { BotService } from './bot.service';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { AdminGuard } from '@app/shared';
 
 @Update()
@@ -17,6 +17,7 @@ export class BotUpdate {
     @Command('admin')
     @UseGuards(AdminGuard)
     async checkAdminStatus(@Ctx() ctx) {
+        Logger.log(ctx.session);
         if (!ctx.session.isAdmin) {
             return 'Попросите, чтоб вас добавили!';
         }
@@ -25,11 +26,11 @@ export class BotUpdate {
     }
 
     @On('document')
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     async getXLSXTable(@Ctx() ctx) {
-        if (!ctx.session.isAdmin) {
-            return 'Нет-нет, голубчик. Тебе сюда нельзя!';
-        }
+        // if (!ctx.session.isAdmin) {
+        //     return 'Нет-нет, голубчик. Тебе сюда нельзя!';
+        // }
         await this.service.getXLSXTable(ctx);
     }
 }

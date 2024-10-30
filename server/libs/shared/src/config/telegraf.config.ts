@@ -25,6 +25,8 @@ const telegrafModuleOptions = (
 
     if (!apikey) Logger.error(`Обязательное поле - |TELEGRAM_API|:${apikey}`);
 
+    Logger.log(apikey);
+
     return {
         token: apikey,
         middlewares: [session({ store })]

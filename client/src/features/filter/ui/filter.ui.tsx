@@ -52,6 +52,7 @@ export const Filter = () => {
                 className="hidden md:block"
                 items={MFilterCategory}
                 selected={Array.from(filters.category)[0]}
+                key=""
             />
 
             <FiltersCheckboxGroup

@@ -1,6 +1,6 @@
 {
-  "compilerOptions": {
-    "outDir": "js"
-  },
-  "include": ["*.ts"]
+    "compilerOptions": {
+        "outDir": "js"
+    },
+    "include": ["*.ts"]
 }

@@ -1,5 +1,5 @@
 import { RadioGroup, RadioGroupItem } from '~&/src/shared/ui/radio-group';
-import type { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
 import { Control } from 'react-hook-form';
 import {
     FormControl,
@@ -9,11 +9,7 @@ import {
     FormMessage
 } from '~&/src/shared/ui/form';
 
-export const TypePayForm = ({
-    control
-}: {
-    control: Control<OrderSchemaDto>;
-}) => {
+function TypePayForm({ control }: { control: Control<orderT.OrderForm> }) {
     return (
         <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-base sm:text-lg leading-5 mb-4 font-medium">
@@ -71,4 +67,6 @@ export const TypePayForm = ({
             />
         </div>
     );
-};
+}
+
+export { TypePayForm };

@@ -34,7 +34,10 @@ export const CartWidget = ({
         <>
             <Button
                 onClick={() => setOpenCart(true)}
-                className={cn('hidden md:flex h-[50px] w-full text-lg', className)}
+                className={cn(
+                    'hidden md:flex h-[50px] w-full text-lg',
+                    className
+                )}
                 type="button"
             >
                 Сейчас в корзине
@@ -45,9 +48,7 @@ export const CartWidget = ({
                 type="button"
                 asChild
             >
-                <Link href='/cart'>
-                    в корзине
-                </Link>
+                <Link href="/cart">в корзине</Link>
             </Button>
         </>
     ) : (

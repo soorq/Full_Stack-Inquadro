@@ -31,17 +31,17 @@ export const Conffeti = ({ isComplete }: { isComplete: boolean }) => {
             style={{ pointerEvents: 'none', inset: '0' }}
             numberOfPieces={play ? 1500 : 0}
             recycle={false}
-            onConfettiComplete={(confetti) => {
+            onConfettiComplete={confetti => {
                 setPlay(false);
                 confetti?.reset();
             }}
-            drawShape={(ctx) => {
+            drawShape={ctx => {
                 const colors = [
                     '#ff9999',
                     '#db97ff',
                     '#9ab9ff',
                     '#9affc1',
-                    '#fdffa6',
+                    '#fdffa6'
                 ];
                 const randomColor =
                     colors[Math.floor(Math.random() * colors.length)];

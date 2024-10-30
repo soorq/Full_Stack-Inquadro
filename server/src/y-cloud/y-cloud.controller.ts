@@ -7,11 +7,13 @@ export class YCloudController {
 
     @Get()
     async uploadToCloud() {
-        return this.service.uploadToCloud(`${process.cwd() + '/static/library'}`);
+        return this.service.uploadToCloud(
+            `${process.cwd() + '/static/library'}`
+        );
     }
 
     @Get('list')
     async getLists() {
-        return this.service.getItems()
+        return this.service.getItems();
     }
 }

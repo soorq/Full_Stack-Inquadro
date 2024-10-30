@@ -1,38 +1,38 @@
 {
-  "$schema": "https://json.schemastore.org/nest-cli",
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
-  "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true
-  },
-  "projects": {
-    "shared": {
-      "type": "library",
-      "root": "libs/shared",
-      "entryFile": "index",
-      "sourceRoot": "libs/shared/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/shared/tsconfig.lib.json"
-      }
+    "$schema": "https://json.schemastore.org/nest-cli",
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "src",
+    "compilerOptions": {
+        "deleteOutDir": true,
+        "webpack": true
     },
-    "providers": {
-      "type": "library",
-      "root": "libs/providers",
-      "entryFile": "index",
-      "sourceRoot": "libs/providers/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/providers/tsconfig.lib.json"
-      }
-    },
-    "entities": {
-      "type": "library",
-      "root": "libs/entities",
-      "entryFile": "index",
-      "sourceRoot": "libs/entities/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/entities/tsconfig.lib.json"
-      }
+    "projects": {
+        "shared": {
+            "type": "library",
+            "root": "libs/shared",
+            "entryFile": "index",
+            "sourceRoot": "libs/shared/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/shared/tsconfig.lib.json"
+            }
+        },
+        "providers": {
+            "type": "library",
+            "root": "libs/providers",
+            "entryFile": "index",
+            "sourceRoot": "libs/providers/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/providers/tsconfig.lib.json"
+            }
+        },
+        "entities": {
+            "type": "library",
+            "root": "libs/entities",
+            "entryFile": "index",
+            "sourceRoot": "libs/entities/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/entities/tsconfig.lib.json"
+            }
+        }
     }
-  }
 }

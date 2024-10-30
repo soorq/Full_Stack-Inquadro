@@ -1,16 +1,11 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as chalk from 'chalk';
-import {
-    HttpException,
-    HttpStatus,
-    Logger,
-    ValidationPipe
-} from '@nestjs/common';
 // import * as csurf from 'csurf';
 
 declare const module: any;
@@ -20,8 +15,6 @@ const MOCK_APP_URLS = [
     'https://89.23.116.190:3000',
     'http://localhost:3000',
     'https://inquadro.vercel.app',
-    'https://rnyai-176-52-35-243.a.free.pinggy.link',
-    'http://rnyai-176-52-35-243.a.free.pinggy.link',
     '*'
 ];
 
@@ -84,7 +77,12 @@ async function bootstrap() {
     //     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
     // });
 
-    app.enableCors({ origin: '*', credentials: true, methods: '*', allowedHeaders: '*' });
+    app.enableCors({
+        origin: '*',
+        credentials: true,
+        methods: '*',
+        allowedHeaders: '*'
+    });
 
     /**
      * Creates a Swagger document configuration using the DocumentBuilder with title 'Test-Api', tag 'test', version '1.0.0'.

@@ -1,42 +1,30 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "paths": {
-      "@app/shared": [
-        "libs/shared/src"
-      ],
-      "@app/shared/*": [
-        "libs/shared/src/*"
-      ],
-      "@app/providers": [
-        "libs/providers/src"
-      ],
-      "@app/providers/*": [
-        "libs/providers/src/*"
-      ],
-      "@app/entities": [
-        "libs/entities/src"
-      ],
-      "@app/entities/*": [
-        "libs/entities/src/*"
-      ]
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "ES2021",
+        "sourceMap": true,
+        "incremental": true,
+        "skipLibCheck": true,
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "strictBindCallApply": false,
+        "forceConsistentCasingInFileNames": false,
+        "noFallthroughCasesInSwitch": false,
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "@app/shared": ["libs/shared/src"],
+            "@app/shared/*": ["libs/shared/src/*"],
+            "@app/providers": ["libs/providers/src"],
+            "@app/providers/*": ["libs/providers/src/*"],
+            "@app/entities": ["libs/entities/src"],
+            "@app/entities/*": ["libs/entities/src/*"]
+        }
     }
-  }
 }

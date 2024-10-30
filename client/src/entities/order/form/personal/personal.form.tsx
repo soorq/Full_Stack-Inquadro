@@ -1,6 +1,4 @@
-'use client';
-
-import type { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
 import type { FormProps } from 'react-hook-form';
 import { Input } from '~&/src/shared/ui/input';
 import { InputMask } from '@react-input/mask';
@@ -12,7 +10,7 @@ import {
     FormLabel
 } from '~&/src/shared/ui/form';
 
-export const PersonalForm = ({ form }: { form: FormProps<OrderSchemaDto> }) => {
+function PersonalForm({ form }: { form: FormProps<orderT.OrderForm> }) {
     return (
         <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-base sm:text-lg leading-5 mb-2.5 font-medium">
@@ -91,4 +89,6 @@ export const PersonalForm = ({ form }: { form: FormProps<OrderSchemaDto> }) => {
             </div>
         </div>
     );
-};
+}
+
+export { PersonalForm };

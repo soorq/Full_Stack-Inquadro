@@ -25,7 +25,7 @@ export class FilterService {
             );
             const sortBy = sortOptions[config.params?.sort || 'available'];
             return API.get<FilterResponse>(
-                `/product/filter?${filtersQueryString}&page=${config.params.page}&limit=12&sortBy=${sortBy?.by}:${sortBy?.order}`
+                `/product/filter?${filtersQueryString}&page=${config.params.page}&limit=9&sortBy=${sortBy?.by}:${sortBy?.order}`
             ).then(AxiosContracts.responseContract(FilterResponseSchema));
         } catch (error) {
             throw handleApiError(error);

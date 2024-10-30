@@ -1,7 +1,7 @@
 import { useCachedRegions, useFindRegionLabel } from './address.lib';
 import type { Control, UseFormSetValue } from 'react-hook-form';
 import { REGIONS } from '~&/src/shared/contants/cities';
-import type { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
 import { cn } from '~&/src/shared/lib/tw-merge';
 import { Input } from '~&/src/shared/ui/input';
 import { useRef, useState } from 'react';
@@ -25,8 +25,8 @@ export const AddressForm = ({
     control,
     setValue
 }: {
-    control: Control<OrderSchemaDto>;
-    setValue: UseFormSetValue<OrderSchemaDto>;
+    control: Control<orderT.OrderForm>;
+    setValue: UseFormSetValue<orderT.OrderForm>;
 }) => {
     const [isListVisible, setListVisible] = useState(false);
     const CACHED_REGIONS = useCachedRegions(setValue, setListVisible);
@@ -118,7 +118,6 @@ export const AddressForm = ({
                                         placeholder="Кремлевская площадь, 1"
                                     />
                                 </FormControl>
-
                             </div>
                         </FormItem>
                     )}

@@ -40,7 +40,7 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
         const product = cartProducts.find(item => item.article === article);
 
         if (newQty < 1) {
-            delFn(product?.article || '')
+            delFn(product?.article || '');
         }
         if (newQty >= 1 && newQty <= 99) {
             updateQuantityFn(article, newQty);
@@ -48,7 +48,7 @@ export const CartPreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     };
 
     const handleCloseCart = () => {
-        setOpenCart(false)
+        setOpenCart(false);
     };
 
     return (
@@ -100,7 +100,11 @@ interface ProductListProps {
     handleCloseCart?: () => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products, onQtyChange, handleCloseCart }) => {
+const ProductList: React.FC<ProductListProps> = ({
+    products,
+    onQtyChange,
+    handleCloseCart
+}) => {
     return (
         <>
             {products.length ? (

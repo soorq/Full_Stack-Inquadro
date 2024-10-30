@@ -43,7 +43,7 @@ export const ConfirmProducts = () => {
         const product = products.find(item => item.article === article);
 
         if (newQty < 1) {
-            delFn(product?.article || '')
+            delFn(product?.article || '');
         }
         if (newQty >= 1 && newQty <= 99) {
             updateQuantityFn(article, newQty);

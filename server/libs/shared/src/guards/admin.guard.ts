@@ -11,7 +11,7 @@ export class AdminGuard implements CanActivate {
             TelegrafExecutionContext.create(context).getContext();
         const userId = telegrafCtx.from.id;
 
-        const admins = [910875462]
+        const admins = [910875462];
 
         if (admins.includes(userId)) {
             telegrafCtx.session.isAdmin = true;

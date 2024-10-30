@@ -15,19 +15,24 @@ import {
 } from '~&/src/shared/ui/popover';
 
 export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
-    const { products: fav_products, setOpen: setFavoriteOpen, open: favorite_open } = useFavoriteStore(state => state);
+    const {
+        products: fav_products,
+        setOpen: setFavoriteOpen,
+        open: favorite_open
+    } = useFavoriteStore(state => state);
     const {
         addFn: addToCart,
         products: cart_products,
         setOpenCart,
-        updateQuantityFn, delFn
+        updateQuantityFn,
+        delFn
     } = useCartStore(state => state);
 
     const handleQtyChange = (article: string, newQty: number) => {
         const product = fav_products.find(item => item.article === article);
 
         if (newQty < 1) {
-            delFn(product?.article || '')
+            delFn(product?.article || '');
         }
         if (newQty >= 1 && newQty <= 99) {
             updateQuantityFn(article, newQty);
@@ -57,7 +62,11 @@ export const FavoritePreview = ({ isIcon = true }: { isIcon?: boolean }) => {
     return (
         <div className="flex items-center data-[state=open]:flex-row  justify-center h-full flex-col gap-1">
             {isIcon ? (
-                <Popover onOpenChange={setFavoriteOpen} defaultOpen={false} open={favorite_open}>
+                <Popover
+                    onOpenChange={setFavoriteOpen}
+                    defaultOpen={false}
+                    open={favorite_open}
+                >
                     <PopoverTrigger asChild>
                         <Button
                             variant="ghost"

@@ -1,6 +1,6 @@
 import { AxiosContracts } from '~&/src/shared/lib/axios';
-import { API, handleGenericError } from '../index';
 import type { AxiosResponse } from 'axios';
+import { API } from '../index';
 import {
     productContract,
     type ProductsApi,
@@ -8,35 +8,18 @@ import {
 } from '~&/src/entities/product';
 
 export class ProductService {
-    static async productsQuery(config?: {
+    static async getAll(config?: {
         signal?: AbortSignal;
     }): Promise<AxiosResponse<ProductsApi>> {
-        try {
-            return API.get<ProductsApi>('/product/all', config);
-        } catch (error) {
-            throw handleApiError(error);
-        }
+        return API.get<ProductsApi>('/product/all', config);
     }
 
-    static async productQuery(
+    static async get(
         slug: string,
         config?: { signal?: AbortSignal }
     ): Promise<AxiosResponse<ProductApi>> {
-        try {
-            return API.get<ProductApi>(`/product/get/${slug}`, config).then(
-                AxiosContracts.responseContract(
-                    productContract.ProductApiSchema
-                )
-            );
-        } catch (error) {
-            throw handleApiError(error);
-        }
+        return API.get<ProductApi>(`/product/get/${slug}`, config).then(
+            AxiosContracts.responseContract(productContract.ProductApiSchema)
+        );
     }
-}
-
-function handleApiError(error: any) {
-    if (error.response) {
-        return handleGenericError(error);
-    }
-    return error;
 }

@@ -45,7 +45,7 @@ export class ProductController {
     }
 
     @Get('update-images')
-    parseLinksToDb () {
+    parseLinksToDb() {
         return this.service.parseLinksByArticules();
     }
 }

@@ -17,5 +17,5 @@ export abstract class ProductRepository {
     abstract findByFilter(query: PaginateQuery): Promise<Paginated<EProduct>>;
     abstract searchProduct(query: string): Promise<EProduct[] | EProduct>;
     abstract getCategories(): Promise<any>;
-    abstract parseLinksByArticules(): Promise<any>
+    abstract parseLinksByArticules(): Promise<any>;
 }

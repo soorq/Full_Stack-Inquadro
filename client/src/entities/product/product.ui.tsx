@@ -42,7 +42,7 @@ export const FiltersProducts = memo(
             if (inView && hasNextPage) {
                 fetchNextPage();
             }
-        }, [inView, hasNextPage]);
+        }, [inView, hasNextPage, fetchNextPage]);
 
         return (
             <section className="relative w-full h-full">
@@ -61,7 +61,7 @@ export const FiltersProducts = memo(
                 </div>
 
                 <div
-                    className="grid w-full gap-x-2.5 gap-y-4 sm:gap-x-5 sm:gap-y-8 grid-cols-2
+                    className="grid w-full max-h-[118dvh] h-full overflow-y-auto gap-x-2.5 gap-y-4 sm:gap-x-5 sm:gap-y-8 grid-cols-2
                     sm:grid-cols-[repeat(3,minmax(170px,1fr))] 
                     md:grid-cols-[repeat(2,minmax(170px,1fr))]
                     lg:grid-cols-[repeat(3,minmax(170px,1fr))]

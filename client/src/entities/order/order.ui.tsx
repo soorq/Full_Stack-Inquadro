@@ -1,26 +1,26 @@
 'use client';
 
-import { TypeDelieveryForm } from './form/type-delievery';
-import { useOrderMutation } from '../api/order.mutation';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { orderC, orderT } from '~&/src/shared/api/order';
 import { useSessionStore } from '~&/src/shared/session';
 import { TotalOrder } from '~&/src/widgets/total-order';
-import { OrderSchema, OrderSchemaDto } from '../index';
 import { CardOrder } from '~&/src/widgets/card-order';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Conffeti } from '~&/src/shared/ui/conffeti';
+import { useOrderMutation } from './order.mutation';
 import { useCartStore } from '~&/src/entities/cart';
-import { PersonalForm } from './form/personal';
-import { TypePayForm } from './form/type-pay';
-import { AddressForm } from './form/address';
 import { Form } from '~&/src/shared/ui/form';
 import { useEffect, useState } from 'react';
-import { PolicyForm } from './form/policy';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast';
+
 import {
-    type SubmitHandler,
-    useForm
-} from 'react-hook-form';
+    AddressForm,
+    PersonalForm,
+    PolicyForm,
+    TypeDelieveryForm,
+    TypePayForm
+} from './form';
 
 export const OrderMakingForm = () => {
     const [isDisabling, setIsDisabling] = useState(false);
@@ -39,9 +39,6 @@ export const OrderMakingForm = () => {
             setIsDisabling(true);
             toast.success('Успешно создан заказ!');
             clearCart();
-        },
-        onError: e => {
-            toast.error(e.message);
         }
     });
 
@@ -51,8 +48,8 @@ export const OrderMakingForm = () => {
         }
     }, [products, isDisabling]);
 
-    const form = useForm<OrderSchemaDto>({
-        resolver: zodResolver(OrderSchema),
+    const form = useForm<orderT.OrderForm>({
+        resolver: zodResolver(orderC.OrderFormSchema),
         reValidateMode: 'onChange',
         mode: 'onTouched',
         disabled: isDisabling,
@@ -73,7 +70,7 @@ export const OrderMakingForm = () => {
         }
     }, [form, session]);
 
-    const onSubmit: SubmitHandler<OrderSchemaDto> = async data => {
+    const onSubmit: SubmitHandler<orderT.OrderForm> = async data => {
         const { isPolicy, ...dto } = data;
         if (isPolicy) {
             const { price, products, quantity, sqmetrs } = getCartSummary();
@@ -103,7 +100,10 @@ export const OrderMakingForm = () => {
                 {!isDisabling ? (
                     <>
                         <PolicyForm control={form.control} />
-                        <TotalOrder isFormSubmit isDisable={!form.getValues('isPolicy') || isSuccess} />
+                        <TotalOrder
+                            isFormSubmit
+                            isDisable={!form.getValues('isPolicy') || isSuccess}
+                        />
                     </>
                 ) : (
                     <div className="md:w-1/2 w-full">

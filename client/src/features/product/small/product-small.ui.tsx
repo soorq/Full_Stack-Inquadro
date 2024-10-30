@@ -12,10 +12,8 @@ export const ProductSmall = React.forwardRef<
     { product: ProductClient; withFav?: boolean; className?: string }
 >(({ product, withFav = false, className }, ref) => {
     const isBordur = Array.isArray(product?.usage)
-        ? product?.usage.some(item =>
-            /бордюр/.test(item)
-        )
-        : /бордюр/.test(product?.usage || '')
+        ? product?.usage.some(item => /бордюр/.test(item))
+        : /бордюр/.test(product?.usage || '');
     return (
         <div className="w-full h-full col-span-1" ref={ref}>
             <div

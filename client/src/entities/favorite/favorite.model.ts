@@ -14,7 +14,7 @@ function createFavoriteSlice() {
         products: [],
         open: false,
 
-        setOpen: (open) => set(() => ({ open })),
+        setOpen: open => set(() => ({ open })),
 
         addFn: (product: ProductClient) => {
             set(

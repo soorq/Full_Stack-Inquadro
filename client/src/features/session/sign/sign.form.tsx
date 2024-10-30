@@ -3,6 +3,7 @@
 import { Form, FormControl, FormField, FormItem } from '~&/src/shared/ui/form';
 import { useSignMutation, useVerifyMutation } from './sign.mutation';
 import type { CodeFormValues, EmailFormValues } from './sign.types';
+import { useSessionStore } from '~&/src/shared/session';
 import { authContractsDto } from '~&/src/shared/api/auth';
 import { useForm, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,30 +16,12 @@ import {
     InputOTPGroup,
     InputOTPSlot
 } from '~&/src/shared/ui/input-otp';
-import { useSessionStore } from '~&/src/shared/session';
 
 export const SignForm = () => {
     const { step, setStep } = useSessionStore.getState();
-    const { mutate: verifyUser } = useVerifyMutation({
-        onSuccess() {
-            toast.success('Успешно!');
-        },
-        onError(error) {
-            toast.error(`${error}`);
-            setStep('email');
-        }
-    });
+    const { mutate: verifyUser } = useVerifyMutation();
 
-    const { mutate: signUser } = useSignMutation({
-        onSuccess() {
-            toast.success('Отправили вам код на почту!');
-            setStep('code');
-        },
-        onError(error) {
-            toast.error(`${error}`);
-            setStep('email');
-        }
-    });
+    const { mutate: signUser } = useSignMutation({});
 
     const form = useForm<EmailFormValues | CodeFormValues>({
         resolver: zodResolver(
@@ -46,7 +29,8 @@ export const SignForm = () => {
                 ? authContractsDto.SignUserDtoSchema
                 : authContractsDto.VerifyUserDtoSchema
         ),
-        mode: 'onTouched',
+        criteriaMode: 'firstError',
+        mode: 'onChange',
         defaultValues: { email: '', code: '' }
     });
 

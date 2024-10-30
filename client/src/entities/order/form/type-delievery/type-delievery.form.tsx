@@ -1,5 +1,5 @@
 import { RadioGroup, RadioGroupItem } from '~&/src/shared/ui/radio-group';
-import type { OrderSchemaDto } from '../../../model';
+import type { orderT } from '~&/src/shared/api/order';
 import { Control } from 'react-hook-form';
 import {
     FormControl,
@@ -8,11 +8,11 @@ import {
     FormLabel
 } from '~&/src/shared/ui/form';
 
-export const TypeDelieveryForm = ({
+function TypeDelieveryForm({
     control
 }: {
-    control: Control<OrderSchemaDto>;
-}) => {
+    control: Control<orderT.OrderForm>;
+}) {
     return (
         <div className="bg-secondary p-4 rounded-[10px]">
             <h3 className="text-base sm:text-lg leading-5 mb-4 font-medium">
@@ -62,4 +62,6 @@ export const TypeDelieveryForm = ({
             />
         </div>
     );
-};
+}
+
+export { TypeDelieveryForm };

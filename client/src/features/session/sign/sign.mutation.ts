@@ -1,10 +1,11 @@
 import { AuthService, authTypesDto } from '~&/src/shared/api/auth';
+import { useSessionStore } from '~&/src/shared/session';
+import toast from 'react-hot-toast';
 import {
     DefaultError,
     UseMutationOptions,
     useMutation
 } from '@tanstack/react-query';
-import { useSessionStore } from '~&/src/shared/session/session.model';
 
 export function useSignMutation(
     options?: Pick<
@@ -14,23 +15,25 @@ export function useSignMutation(
             authTypesDto.SignUserDto,
             unknown
         >,
-        'mutationKey' | 'onMutate' | 'onSuccess' | 'onError' | 'onSettled'
+        'mutationKey' | 'onMutate' | 'onSettled'
     >
 ) {
-    const {
-        mutationKey = [],
-        onMutate,
-        onSuccess,
-        onError,
-        onSettled
-    } = options || {};
+    const { setStep } = useSessionStore.getState();
+
+    const { mutationKey = [], onMutate, onSettled } = options || {};
     return useMutation({
         mutationKey: ['session', 'sign-user', ...mutationKey],
         mutationFn: async (dto: authTypesDto.SignUserDto) =>
             AuthService.signUserMutation({ dto }),
         onMutate,
-        onSuccess,
-        onError,
+        onSuccess() {
+            toast.success('Отправили вам код на почту!');
+            setStep('code');
+        },
+        onError(error) {
+            toast.error(`${error}`);
+            setStep('email');
+        },
         onSettled
     });
 }
@@ -43,29 +46,28 @@ export function useVerifyMutation(
             authTypesDto.VerifyUserDto,
             unknown
         >,
-        'mutationKey' | 'onMutate' | 'onSuccess' | 'onError' | 'onSettled'
+        'mutationKey' | 'onMutate' | 'onSettled'
     >
 ) {
-    const {
-        mutationKey = [],
-        onMutate,
-        onSuccess,
-        onError,
-        onSettled
-    } = options || {};
+    const { setStep } = useSessionStore.getState();
+
+    const { mutationKey = [], onMutate, onSettled } = options || {};
     return useMutation({
         mutationKey: ['session', 'verify-user', ...mutationKey],
         mutationFn: async (dto: authTypesDto.VerifyUserDto) =>
             AuthService.verifyCode({ dto }),
-        onMutate,
         onSuccess: async (response, variables, context) => {
             const user = response.data;
             const { setSession } = useSessionStore.getState();
             setSession({ ...user });
-            await onSuccess?.(response, variables, context);
-        },
 
-        onError,
+            return toast.success('Успешно!');
+        },
+        onMutate,
+        onError: error => {
+            toast.error(`${error}`);
+            setStep('email');
+        },
         onSettled
     });
 }

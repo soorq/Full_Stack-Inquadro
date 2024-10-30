@@ -1,1 +1,1 @@
-export * from './cookie-page.ui'
+export * from './cookie-page.ui';
