@@ -4,7 +4,11 @@ import { z } from 'zod';
 const $api = process.env.NEXT_PUBLIC_API_URL;
 
 export const API = axios.create({
-    baseURL: $api
+    baseURL: $api,
+    withCredentials: true,
+    headers: {
+        'Access-Control-Allow-Origin': '*'
+    }
 });
 
 export function handleGenericError(error: AxiosError) {
