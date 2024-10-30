@@ -1,18 +1,23 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as chalk from 'chalk';
+import {
+    HttpException,
+    HttpStatus,
+    Logger,
+    ValidationPipe
+} from '@nestjs/common';
 // import * as csurf from 'csurf';
 
 declare const module: any;
 
 const MOCK_APP_URLS = [
-    'http://89.23.116.190:3000',
-    'https://89.23.116.190:3000',
+    'http://194.87.43.122:3000',
+    'http://194.87.43.122:3000',
     'http://localhost:3000',
     'https://inquadro.vercel.app',
     '*'
@@ -58,30 +63,23 @@ async function bootstrap() {
      * - Sets credentials to true
      * - Specifies allowed headers and methods for the CORS policy
      */
-    // app.enableCors({
-    //     origin: (origin, cb) => {
-    //         if (!origin || MOCK_APP_URLS.indexOf(origin) !== -1) {
-    //             cb(null, true);
-    //         } else {
-    //             cb(
-    //                 new HttpException(
-    //                     'Ошибка на уровне CORS политики.',
-    //                     HttpStatus.CONFLICT
-    //                 )
-    //             );
-    //         }
-    //     },
-    //     credentials: true,
-    //     allowedHeaders:
-    //         'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, X',
-    //     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
-    // });
-
     app.enableCors({
-        origin: '*',
+        origin: (origin, cb) => {
+            if (!origin || MOCK_APP_URLS.indexOf(origin) !== -1) {
+                cb(null, true);
+            } else {
+                cb(
+                    new HttpException(
+                        'Ошибка на уровне CORS политики.',
+                        HttpStatus.CONFLICT
+                    )
+                );
+            }
+        },
         credentials: true,
-        methods: '*',
-        allowedHeaders: '*'
+        allowedHeaders:
+            'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, X',
+        methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
     });
 
     /**
