@@ -12,16 +12,25 @@ const nextConfig = {
     },
     reactStrictMode: true,
     transpilePackages: ['@radix-ui/*'],
+    output: 'standalone',
     images: {
         remotePatterns: [
             {
                 hostname: 'inquadra.storage.yandexcloud.net',
                 protocol: 'https',
                 pathname: '**'
+            },
+            {
+                hostname: 'www.inquadra.storage.yandexcloud.net',
+                protocol: 'https',
+                pathname: '**'
             }
+        ],
+        domains: [
+            'inquadra.storage.yandexcloud.net',
+            'www.inquadra.storage.yandexcloud.net'
         ]
     },
-
     webpack(cfg) {
         const fileLoaderRule = cfg.module.rules.find(rule =>
             rule.test?.test?.('.svg')
