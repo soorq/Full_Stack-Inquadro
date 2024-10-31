@@ -1,18 +1,15 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  client:
-    image: client:latest
-    container_name: client
-    hostname: client
-    build:
-      context: ./client/
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_APP_URL: http://localhost:3000
-        NEXT_PUBLIC_API_URL: http://192.87.43.122/api
-    env_file:
-      - ./client/.env
-    ports:
-      - '3000:3000'
-    restart: always
+    client:
+        image: client:latest
+        container_name: client
+        hostname: client
+        build:
+            context: ./client/
+            dockerfile: Dockerfile
+        env_file:
+            - ./client/.env
+        ports:
+            - "3000:3000"
+        restart: always
