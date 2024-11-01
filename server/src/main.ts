@@ -21,7 +21,7 @@ const MOCK_APP_URLS = [
     'http://localhost:3000',
     'https://soorq.ru',
     'https://www.soorq.ru',
-    'https://inquadro.vercel.app',
+    'https://finquadro.vercel.app',
     '*'
 ];
 
