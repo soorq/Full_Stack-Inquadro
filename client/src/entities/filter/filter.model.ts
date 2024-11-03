@@ -1,9 +1,6 @@
+import type { TypeFilterActions, TypeFilterState } from './filter.types';
+import { filterT } from '~&/src/shared/api/filter';
 import { create, StateCreator } from 'zustand';
-import type {
-    TypeFilterActions,
-    TypeFilters,
-    TypeFilterState
-} from './filter.types';
 
 const createFiltersSlice: StateCreator<
     TypeFilterState & TypeFilterActions,
@@ -24,7 +21,10 @@ const createFiltersSlice: StateCreator<
     isOpenCategory: false,
     isOpenFilters: false,
 
-    setFilter: (name: keyof Omit<TypeFilters, 'prices'>, value: string) => {
+    setFilter: (
+        name: keyof Omit<filterT.TypeFilters, 'prices'>,
+        value: string
+    ) => {
         set(state => {
             if (name === 'category') {
                 return { category: value };
@@ -32,13 +32,16 @@ const createFiltersSlice: StateCreator<
             const newSet = new Set(state[name]);
             newSet.add(value);
             return { [name]: newSet } as unknown as Pick<
-                TypeFilters,
-                keyof Omit<TypeFilters, 'prices'>
+                filterT.TypeFilters,
+                keyof Omit<filterT.TypeFilters, 'prices'>
             >;
         });
     },
 
-    removeFilter: (name: keyof Omit<TypeFilters, 'prices'>, value: string) => {
+    removeFilter: (
+        name: keyof Omit<filterT.TypeFilters, 'prices'>,
+        value: string
+    ) => {
         set(state => {
             if (name === 'category') {
                 return { category: value };
@@ -46,8 +49,8 @@ const createFiltersSlice: StateCreator<
             const newSet = new Set(state[name]);
             newSet.delete(value);
             return { [name]: newSet } as unknown as Pick<
-                TypeFilters,
-                keyof Omit<TypeFilters, 'prices'>
+                filterT.TypeFilters,
+                keyof Omit<filterT.TypeFilters, 'prices'>
             >;
         });
     },

@@ -25,7 +25,7 @@ export const ErrorPage = () => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Страница не найдена</BreadcrumbPage>
+                            <BreadcrumbPage>Страница ошибки</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

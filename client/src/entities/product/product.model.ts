@@ -15,10 +15,8 @@ function createProductSlice(): StateCreator<
         product_client: null,
         currentId: null,
 
-        setProductClient: (product) => {
-            const product_client = transformProductClientDto(
-                product,
-            );
+        setProductClient: product => {
+            const product_client = transformProductClientDto(product);
             set({
                 product_client
             });

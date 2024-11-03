@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import { HintOrder } from '~&/src/widgets/hint-order';
 
-export const CartPage = () => {
+function CartPage() {
     return (
         <>
             <Header />
@@ -38,4 +38,6 @@ export const CartPage = () => {
             <Footer />
         </>
     );
-};
+}
+
+export { CartPage };

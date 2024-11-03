@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { ProductsClientSchema } from '~&/src/entities/product/product.contracts';
+import { z } from 'zod';
 
 export const FiltersSchema = z.object({
     category: z.string(),
@@ -44,24 +44,4 @@ export const FilterResponseSchema = z.object({
     data: ProductsClientSchema,
     meta: FilterMetaSchema,
     links: FilterLinksSchema
-});
-
-const CategoriesSchemeField = z.array(
-    z.object({
-        label: z.string(),
-        value: z.string()
-    })
-);
-
-export const FilterResponseCategories = z.object({
-    name: CategoriesSchemeField,
-    availability: CategoriesSchemeField,
-    usage: CategoriesSchemeField,
-    plating: CategoriesSchemeField,
-    texture: CategoriesSchemeField,
-    invoice: CategoriesSchemeField,
-    size: CategoriesSchemeField,
-    shade: CategoriesSchemeField,
-    country: CategoriesSchemeField,
-    manufacturing: CategoriesSchemeField
 });

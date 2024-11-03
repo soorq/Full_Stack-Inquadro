@@ -1,14 +1,14 @@
 'use client';
 
 import { Funnel, FunnelX, Sliders } from '@phosphor-icons/react';
-import { useFiltersStore } from '~&/src/features/filter';
+import { useFiltersStore } from '~&/src/entities/filter';
 import { Button } from '~&/src/shared/ui/button';
 import { SortSelect } from '../sort-select';
 
 export const FilterHeader = () => {
     const {
-        hasActiveFilters,
         resetFilters,
+        hasActiveFilters,
         setOpenCategory,
         setOpenFilters,
         isOpenCategory,

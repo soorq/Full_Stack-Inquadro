@@ -5,7 +5,7 @@ import { Button } from '~&/src/shared/ui/button';
 import { useState, useEffect } from 'react';
 import { SignForm } from './sign.form';
 
-export const SignBlock = () => {
+function SignBlock() {
     const [isMounted, setIsMounted] = useState(false);
     const [isAuth, setIsAuth] = useState(true);
     const [show, setShow] = useState(false);
@@ -62,4 +62,6 @@ export const SignBlock = () => {
             </div>
         </div>
     );
-};
+}
+
+export { SignBlock }

@@ -1,18 +1,15 @@
 'use client';
 
 import { ProductSmallSkeleton } from '~&/src/features/product/small';
+import { FilterQueries, useFiltersStore } from '../filter';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SortSelect } from '~&/src/widgets/sort-select';
 import { useInView } from 'react-intersection-observer';
+import { filterT } from '~&/src/shared/api/filter';
 import { Button } from '~&/src/shared/ui/button';
 import { X } from '@phosphor-icons/react';
 import { useEffect, memo } from 'react';
 import dynamic from 'next/dynamic';
-import {
-    TypeQueryFilters,
-    useFiltersStore,
-    FilterQueries
-} from '~&/src/features/filter';
 
 const ProductSmall = dynamic(
     () => import('~&/src/features/product/small').then(cn => cn.ProductSmall),
@@ -23,7 +20,7 @@ const ProductSmall = dynamic(
 );
 
 export const FiltersProducts = memo(
-    ({ filters }: { filters: TypeQueryFilters }) => {
+    ({ filters }: { filters: filterT.TypeQueryFilters }) => {
         const { hasActiveFilters, resetFilters } = useFiltersStore(
             state => state
         );
@@ -61,7 +58,7 @@ export const FiltersProducts = memo(
                 </div>
 
                 <div
-                    className="grid w-full max-h-[118dvh] h-full overflow-y-auto gap-x-2.5 gap-y-4 sm:gap-x-5 sm:gap-y-8 grid-cols-2
+                    className="grid w-full max-h-[200dvh] h-full overflow-y-auto gap-x-2.5 gap-y-4 sm:gap-x-5 sm:gap-y-8 grid-cols-2
                     sm:grid-cols-[repeat(3,minmax(170px,1fr))] 
                     md:grid-cols-[repeat(2,minmax(170px,1fr))]
                     lg:grid-cols-[repeat(3,minmax(170px,1fr))]

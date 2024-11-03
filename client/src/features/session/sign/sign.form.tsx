@@ -17,7 +17,7 @@ import {
     InputOTPSlot
 } from '~&/src/shared/ui/input-otp';
 
-export const SignForm = () => {
+function SignForm() {
     const { step, setStep } = useSessionStore.getState();
     const { mutate: verifyUser } = useVerifyMutation();
 
@@ -85,7 +85,7 @@ export const SignForm = () => {
             </form>
         </Form>
     );
-};
+}
 
 const EmailStep = ({ control }: { control: Control<EmailFormValues> }) => (
     <FormField
@@ -121,3 +121,5 @@ const CodeStep = ({ control }: { control: Control<CodeFormValues> }) => (
         )}
     />
 );
+
+export { SignForm };

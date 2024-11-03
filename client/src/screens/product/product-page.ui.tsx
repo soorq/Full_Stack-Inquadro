@@ -1,4 +1,4 @@
-import { RecentProducts } from '~&/src/entities/recent-view';
+import { RecentProducts } from '~&/src/features/recent-view';
 import { ProductLarge } from '~&/src/features/product/large';
 import { HintOrder } from '~&/src/widgets/hint-order';
 import { ProductApi } from '~&/src/entities/product';

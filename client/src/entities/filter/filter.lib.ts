@@ -1,11 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { TypeFilters } from '../model';
 import React from 'react';
 import qs from 'qs';
+import { filterT } from '~&/src/shared/api/filter';
 
-export const useQueryFilters = (filters: TypeFilters) => {
+function useQueryFilters(filters: filterT.TypeFilters) {
     const isMounted = React.useRef(false);
     const router = useRouter();
 
@@ -44,4 +44,6 @@ export const useQueryFilters = (filters: TypeFilters) => {
         }
         isMounted.current = true;
     }, [filters, router]);
-};
+}
+
+export { useQueryFilters };

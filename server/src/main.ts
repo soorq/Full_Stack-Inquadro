@@ -1,24 +1,17 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as chalk from 'chalk';
-import {
-    HttpException,
-    HttpStatus,
-    Logger,
-    ValidationPipe
-} from '@nestjs/common';
 // import * as csurf from 'csurf';
 
 declare const module: any;
 
 async function bootstrap() {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-        cors: false
-    });
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     const config = app.get(ConfigService);
 
@@ -56,10 +49,9 @@ async function bootstrap() {
      * - Specifies allowed headers and methods for the CORS policy
      */
     app.enableCors({
-        origin: ['https://soorq.ru', 'http://localhost:3000', 'www.soorq.ru'],
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
+        origin: true,
         credentials: true,
+        methods: 'GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH'
     });
 
     /**
@@ -70,17 +62,6 @@ async function bootstrap() {
         .setTitle('Inquadro API`s')
         .setDescription('Документация по эндпойнтам для быстрой орентации.')
         .setVersion('1.0.0')
-        // .addBearerAuth(
-        //   {
-        //     type: 'http',
-        //     scheme: 'bearer',
-        //     bearerFormat: 'JWT',
-        //     name: 'JWT',
-        //     description: 'Enter JWT token',
-        //     in: 'header',
-        //   },
-        //   'JWT-auth',
-        // )
         .build();
 
     const SWAGGER = SwaggerModule.createDocument(app, CFG);

@@ -1,35 +1,38 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { FilterCategory, useFiltersStore } from '../model';
 import { FiltersCheckboxGroup } from './filter-group';
-import { FilterQueries } from '../api/filter.queries';
+import { filterT } from '~&/src/shared/api/filter';
 import { FilterRadioGroup } from './filter-radio';
 import { cn } from '~&/src/shared/lib/tw-merge';
 import { Navbar } from '~&/src/widgets/navbar';
 import { FilterSize } from './filter-size';
-import { useQueryFilters } from '../lib';
 import React from 'react';
 import {
+    FilterQueries,
     MFilterAvailable,
     MFilterCategory,
-    MFilterTexture,
     MFilterInvoice,
     MFilterPlating,
     MFilterShade,
+    MFilterSize,
+    MFilterTexture,
     MFilterUsage,
-    MFilterSize
-} from '../constnants/filter.constnants';
+    useFiltersStore,
+    useQueryFilters
+} from '~&/src/entities/filter';
 
 export const Filter = () => {
-    const { data, isLoading } = useSuspenseQuery(
-        FilterQueries.categoriesQuery()
-    );
+    const {
+        data: { data },
+        isLoading,
+        isPending
+    } = useSuspenseQuery(FilterQueries.categoryQuery());
     const filters = useFiltersStore(state => state);
     useQueryFilters(filters);
 
     const handleCheckboxClick = (
-        filterName: FilterCategory,
+        filterName: filterT.FilterCategory,
         id: string,
         isSelected: boolean
     ) => {
@@ -61,7 +64,7 @@ export const Filter = () => {
                 }
                 defaultItems={MFilterUsage}
                 selected={filters.usage}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
                 items={data.usage}
             />
 
@@ -72,7 +75,7 @@ export const Filter = () => {
                 defaultItems={MFilterAvailable}
                 selected={filters.availability}
                 items={data.availability}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
             />
 
             <FiltersCheckboxGroup
@@ -82,7 +85,7 @@ export const Filter = () => {
                 defaultItems={MFilterPlating}
                 selected={filters.plating}
                 items={data.plating}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
             />
 
             <FilterSize
@@ -91,7 +94,7 @@ export const Filter = () => {
                 }
                 defaultItems={MFilterSize}
                 selected={filters.size}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
                 items={data.size}
             />
 
@@ -102,7 +105,7 @@ export const Filter = () => {
                 defaultItems={MFilterInvoice}
                 selected={filters.invoice}
                 items={data.invoice}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
             />
 
             <FiltersCheckboxGroup
@@ -112,7 +115,7 @@ export const Filter = () => {
                 defaultItems={MFilterTexture}
                 selected={filters.texture}
                 items={data.texture}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
                 limit={10}
             />
 
@@ -123,7 +126,7 @@ export const Filter = () => {
                 defaultItems={MFilterShade}
                 selected={filters.shade}
                 items={data.shade}
-                loading={isLoading}
+                loading={isLoading ?? isPending}
             />
         </div>
     );

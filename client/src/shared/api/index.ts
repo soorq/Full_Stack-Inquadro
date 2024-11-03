@@ -5,11 +5,7 @@ const $api = process.env.NEXT_PUBLIC_API_URL;
 
 export const API = axios.create({
     baseURL: $api,
-    withCredentials: true,
-    headers: {
-        'Access-Control-Allow-Origin': $api,
-        'Content-Type': 'application/json'
-    },
+    withCredentials: true
 });
 
 export function handleGenericError(error: AxiosError) {

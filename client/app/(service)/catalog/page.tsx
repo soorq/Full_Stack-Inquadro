@@ -1,4 +1,4 @@
-import { TypeQueryFilters } from '~&/src/features/filter';
+import type { filterT } from '~&/src/shared/api/filter';
 import dynamic from 'next/dynamic';
 
 const Page = dynamic(
@@ -9,7 +9,7 @@ const Page = dynamic(
 export default function CatalogPage({
     searchParams
 }: {
-    searchParams: TypeQueryFilters;
+    searchParams: filterT.TypeQueryFilters;
 }) {
     return <Page params={searchParams} />;
 }

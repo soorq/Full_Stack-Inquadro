@@ -1,7 +1,6 @@
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { ENTITIES } from '@app/entities';
-import { Logger } from '@nestjs/common';
 import { config } from 'dotenv';
 import { join } from 'path';
 
@@ -9,18 +8,19 @@ config({ path: join(process.cwd(), '.env') });
 const cfg = new ConfigService();
 
 const options = (): DataSourceOptions => {
-    const url = cfg.get('DATABASE_URL');
-
-    const urlRedis = cfg.get('REDIS_URL');
-    if (!url || !urlRedis) {
-        Logger.error(
-            `Database URL or Redis URL is empty. Redis - ${urlRedis} | Pg - ${url}`
-        );
-        process.exit();
-    }
+    const { database, host, password, username } = {
+        database: cfg.get('POSTGRES_DB'),
+        host: cfg.get('POSTGRES_HOST'),
+        password: cfg.get('POSTGRES_PASSWORD'),
+        username: cfg.get('POSTGRES_USER')
+    };
 
     return {
-        url,
+        host,
+        port: 5432,
+        password,
+        username,
+        database,
         type: 'postgres',
         schema: 'public',
         logging: true,
@@ -28,15 +28,7 @@ const options = (): DataSourceOptions => {
         migrations: [join(process.cwd(), 'migrations', '**', '*.js')],
         migrationsRun: true,
         migrationsTableName: 'migrations',
-        synchronize: process.env.NODE_ENV === 'developmnet' || true,
-        cache: {
-            type: 'redis',
-            tableName: 'redis',
-            duration: 60000,
-            options: {
-                url: urlRedis
-            }
-        }
+        synchronize: process.env.NODE_ENV === 'developmnet' || true
     };
 };
 

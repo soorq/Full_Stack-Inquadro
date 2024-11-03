@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductApi, useProductStore } from '~&/src/entities/product';
-import { useRecentViewStore } from '~&/src/entities/recent-view';
+import { useRecentViewStore } from '~&/src/features/recent-view';
 import { OrderInfo } from '~&/src/widgets/order-info';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { memo, useEffect, useRef } from 'react';
@@ -59,7 +59,7 @@ export const ProductLarge = memo(
         useEffect(() => {
             setProductClient(product, slug);
             setProductApi(product);
-        }, [product, setProductApi, setProductClient]);
+        }, [product, setProductApi, setProductClient, slug]);
 
         useEffect(() => {
             if (product_client !== null) {
@@ -105,8 +105,8 @@ export const ProductLarge = memo(
                     isBordur={
                         Array.isArray(product_client?.usage)
                             ? product_client?.usage.some(item =>
-                                  /бордюр/.test(item)
-                              )
+                                /бордюр/.test(item)
+                            )
                             : /бордюр/.test(product_client?.usage || '')
                     }
                 />

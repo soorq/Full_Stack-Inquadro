@@ -1,10 +1,11 @@
-import { Filter, TypeQueryFilters } from '~&/src/features/filter';
 import { FilterHeader } from '~&/src/widgets/filter-header';
 import { FiltersProducts } from '~&/src/entities/product';
+import type { filterT } from '~&/src/shared/api/filter';
+import { Filter } from '~&/src/features/filter';
 import { Header } from '~&/src/widgets/header';
 import { Footer } from '~&/src/widgets/footer';
 
-export const CatalogPage = ({ params }: { params: TypeQueryFilters }) => {
+export function CatalogPage({ params }: { params: filterT.TypeQueryFilters }) {
     return (
         <>
             <Header />

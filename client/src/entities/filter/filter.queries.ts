@@ -1,10 +1,5 @@
 import { getQueryClient } from '~&/src/shared/lib/query-client';
-import { FilterService } from './filter.api';
-import type {
-    FilterCategories,
-    FilterResponse,
-    TypeQueryFilters
-} from '../model/filter.types';
+
 import {
     type InfiniteData,
     infiniteQueryOptions,
@@ -12,6 +7,7 @@ import {
     QueryClient,
     queryOptions
 } from '@tanstack/react-query';
+import { FilterService, filterT } from '~&/src/shared/api/filter';
 
 export class FilterQueries {
     static readonly queryClient: QueryClient = getQueryClient();
@@ -20,7 +16,7 @@ export class FilterQueries {
         categories: ['filter', 'categories'] as const
     };
 
-    static infinityProductsQuery = (filters: TypeQueryFilters) => {
+    static infinityProductsQuery = (filters: filterT.TypeQueryFilters) => {
         const { sort, ...filter } = filters;
 
         const queryKey = [
@@ -36,7 +32,7 @@ export class FilterQueries {
             queryFn: async ({
                 pageParam = 1,
                 signal
-            }): Promise<FilterResponse> => {
+            }): Promise<filterT.FilterResponse> => {
                 const response = await FilterService.FilterQuery({
                     params: {
                         page: pageParam,
@@ -73,33 +69,30 @@ export class FilterQueries {
             placeholderData: keepPreviousData,
             //@ts-expect-error
             initialData: () =>
-                this.getInitialData<InfiniteData<FilterResponse, number>>(
-                    queryKey
-                )
+                this.getInitialData<
+                    InfiniteData<filterT.FilterResponse, number>
+                >(queryKey)
         });
     };
 
-    static categoriesQuery = () => {
+    static categoryQuery() {
         return queryOptions({
             queryKey: [this.keys.categories],
-            queryFn: async ({ signal }): Promise<FilterCategories> => {
-                const response = await FilterService.FilterCategoriesQuery({
+            queryFn: ({ signal }) =>
+                FilterService.getCategory({
                     signal
-                });
-
-                return response.data;
-            },
+                }),
             networkMode: 'offlineFirst',
             staleTime: 60 * 60 * 15 * 1000,
             placeholderData: keepPreviousData
         });
-    };
+    }
 
     private static getInitialData<T>(queryKey: string[]) {
         return this.queryClient.getQueryData<T>(queryKey);
     }
 
-    private static setProductsData(products: FilterResponse) {
+    private static setProductsData(products: filterT.FilterResponse) {
         products.data.forEach(product => {
             this.queryClient.setQueryData(
                 [...this.keys.infinitySlug, product.slug],
