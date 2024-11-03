@@ -49,74 +49,76 @@ const ProductOperation = dynamic(
 
 // ################# //
 
-export const ProductLarge = memo(({ product }: { product: ProductApi }) => {
-    const container = useRef(null);
-    const { addRecentProduct } = useRecentViewStore(state => state);
-    const { setProductApi, product_client, setProductClient } = useProductStore(
-        state => state
-    );
+export const ProductLarge = memo(
+    ({ product, slug }: { product: ProductApi; slug: string }) => {
+        const container = useRef(null);
+        const { addRecentProduct } = useRecentViewStore(state => state);
+        const { setProductApi, product_client, setProductClient } =
+            useProductStore(state => state);
 
-    useEffect(() => {
-        setProductClient(product);
-        setProductApi(product);
-    }, [product, setProductApi, setProductClient]);
+        useEffect(() => {
+            setProductClient(product, slug);
+            setProductApi(product);
+        }, [product, setProductApi, setProductClient]);
 
-    useEffect(() => {
-        if (product_client !== null) {
-            addRecentProduct(product_client);
-        }
-    }, [product, product_client]);
-
-    useGSAP(
-        () => {
-            let mm = gsap.matchMedia();
-            const containerElement = container?.current as HTMLElement | null;
-            const leftSliderElement = document.getElementById(
-                'left-slider'
-            ) as HTMLElement | null;
-
-            if (containerElement && leftSliderElement) {
-                mm.add('(min-width: 1024px)', () => {
-                    gsap.to(leftSliderElement, {
-                        position: 'sticky',
-                        top: '20px',
-                        scrollTrigger: {
-                            trigger: leftSliderElement,
-                            start: 'top top',
-                            end: () => `35%`,
-                            scrub: true,
-                            pin: false
-                        }
-                    });
-                });
+        useEffect(() => {
+            if (product_client !== null) {
+                addRecentProduct(product_client);
             }
-        },
-        { scope: container }
-    );
+        }, [product, product_client]);
 
-    return (
-        <section
-            className="relative lg:flex-row flex flex-col lg:justify-between lg:gap-5 mb-5"
-            ref={container}
-        >
-            <ProductSlider
-                images={product_client?.images}
-                isBordur={
-                    Array.isArray(product_client?.usage)
-                        ? product_client?.usage.some(item =>
-                              /бордюр/.test(item)
-                          )
-                        : /бордюр/.test(product_client?.usage || '')
+        useGSAP(
+            () => {
+                let mm = gsap.matchMedia();
+                const containerElement =
+                    container?.current as HTMLElement | null;
+                const leftSliderElement = document.getElementById(
+                    'left-slider'
+                ) as HTMLElement | null;
+
+                if (containerElement && leftSliderElement) {
+                    mm.add('(min-width: 1024px)', () => {
+                        gsap.to(leftSliderElement, {
+                            position: 'sticky',
+                            top: '20px',
+                            scrollTrigger: {
+                                trigger: leftSliderElement,
+                                start: 'top top',
+                                end: () => `35%`,
+                                scrub: true,
+                                pin: false
+                            }
+                        });
+                    });
                 }
-            />
-            <div className="flex flex-col gap-1.5 w-full lg:max-w-[450px] xl:max-w-none">
-                <ProductOptions product={product_client} />
-                <ProductOperation />
-                <OrderInfo />
-                <ProductDetails product={product_client} />
-            </div>
-        </section>
-    );
-});
+            },
+            { scope: container }
+        );
+
+        return (
+            <section
+                className="relative lg:flex-row flex flex-col lg:justify-between lg:gap-5 mb-5"
+                ref={container}
+            >
+                <ProductSlider
+                    images={product_client?.images}
+                    isBordur={
+                        Array.isArray(product_client?.usage)
+                            ? product_client?.usage.some(item =>
+                                  /бордюр/.test(item)
+                              )
+                            : /бордюр/.test(product_client?.usage || '')
+                    }
+                />
+                <div className="flex flex-col gap-1.5 w-full lg:max-w-[450px] xl:max-w-none">
+                    <ProductOptions product={product_client} />
+                    <ProductOperation />
+                    <OrderInfo />
+                    <ProductDetails product={product_client} />
+                </div>
+            </section>
+        );
+    }
+);
 
 ProductLarge.displayName = 'ProductLarge';

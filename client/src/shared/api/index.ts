@@ -7,9 +7,9 @@ export const API = axios.create({
     baseURL: $api,
     withCredentials: true,
     headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': $api,
         'Content-Type': 'application/json'
-    }
+    },
 });
 
 export function handleGenericError(error: AxiosError) {

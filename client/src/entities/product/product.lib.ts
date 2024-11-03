@@ -2,7 +2,8 @@ import type { ProductApi, ProductClient } from './product.types';
 
 export const transformProductClientDto = (
     productApi: ProductApi,
-    selectedId?: number
+    selectedId?: number,
+    slug?: string
 ): ProductClient => {
     const transformToString = (
         field: unknown | { id: number; value: string }[] | null
@@ -51,6 +52,30 @@ export const transformProductClientDto = (
         }
         return [];
     };
+
+    const findProductBySlug = (slug: string): ProductClient | null => {
+        if (Array.isArray(productApi.slug)) {
+            const foundProduct = productApi.slug.find(
+                item => item.value === slug
+            );
+            return foundProduct
+                ? {
+                      ...transformProductClientDto(
+                          productApi,
+                          selectedId,
+                          undefined
+                      ),
+                      slug: foundProduct.value
+                  }
+                : null;
+        }
+        return null;
+    };
+
+    if (slug) {
+        const productBySlug = findProductBySlug(slug);
+        if (productBySlug) return productBySlug;
+    }
 
     return {
         name: transformToString(productApi.name),

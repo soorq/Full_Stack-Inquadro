@@ -48,5 +48,5 @@ export default async function ProductPage({
 }) {
     const product = await getProductBySlug(params.slug).catch(() => notFound());
 
-    return <Page product={product.data} />;
+    return <Page product={product.data} slug={params.slug} />;
 }

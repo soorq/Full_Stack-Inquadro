@@ -13,7 +13,13 @@ import {
     BreadcrumbSeparator
 } from '~&/src/shared/ui/breadcrumb';
 
-export const ProductPage = ({ product }: { product: ProductApi }) => {
+export const ProductPage = ({
+    product,
+    slug
+}: {
+    product: ProductApi;
+    slug: string;
+}) => {
     const productJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Product',
@@ -45,7 +51,7 @@ export const ProductPage = ({ product }: { product: ProductApi }) => {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <ProductLarge product={product} />
+                <ProductLarge slug={slug} product={product} />
                 <RecentProducts />
             </main>
             <HintOrder />

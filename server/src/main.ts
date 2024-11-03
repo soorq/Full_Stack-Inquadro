@@ -15,16 +15,6 @@ import {
 
 declare const module: any;
 
-const MOCK_APP_URLS = [
-    'http://194.87.43.122:3000',
-    'http://194.87.43.122:3000',
-    'http://localhost:3000',
-    'https://soorq.ru',
-    'https://www.soorq.ru',
-    'https://finquadro.vercel.app',
-    '*'
-];
-
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         cors: false
@@ -40,7 +30,7 @@ async function bootstrap() {
     /**
      * Sets the global prefix of the app to 'api' and enables CORS with specific configurations:
      */
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix('v1/api');
 
     /**
      * Adds the cookie parser middleware to the application for handling cookies.
@@ -66,22 +56,10 @@ async function bootstrap() {
      * - Specifies allowed headers and methods for the CORS policy
      */
     app.enableCors({
-        origin: (origin, cb) => {
-            if (!origin || MOCK_APP_URLS.indexOf(origin) !== -1) {
-                cb(null, true);
-            } else {
-                cb(
-                    new HttpException(
-                        'Ошибка на уровне CORS политики.',
-                        HttpStatus.CONFLICT
-                    )
-                );
-            }
-        },
+        origin: ['https://soorq.ru', 'http://localhost:3000', 'www.soorq.ru'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
-        allowedHeaders:
-            'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, X',
-        methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
     });
 
     /**
