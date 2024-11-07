@@ -1,3 +1,5 @@
+'use client';
+import { cn } from '~&/src/shared/lib/tw-merge';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -7,9 +9,12 @@ import {
     ListItem
 } from '~&/src/shared/ui/navigation-menu';
 
-export const Navbar = () => {
+export function Navbar({ className }: { className?: string }) {
     return (
-        <NavigationMenu className="justify-start" delayDuration={5}>
+        <NavigationMenu
+            className={cn('justify-start', className)}
+            delayDuration={5}
+        >
             <NavigationMenuList>
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>
@@ -39,4 +44,4 @@ export const Navbar = () => {
             </NavigationMenuList>
         </NavigationMenu>
     );
-};
+}

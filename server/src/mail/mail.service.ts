@@ -1,9 +1,9 @@
-import { MailerService } from '@nestjs-modules/mailer';
-import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { OrderService } from 'src/order/order.service';
+import { MailerService } from '@nestjs-modules/mailer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserService } from 'src/user/user.service';
-import { OrderService } from 'src/order/order.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
@@ -21,17 +21,20 @@ export class MailService {
         const mailOtions = {
             to: dto.email,
             from: this.cfg.get('MAIL_USER'),
-            subject: 'Подтверждение регистрации',
+            subject: 'Входящий Заказ',
             template: 'order',
             context: {
                 totalQuantity: dto.quantity || 0,
                 entrance: dto.entrance || 'Не указано',
                 products: dto.products,
-                person_name: dto.name,
+                u_name: dto.name,
                 total: dto.price,
                 address: dto.address,
                 city: dto.city,
-                payment_method: dto.payment_method
+                payment_method: dto.payment_method,
+                phone: dto.phone,
+                email: dto.email,
+                year: new Date().getFullYear()
             }
         };
 
@@ -44,14 +47,14 @@ export class MailService {
                 totalQuantity: dto.quantity || 0,
                 entrance: dto.entrance || 'Не указано',
                 products: dto.products,
-                person_name: dto.name,
+                u_name: dto.name,
                 total: dto.price,
                 address: dto.address,
                 city: dto.city,
                 payment_method: dto.payment_method,
-                user_name: dto.name,
-                user_phone: dto.phone,
-                user_email: dto.email
+                phone: dto.phone,
+                email: dto.email,
+                year: new Date().getFullYear()
             }
         };
 

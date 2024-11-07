@@ -17,6 +17,8 @@ import { OrderModule } from 'src/order/order.module';
             useFactory: (cfg: ConfigService) => ({
                 transport: {
                     host: cfg.get('SMTP_HOST'),
+                    port: 587,
+                    secure: false,
                     auth: {
                         user: cfg.get('MAIL_USER'),
                         pass: cfg.get('SMTP_PASS')

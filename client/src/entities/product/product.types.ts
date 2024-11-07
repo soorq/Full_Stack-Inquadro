@@ -27,7 +27,7 @@ export type ProductState = {
 };
 
 export type ProductActions = {
-    setProductClient: (product: ProductApi, slug?: string) => void;
+    setProductClient: (product: ProductApi, slug: string) => void;
     setProductApi: (product: ProductApi) => void;
     setCurrentId: (id: number) => void;
     reset: () => void;

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const HeaderSearch = dynamic(() => import('./search').then(cn => cn.SearchUi));
 
-export const Header = () => {
+export function Header() {
     return (
         <header className="w-full">
             <div className="py-2.5 bg-secondary hidden lg:block">
@@ -65,4 +65,4 @@ export const Header = () => {
             </div>
         </header>
     );
-};
+}

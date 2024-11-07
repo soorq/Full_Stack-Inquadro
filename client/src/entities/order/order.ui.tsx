@@ -1,7 +1,7 @@
 'use client';
 
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { orderC, orderT } from '~&/src/shared/api/order';
+import { orderC, type orderT } from '~&/src/shared/api/order';
 import { useSessionStore } from '~&/src/shared/session';
 import { TotalOrder } from '~&/src/widgets/total-order';
 import { CardOrder } from '~&/src/widgets/card-order';
@@ -55,7 +55,7 @@ export const OrderMakingForm = () => {
         disabled: isDisabling,
         defaultValues: {
             shipping_method: 'самовывоз',
-            payment_method: 'наличка',
+            payment_method: 'денежными средствами при получении',
             isPolicy: false
         }
     });

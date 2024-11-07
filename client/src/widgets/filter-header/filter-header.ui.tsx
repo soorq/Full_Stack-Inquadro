@@ -45,7 +45,7 @@ export const FilterHeader = () => {
                     </Button>
                 </div>
                 <Button
-                    className={`size-10 sm:p-1 ${isActiveFilter ? 'visible' : 'invisible'}`}
+                    className={`size-10 sm:p-1 shrink-0 ${isActiveFilter ? 'visible' : 'invisible'}`}
                     onClick={resetFilters}
                 >
                     <FunnelX

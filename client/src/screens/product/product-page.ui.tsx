@@ -13,13 +13,13 @@ import {
     BreadcrumbSeparator
 } from '~&/src/shared/ui/breadcrumb';
 
-export const ProductPage = ({
+export function ProductPage({
     product,
     slug
 }: {
     product: ProductApi;
     slug: string;
-}) => {
+}) {
     const productJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Product',
@@ -64,4 +64,4 @@ export const ProductPage = ({
             <Footer />
         </>
     );
-};
+}

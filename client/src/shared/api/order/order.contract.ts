@@ -14,7 +14,10 @@ export const OrderCreateSchemaDto = z.object({
     address: z.string(),
     entrance: z.string(),
     shipping_method: z.enum(['самовывоз', 'курьер']),
-    payment_method: z.enum(['наличка', 'карта']),
+    payment_method: z.enum([
+        'платёжным поручением от компании',
+        'денежными средствами при получении'
+    ]),
     products: z.array(ProductWithQuantitySchema),
     quantity: z.number(),
     price: z.number(),
@@ -41,6 +44,9 @@ export const OrderFormSchema = z.object({
     address: z.string({ required_error: 'необходимо заполнить' }),
     entrance: z.string().optional().default(''),
     shipping_method: z.enum(['самовывоз', 'курьер']),
-    payment_method: z.enum(['наличка', 'карта']),
+    payment_method: z.enum([
+        'платёжным поручением от компании',
+        'денежными средствами при получении'
+    ]),
     isPolicy: z.boolean({ required_error: 'Поле ознакомлен - обязательно' })
 });

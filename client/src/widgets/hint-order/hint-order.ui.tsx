@@ -3,16 +3,20 @@
 import { Heart, ShoppingCart } from '@phosphor-icons/react';
 import { useFavoriteStore } from '~&/src/entities/favorite';
 import { useCartStore } from '~&/src/entities/cart';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { cn } from '~&/src/shared/lib/tw-merge';
 
-export const HintOrder = () => {
-    const path = usePathname();
+export function HintOrder({ className }: { className?: string }) {
     const { products: favorite } = useFavoriteStore(state => state);
     const { products: cart } = useCartStore(state => state);
 
     return (
-        <div className="bg-secondary mb-10 w-5/12 rounded-r-[10px] h-full md:hidden">
+        <div
+            className={cn(
+                'bg-secondary mb-10 w-5/12 rounded-r-[10px] h-full md:hidden',
+                className
+            )}
+        >
             <div className="flex py-3 justify-evenly gap-2.5 h-full w-full">
                 <Link
                     href="/favorite"
@@ -38,4 +42,4 @@ export const HintOrder = () => {
             </div>
         </div>
     );
-};
+}

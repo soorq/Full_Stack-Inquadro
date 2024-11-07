@@ -91,6 +91,8 @@ export const ProductLarge = memo(
                         });
                     });
                 }
+
+                return () => mm.revert();
             },
             { scope: container }
         );
@@ -105,8 +107,8 @@ export const ProductLarge = memo(
                     isBordur={
                         Array.isArray(product_client?.usage)
                             ? product_client?.usage.some(item =>
-                                /бордюр/.test(item)
-                            )
+                                  /бордюр/.test(item)
+                              )
                             : /бордюр/.test(product_client?.usage || '')
                     }
                 />

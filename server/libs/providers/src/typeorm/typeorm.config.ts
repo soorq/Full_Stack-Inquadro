@@ -22,13 +22,15 @@ const options = (): DataSourceOptions => {
         username,
         database,
         type: 'postgres',
-        schema: 'public',
         logging: true,
         entities: ENTITIES,
         migrations: [join(process.cwd(), 'migrations', '**', '*.js')],
         migrationsRun: true,
         migrationsTableName: 'migrations',
-        synchronize: process.env.NODE_ENV === 'developmnet' || true
+        synchronize: process.env.NODE_ENV === 'developmnet' || true,
+        extra: {
+            ssl: true
+        }
     };
 };
 

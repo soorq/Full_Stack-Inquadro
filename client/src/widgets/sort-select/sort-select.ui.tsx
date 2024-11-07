@@ -11,9 +11,8 @@ import {
     SelectTrigger,
     SelectValue
 } from '~&/src/shared/ui/select';
-import * as React from 'react';
 
-export const SortSelect = () => {
+export function SortSelect() {
     const [value, setValue] = useState('');
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -32,7 +31,7 @@ export const SortSelect = () => {
     return (
         <Select onValueChange={handleChange} value={value}>
             <SelectTrigger
-                className="self-end md:w-[182px] md:gap-2.5 p-1.5 md:py-2.5 md:px-4"
+                className="self-end shrink-0 md:w-[182px] md:gap-2.5 p-1.5 md:py-2.5 md:px-4"
                 icon={
                     <>
                         <CaretDown className="hidden size-4 md:block opacity-50 transform delay-100 transition-transform" />
@@ -52,4 +51,4 @@ export const SortSelect = () => {
             </SelectContent>
         </Select>
     );
-};
+}

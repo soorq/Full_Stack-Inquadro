@@ -10,12 +10,7 @@ import {
     getOptions
 } from './product-operation.lib';
 
-type DynamicOption = {
-    id: number;
-    value: string;
-};
-
-export const ProductOperation = () => {
+export function ProductOperation() {
     const [selectedSizeId, setSelectedSizeId] = useState<number | undefined>(
         undefined
     );
@@ -29,22 +24,24 @@ export const ProductOperation = () => {
     const {
         product_api: product,
         setCurrentId,
-        product_client
+        product_client,
+        currentId: id
     } = useProductStore(state => state);
 
     useEffect(() => {
         if (product && product.size) {
             const sizeOptions = getOptions(product.size, true);
-            setSelectedSizeId(sizeOptions[0]?.id);
+            setSelectedSizeId(
+                sizeOptions.length > 1
+                    ? (id ?? sizeOptions[0]?.id)
+                    : (sizeOptions[0]?.id ?? id)
+            );
         }
     }, [product]);
 
     useEffect(() => {
-        const determineCurrentId = (): number | undefined => {
-            return selectedShadeId ?? selectedUsageId ?? selectedSizeId;
-        };
-
-        const currentId = determineCurrentId();
+        const currentId =
+            selectedShadeId ?? selectedUsageId ?? id ?? selectedSizeId;
 
         if (currentId !== undefined) {
             setCurrentId(currentId);
@@ -55,19 +52,17 @@ export const ProductOperation = () => {
         if (product) {
             const sizeOptions = getOptions(product.size, true);
             const usageOptions = getOptions(product.usage);
-            const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
+            const shadeOptions = Array.isArray(product.shade)
                 ? getOptions(product.shade).filter(
-                      (option): option is DynamicOption =>
-                          option.id !== undefined
+                      option => option.id !== undefined
                   )
-                : [{ id: selectedShadeId ?? 0, value: product.shade }].filter(
-                      (option): option is DynamicOption =>
-                          option.id !== undefined
-                  );
+                : [
+                      { id: selectedShadeId ?? id ?? 0, value: product.shade }
+                  ].filter(option => option.id !== undefined);
 
             const relatedSizeIds = getRelatedSizeIds(
                 sizeOptions,
-                selectedSizeId ?? 0
+                selectedSizeId ?? id ?? 0
             );
 
             const filteredUsageOptions =
@@ -82,19 +77,21 @@ export const ProductOperation = () => {
                     )
                     .map(usage => usage.id);
 
-                setSelectedUsageId(relatedUsageIds[0]);
+                setSelectedUsageId(
+                    relatedUsageIds.length > 1
+                        ? (id ?? relatedUsageIds[0])
+                        : (relatedUsageIds[0] ?? id)
+                );
                 const filteredShadeOptions = filterOptionsByIds(
                     shadeOptions,
                     relatedUsageIds
                 );
+
                 setSelectedShadeId(
-                    filteredShadeOptions.length > 0
-                        ? filteredShadeOptions[0].id
-                        : undefined
+                    filteredShadeOptions.length > 1
+                        ? (id ?? filteredShadeOptions[0]?.id)
+                        : (filteredShadeOptions[0]?.id ?? id)
                 );
-            } else {
-                setSelectedUsageId(undefined);
-                setSelectedShadeId(undefined);
             }
         }
     };
@@ -103,14 +100,12 @@ export const ProductOperation = () => {
 
     useEffect(() => {
         if (selectedUsageId && product) {
-            const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
+            const shadeOptions = Array.isArray(product.shade)
                 ? getOptions(product.shade).filter(
-                      (option): option is DynamicOption =>
-                          option.id !== undefined
+                      option => option.id !== undefined
                   )
                 : [{ id: selectedUsageId ?? 0, value: product.shade }].filter(
-                      (option): option is DynamicOption =>
-                          option.id !== undefined
+                      option => option.id !== undefined
                   );
 
             const usageOptions = getOptions(product.usage);
@@ -140,12 +135,10 @@ export const ProductOperation = () => {
 
     const sizeOptions = getOptions(product.size, true);
     const usageOptions = getOptions(product.usage);
-    const shadeOptions: DynamicOption[] = Array.isArray(product.shade)
-        ? getOptions(product.shade).filter(
-              (option): option is DynamicOption => option.id !== undefined
-          )
-        : [{ id: selectedShadeId ?? 0, value: product.shade }].filter(
-              (option): option is DynamicOption => option.id !== undefined
+    const shadeOptions = Array.isArray(product.shade)
+        ? getOptions(product.shade).filter(option => option.id !== undefined)
+        : [{ id: selectedShadeId ?? id ?? 0, value: product.shade }].filter(
+              option => option.id !== undefined
           );
 
     const relatedSizeIds = getRelatedSizeIds(sizeOptions, selectedSizeId ?? 0);
@@ -210,4 +203,4 @@ export const ProductOperation = () => {
             <ProductQty product={product_client} />
         </div>
     );
-};
+}

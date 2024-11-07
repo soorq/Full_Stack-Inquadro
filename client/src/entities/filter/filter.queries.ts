@@ -52,7 +52,7 @@ export class FilterQueries {
                 if (nextPageUrl) {
                     const url = new URL(nextPageUrl);
                     const nextPage = url.searchParams.get('page');
-                    return nextPage ? parseInt(nextPage, 9) : undefined;
+                    return nextPage ? parseInt(nextPage) : undefined;
                 }
                 return undefined;
             },
@@ -62,7 +62,7 @@ export class FilterQueries {
                 if (previousPageUrl) {
                     const url = new URL(previousPageUrl);
                     const prevPage = url.searchParams.get('page');
-                    return prevPage ? parseInt(prevPage, 9) : undefined;
+                    return prevPage ? parseInt(prevPage) : undefined;
                 }
                 return undefined;
             },

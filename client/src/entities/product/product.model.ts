@@ -1,7 +1,7 @@
 import { persist, devtools, createJSONStorage } from 'zustand/middleware';
 import type { ProductState, ProductActions } from './product.types';
 import { createSelectors } from '~&/src/shared/lib/zustand';
-import { transformProductClientDto } from './product.lib';
+import { transformFromApi } from './product.lib';
 import { StateCreator, create } from 'zustand';
 
 function createProductSlice(): StateCreator<
@@ -15,8 +15,19 @@ function createProductSlice(): StateCreator<
         product_client: null,
         currentId: null,
 
-        setProductClient: product => {
-            const product_client = transformProductClientDto(product);
+        setProductClient: (product, slug) => {
+            const product_client = transformFromApi(product);
+
+            if (Array.isArray(product.slug)) {
+                const id = product.slug
+                    .filter(el => el.value === slug)
+                    .map(el => el.id)[0];
+
+                set({
+                    currentId: id
+                });
+            }
+
             set({
                 product_client
             });
@@ -27,14 +38,11 @@ function createProductSlice(): StateCreator<
                 product_api
             }),
 
-        setCurrentId: (id: number) => {
+        setCurrentId: id => {
             set(state => {
                 const product_api = state.product_api;
                 if (product_api) {
-                    const product_client = transformProductClientDto(
-                        product_api,
-                        id
-                    );
+                    const product_client = transformFromApi(product_api, id);
                     return {
                         currentId: id,
                         product_client

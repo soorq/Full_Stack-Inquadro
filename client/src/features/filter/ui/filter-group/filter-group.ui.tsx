@@ -44,8 +44,8 @@ export const FiltersCheckboxGroup = ({
     }
 
     const filteredItems = showAll
-        ? defaultItems || items
-        : (defaultItems || items).slice(0, limit);
+        ? (items ?? defaultItems)
+        : (items ?? defaultItems).slice(0, limit);
 
     const handleCheckboxChange = (id: string) => {
         const isSelected = selected.has(id);

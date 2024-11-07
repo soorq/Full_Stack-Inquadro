@@ -32,7 +32,7 @@ function TypePayForm({ control }: { control: Control<orderT.OrderForm> }) {
                                         <FormControl className="shrink-0">
                                             <RadioGroupItem
                                                 withIndicator
-                                                value="наличка"
+                                                value="денежными средствами при получении"
                                                 disabled={field.disabled}
                                             />
                                         </FormControl>
@@ -44,7 +44,7 @@ function TypePayForm({ control }: { control: Control<orderT.OrderForm> }) {
                                         <FormControl className="shrink-0">
                                             <RadioGroupItem
                                                 withIndicator
-                                                value="карта"
+                                                value="платёжным поручением от компании"
                                                 disabled={field.disabled}
                                             />
                                         </FormControl>

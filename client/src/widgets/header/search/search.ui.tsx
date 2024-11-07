@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductSearchSkeleton } from '~&/src/features/product/search';
-import { Divide, MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import { useClickAway, useDebounce } from 'react-use';
 import { SearchQueries } from './search.queries';
 import { useQuery } from '@tanstack/react-query';

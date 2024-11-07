@@ -64,4 +64,4 @@ function SignBlock() {
     );
 }
 
-export { SignBlock }
+export { SignBlock };
